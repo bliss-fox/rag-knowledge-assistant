@@ -21,18 +21,18 @@ logger = logging.getLogger(__name__)
 
 def render() -> None:
     """Render the Query Traces page."""
-    st.header("🔎 Query Traces")
+    st.header("🔎 查询追踪")
 
     svc = TraceService()
     traces = svc.list_traces(trace_type="query")
 
     if not traces:
-        st.info("No query traces recorded yet. Run a query first!")
+        st.info("暂无查询追踪记录，请先执行一次查询。")
         return
 
     # ── Keyword filter ─────────────────────────────────────────────
     keyword = st.text_input(
-        "Search by query keyword",
+        "按关键词筛选",
         value="",
         key="qt_keyword",
     )
@@ -45,7 +45,7 @@ def render() -> None:
             or kw in str(t.get("stages", [])).lower()
         ]
 
-    st.subheader(f"📋 Query History ({len(traces)})")
+    st.subheader(f"📋 查询记录（{len(traces)}）")
 
     for idx, trace in enumerate(traces):
         trace_id = trace.get("trace_id", "unknown")
@@ -66,15 +66,15 @@ def render() -> None:
 
         with st.expander(expander_title, expanded=(idx == 0)):
             # ── 1. Query overview ──────────────────────────────
-            st.markdown("#### 💬 Query")
+            st.markdown("#### 💬 查询内容")
             col_q, col_meta = st.columns([3, 1])
             with col_q:
                 st.markdown(f"> {query_text}")
             with col_meta:
                 source_emoji = "🤖" if source == "mcp" else "📡"
-                st.markdown(f"**Source:** {source_emoji} `{source}`")
+                st.markdown(f"**来源:** {source_emoji} `{source}`")
                 st.markdown(f"**Top-K:** `{meta.get('top_k', '—')}`")
-                st.markdown(f"**Collection:** `{meta.get('collection', '—')}`")
+                st.markdown(f"**集合:** `{meta.get('collection', '—')}`")
 
             st.divider()
 
@@ -94,15 +94,15 @@ def render() -> None:
 
             rc1, rc2, rc3, rc4, rc5 = st.columns(5)
             with rc1:
-                st.metric("Dense Hits", dense_count)
+                st.metric("稠密检索", dense_count)
             with rc2:
-                st.metric("Sparse Hits", sparse_count)
+                st.metric("稀疏检索", sparse_count)
             with rc3:
-                st.metric("Fused", fusion_count or (dense_count + sparse_count))
+                st.metric("融合后", fusion_count or (dense_count + sparse_count))
             with rc4:
-                st.metric("After Rerank", rerank_count if rerank_d else "—")
+                st.metric("重排序后", rerank_count if rerank_d else "—")
             with rc5:
-                st.metric("Total Time", total_label)
+                st.metric("总耗时", total_label)
 
             # ── Diagnostic hints ───────────────────────────────
             _render_diagnostics(
@@ -116,13 +116,13 @@ def render() -> None:
             main_stage_names = ("query_processing", "dense_retrieval", "sparse_retrieval", "fusion", "rerank")
             main_timings = [t for t in timings if t["stage_name"] in main_stage_names]
             if main_timings:
-                st.markdown("#### ⏱️ Stage Timings")
+                st.markdown("#### ⏱️ 阶段耗时")
                 chart_data = {t["stage_name"]: t["elapsed_ms"] for t in main_timings}
                 st.bar_chart(chart_data, horizontal=True)
                 st.table([
                     {
-                        "Stage": t["stage_name"],
-                        "Elapsed (ms)": round(t["elapsed_ms"], 2),
+                        "阶段": t["stage_name"],
+                        "耗时 (ms)": round(t["elapsed_ms"], 2),
                     }
                     for t in main_timings
                 ])
@@ -130,19 +130,19 @@ def render() -> None:
             st.divider()
 
             # ── 4. Per-stage detail tabs ───────────────────────
-            st.markdown("#### 🔍 Stage Details")
+            st.markdown("#### 🔍 阶段详情")
 
             tab_defs = []
             if "query_processing" in stages_by_name:
-                tab_defs.append(("🔤 Query Processing", "query_processing"))
+                tab_defs.append(("🔤 查询处理", "query_processing"))
             if "dense_retrieval" in stages_by_name:
-                tab_defs.append(("🟦 Dense Retrieval", "dense_retrieval"))
+                tab_defs.append(("🟦 稠密检索", "dense_retrieval"))
             if "sparse_retrieval" in stages_by_name:
-                tab_defs.append(("🟨 Sparse Retrieval", "sparse_retrieval"))
+                tab_defs.append(("🟨 稀疏检索", "sparse_retrieval"))
             if "fusion" in stages_by_name:
-                tab_defs.append(("🟩 Fusion (RRF)", "fusion"))
+                tab_defs.append(("🟩 融合（RRF）", "fusion"))
             if "rerank" in stages_by_name:
-                tab_defs.append(("🟪 Rerank", "rerank"))
+                tab_defs.append(("🟪 重排序", "rerank"))
 
             if tab_defs:
                 tabs = st.tabs([label for label, _ in tab_defs])

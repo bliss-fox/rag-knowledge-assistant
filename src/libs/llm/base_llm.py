@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Iterator, List, Optional
 
 
 @dataclass
@@ -76,6 +76,19 @@ class BaseLLM(ABC):
         """
         pass
     
+    def stream_chat(
+        self,
+        messages: List[Message],
+        **kwargs: Any,
+    ) -> Iterator[str]:
+        """Stream chat completion tokens.
+
+        Default implementation calls chat() and yields the full content at once.
+        Subclasses should override with provider-native SSE streaming.
+        """
+        response = self.chat(messages, **kwargs)
+        yield response.content
+
     def validate_messages(self, messages: List[Message]) -> None:
         """Validate message list structure.
         

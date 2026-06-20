@@ -1,36 +1,180 @@
 {
-  "description": "Golden test set for Modular RAG MCP Server evaluation. Contains test queries with expected chunk IDs for IR metrics and optional reference answers for LLM-as-Judge metrics.",
-  "version": "1.0",
+  "description": "Golden test set for Modular RAG MCP Server benchmark evaluation (Stage K). 21 QA pairs covering 4 sample documents, designed for source-level relevance evaluation across Dense / Sparse / Hybrid / Hybrid+Rerank modes.",
+  "version": "2.0",
+  "documents_used": [
+    "tests/fixtures/sample_documents/complex_technical_doc.pdf",
+    "tests/fixtures/sample_documents/chinese_technical_doc.pdf",
+    "tests/fixtures/sample_documents/chinese_table_chart_doc.pdf",
+    "tests/fixtures/sample_documents/chinese_long_doc.pdf"
+  ],
   "test_cases": [
     {
-      "query": "What is Modular RAG?",
-      "expected_chunk_ids": [],
-      "expected_sources": [],
-      "reference_answer": "Modular RAG is a Retrieval-Augmented Generation system built with modular, pluggable components that can be configured and swapped independently."
+      "id": "q001",
+      "query": "What embedding providers does the RAG system support?",
+      "expected_sources": ["complex_technical_doc.pdf"],
+      "reference_answer": "The system supports multiple embedding providers including OpenAI text-embedding-ada-002, Azure OpenAI endpoints, local Ollama models, and various Sentence Transformer models through a factory pattern.",
+      "category": "factual",
+      "language": "en"
     },
     {
-      "query": "How to configure Azure OpenAI?",
-      "expected_chunk_ids": [],
-      "expected_sources": [],
-      "reference_answer": "Configure Azure OpenAI by setting the provider to 'azure' in settings.yaml, along with the deployment_name, azure_endpoint, api_version, and api_key fields."
+      "id": "q002",
+      "query": "What are the key features of the modular RAG architecture?",
+      "expected_sources": ["complex_technical_doc.pdf"],
+      "reference_answer": "Key features include multiple embedding provider support, flexible chunking strategies with metadata preservation, hybrid search combining dense and sparse retrieval, advanced reranking with cross-encoder models, comprehensive observability and evaluation framework, and production-ready error handling.",
+      "category": "factual",
+      "language": "en"
     },
     {
-      "query": "What is hybrid search and how does it work?",
-      "expected_chunk_ids": [],
-      "expected_sources": [],
-      "reference_answer": "Hybrid search combines dense retrieval (semantic embeddings) and sparse retrieval (BM25 keyword matching), then fuses results using Reciprocal Rank Fusion (RRF) for better recall."
+      "id": "q003",
+      "query": "How does the chunking process work and what metadata is preserved?",
+      "expected_sources": ["complex_technical_doc.pdf"],
+      "reference_answer": "The chunking process uses recursive character text splitting as the default strategy. It preserves critical metadata including source document information, page numbers, section headers, and custom attributes. The system also supports LLM-based chunk refinement for post-processing.",
+      "category": "factual",
+      "language": "en"
     },
     {
-      "query": "Explain the chunking strategy",
-      "expected_chunk_ids": [],
-      "expected_sources": [],
-      "reference_answer": "Documents are split into chunks using configurable strategies (recursive, semantic, or fixed-length). Chunks are then refined and enriched with metadata before storage."
+      "id": "q004",
+      "query": "What is the default chunk size and chunk overlap used in the system?",
+      "expected_sources": ["complex_technical_doc.pdf"],
+      "reference_answer": "The default chunk size is 512 characters with a chunk overlap of 128 characters. The system uses separators in priority order and len() as the length function.",
+      "category": "factual",
+      "language": "en"
     },
     {
-      "query": "What evaluation metrics are supported?",
-      "expected_chunk_ids": [],
-      "expected_sources": [],
-      "reference_answer": "The system supports hit_rate, MRR (custom metrics), and Ragas LLM-as-Judge metrics including faithfulness, answer_relevancy, and context_precision."
+      "id": "q005",
+      "query": "What reranking options are available in the system?",
+      "expected_sources": ["complex_technical_doc.pdf"],
+      "reference_answer": "The system supports cross-encoder models for reranking, providing more precise relevance assessment by jointly considering the query and document content.",
+      "category": "factual",
+      "language": "en"
+    },
+    {
+      "id": "q006",
+      "query": "BM25 算法的基本原理是什么？它如何计算文档相关性？",
+      "expected_sources": ["chinese_technical_doc.pdf"],
+      "reference_answer": "BM25（Best Matching 25）是经典的概率检索模型，基于词频（TF）和逆文档频率（IDF）计算文档与查询的相关性。它对精确关键词匹配非常有效，特别是在专有名词和错别字场景下表现优于纯语义检索。本项目使用 jieba 分词结合 rank_bm25 库实现中文 BM25 检索。",
+      "category": "factual",
+      "language": "zh"
+    },
+    {
+      "id": "q007",
+      "query": "RRF 融合算法的计算公式是什么？参数 k 的默认值是多少？",
+      "expected_sources": ["chinese_technical_doc.pdf"],
+      "reference_answer": "RRF（Reciprocal Rank Fusion）公式为：score(d) = Σ 1/(k + rank_i(d))，其中 k 为平滑常数，默认值为 60，rank_i(d) 为文档 d 在第 i 个排名列表中的位置。RRF 不依赖原始分数的量纲，可直接融合不同检索方法的排名结果。",
+      "category": "factual",
+      "language": "zh"
+    },
+    {
+      "id": "q008",
+      "query": "ChromaDB 是什么？它有什么特点？适用于什么场景？",
+      "expected_sources": ["chinese_technical_doc.pdf"],
+      "reference_answer": "ChromaDB 是一个轻量级开源向量数据库，支持 Embedding 存储、元数据过滤和近似最近邻（ANN）搜索。使用 SQLite 本地持久化存储，适合个人项目和中小规模应用场景。默认使用 HNSW 算法，构建简单、与 Python 生态集成良好。",
+      "category": "factual",
+      "language": "zh"
+    },
+    {
+      "id": "q009",
+      "query": "Naive RAG 和 Advanced RAG 的主要区别是什么？",
+      "expected_sources": ["chinese_technical_doc.pdf"],
+      "reference_answer": "Naive RAG 采用简单的「检索-拼接-生成」流程，缺点包括检索质量受限于单一向量相似度、缺乏重排序机制、无法处理多跳推理等。Advanced RAG 引入查询改写、混合检索（Dense + Sparse）、重排序（Cross-Encoder 或 LLM）以及文档分块优化（Smart Chunking + Metadata Enrichment）等多项优化。",
+      "category": "comparison",
+      "language": "zh"
+    },
+    {
+      "id": "q010",
+      "query": "Modular RAG 设计理念的核心是什么？它有什么优势？",
+      "expected_sources": ["chinese_technical_doc.pdf"],
+      "reference_answer": "Modular RAG 将 RAG 流程分解为可独立替换的模块：Loader → Splitter → Transformer → Embedder → Vector Store → Retriever → Reranker → Generator。通过工厂模式和配置文件驱动实例化，可在不修改代码的情况下通过 settings.yaml 一键切换 LLM Provider、Embedding 模型、Reranker 策略等，方便 A/B 测试和技术选型。",
+      "category": "conceptual",
+      "language": "zh"
+    },
+    {
+      "id": "q011",
+      "query": "Cross-Encoder 和 Bi-Encoder 在 RAG 系统中各自的角色是什么？",
+      "expected_sources": ["chinese_technical_doc.pdf"],
+      "reference_answer": "Bi-Encoder（双塔模型）将查询和文档分别编码为独立向量，速度快但精度有限，用于粗排召回。Cross-Encoder 将查询和文档拼接后同时输入模型，通过注意力机制捕捉细粒度交互，精度更高但速度慢，用于精排。RAG 中通常使用 Bi-Encoder 粗排，Cross-Encoder 精排。",
+      "category": "comparison",
+      "language": "zh"
+    },
+    {
+      "id": "q012",
+      "query": "MCP 协议是什么？项目实现了哪些 MCP 工具？",
+      "expected_sources": ["chinese_technical_doc.pdf"],
+      "reference_answer": "MCP（Model Context Protocol）是 Anthropic 提出的标准化 AI 模型与外部工具交互协议，定义了 tools/list、tools/call 等 JSON-RPC 2.0 接口标准。本项目实现了 MCP Server，暴露了 query_knowledge_hub、list_collections 和 get_document_summary 三个工具，可被 VS Code Copilot 或 Claude Desktop 直接调用。",
+      "category": "factual",
+      "language": "zh"
+    },
+    {
+      "id": "q013",
+      "query": "混合检索加 Cross-Encoder 重排的 NDCG@10 和平均延迟是多少？",
+      "expected_sources": ["chinese_table_chart_doc.pdf"],
+      "reference_answer": "混合检索 + Cross-Encoder 精排的 NDCG@10 为 0.88，平均延迟为 89ms，在各种检索策略中精度最高，但延迟也相对较高。",
+      "category": "factual",
+      "language": "zh"
+    },
+    {
+      "id": "q014",
+      "query": "推荐的分块参数 chunk_size 和 chunk_overlap 各是多少？为什么？",
+      "expected_sources": ["chinese_table_chart_doc.pdf"],
+      "reference_answer": "推荐使用 chunk_size=1000，chunk_overlap=200 的配置。实验表明该配置在 Hit Rate（0.82）和 MRR（0.76）上取得最佳平衡，既保留足够上下文又获得较高检索精度。建议同时开启 LLM Chunk Refiner 进一步提升语义完整性。",
+      "category": "factual",
+      "language": "zh"
+    },
+    {
+      "id": "q015",
+      "query": "纯稠密检索和纯稀疏检索（BM25）的 Precision@5 分别是多少？哪种延迟更低？",
+      "expected_sources": ["chinese_table_chart_doc.pdf"],
+      "reference_answer": "纯稠密检索的 Precision@5 为 0.72，平均延迟 45ms；纯稀疏检索（BM25）的 Precision@5 为 0.68，平均延迟 28ms。BM25 延迟最低，但精度不如稠密检索。",
+      "category": "comparison",
+      "language": "zh"
+    },
+    {
+      "id": "q016",
+      "query": "BGE-large-zh 模型的向量维度是多少？它的优势是什么？",
+      "expected_sources": ["chinese_table_chart_doc.pdf"],
+      "reference_answer": "BGE-large-zh 模型的向量维度为 1024 维，成本为免费（本地部署），中文质量评级为「优秀」，延迟约 15ms。在 MTEB 中文榜单上表现最佳，适合中文场景使用。",
+      "category": "factual",
+      "language": "zh"
+    },
+    {
+      "id": "q017",
+      "query": "KV Cache 技术的作用是什么？它有什么局限性？",
+      "expected_sources": ["chinese_long_doc.pdf"],
+      "reference_answer": "KV Cache 将已计算的 Key 和 Value 向量缓存起来，避免在自回归生成中重复计算，将推理时间复杂度从 O(n²) 降低到 O(n)。局限性是 KV Cache 的显存占用随序列长度线性增长，成为处理长上下文的主要瓶颈。常见优化方案包括 GQA（Grouped Query Attention）和 MQA（Multi-Query Attention）。",
+      "category": "factual",
+      "language": "zh"
+    },
+    {
+      "id": "q018",
+      "query": "LoRA 微调技术的原理是什么？如何降低计算资源需求？",
+      "expected_sources": ["chinese_long_doc.pdf"],
+      "reference_answer": "LoRA（Low-Rank Adaptation）通过在原始权重矩阵旁添加低秩分解矩阵（A·B，rank << d），仅训练这些新增参数，大幅降低显存和计算需求。QLoRA 进一步将模型权重量化为 4-bit，配合 LoRA 在消费级 GPU 上也能微调大模型。",
+      "category": "conceptual",
+      "language": "zh"
+    },
+    {
+      "id": "q019",
+      "query": "什么是语义缓存？它如何降低 RAG 系统的延迟和成本？",
+      "expected_sources": ["chinese_long_doc.pdf"],
+      "reference_answer": "语义缓存将查询向量与缓存库中的历史查询进行相似度匹配，若超过阈值则直接返回缓存结果，避免重复的 Embedding 计算和 LLM 调用，显著降低延迟和成本。适合处理重复或相似的查询场景。",
+      "category": "conceptual",
+      "language": "zh"
+    },
+    {
+      "id": "q020",
+      "query": "HNSW 近似最近邻索引算法有什么特点？",
+      "expected_sources": ["chinese_long_doc.pdf"],
+      "reference_answer": "HNSW（Hierarchical Navigable Small World）是一种多层图结构的近似最近邻算法，查询速度快但构建时间较慢。ChromaDB 默认使用 HNSW 算法，对于中小规模数据集是最优选择。其他常见 ANN 方案还包括 IVF（倒排索引+聚类）和 PQ（乘积量化）。",
+      "category": "factual",
+      "language": "zh"
+    },
+    {
+      "id": "q021",
+      "query": "RAG 系统面临哪些安全风险？有哪些防御措施？",
+      "expected_sources": ["chinese_long_doc.pdf"],
+      "reference_answer": "RAG 系统面临的安全风险包括：知识库投毒（恶意文档污染检索结果）、Prompt 注入（用户注入恶意指令）、数据泄露（敏感文档内容暴露）和引用伪造（LLM 编造引用来源）。防御措施包括：文档摄入时内容审查、查询输入过滤和 sanitization、基于角色的访问控制（RBAC）、输出引用验证、以及审计日志记录。",
+      "category": "multi_step",
+      "language": "zh"
     }
   ]
 }

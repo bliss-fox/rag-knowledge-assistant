@@ -99,6 +99,10 @@ traces.jsonl
 
 # Auto-coder skill cache
 .github/skills/auto-coder/.spec_hash
+.claude/skills/auto-coder/.spec_hash
+
+# Claude Code IDE files
+.claude/
 
 # Secrets
 .env.local
