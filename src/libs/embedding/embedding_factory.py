@@ -130,6 +130,14 @@ def _register_builtin_providers() -> None:
     except ImportError:
         pass  # Ollama provider not available
 
+    # OpenAI-compatible providers (use OpenAIEmbedding with custom base_url)
+    try:
+        from src.libs.embedding.openai_embedding import OpenAIEmbedding
+        for _alias in ("siliconflow", "硅基流动", "deepseek", "moonshot", "zhipu"):
+            EmbeddingFactory.register_provider(_alias, OpenAIEmbedding)
+    except ImportError:
+        pass
+
 
 # Register providers when module is imported
 _register_builtin_providers()

@@ -8,7 +8,7 @@ endpoints by configuring the base_url.
 from __future__ import annotations
 
 import os
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Iterator, List, Optional
 
 from src.libs.llm.base_llm import BaseLLM, ChatResponse, Message
 
@@ -80,9 +80,10 @@ class OpenAILLM(BaseLLM):
         # Azure-compatible mode detection
         azure_endpoint = getattr(settings.llm, 'azure_endpoint', None)
         self.api_version = getattr(settings.llm, 'api_version', None)
-        
-        if base_url:
-            self.base_url = base_url
+        settings_base_url = getattr(settings.llm, 'base_url', None)
+
+        if base_url or settings_base_url:
+            self.base_url = base_url or settings_base_url
             self._use_azure_auth = False
         elif azure_endpoint:
             # Azure-compatible mode: construct deployment-based URL
@@ -159,6 +160,50 @@ class OpenAILLM(BaseLLM):
                 f"[OpenAI] API call failed: {type(e).__name__}: {e}"
             ) from e
     
+    def stream_chat(
+        self,
+        messages: List[Message],
+        **kwargs: Any,
+    ) -> Iterator[str]:
+        """Stream tokens via OpenAI-compatible SSE."""
+        import json as _json
+        import httpx
+
+        self.validate_messages(messages)
+        api_messages = [{"role": m.role, "content": m.content} for m in messages]
+        model = kwargs.get("model", self.model)
+        payload = {
+            "model": model,
+            "messages": api_messages,
+            "temperature": kwargs.get("temperature", self.default_temperature),
+            "max_tokens": kwargs.get("max_tokens", self.default_max_tokens),
+            "stream": True,
+        }
+        url = f"{self.base_url.rstrip('/')}/chat/completions"
+        if self.api_version:
+            url += f"?api-version={self.api_version}"
+        headers = (
+            {"api-key": self.api_key, "Content-Type": "application/json"}
+            if self._use_azure_auth
+            else {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
+        )
+        with httpx.Client(timeout=120.0) as client:
+            with client.stream("POST", url, json=payload, headers=headers) as resp:
+                resp.raise_for_status()
+                for line in resp.iter_lines():
+                    if not line.startswith("data: "):
+                        continue
+                    data = line[6:]
+                    if data.strip() == "[DONE]":
+                        break
+                    try:
+                        chunk = _json.loads(data)
+                        delta = chunk["choices"][0]["delta"].get("content") or ""
+                        if delta:
+                            yield delta
+                    except (ValueError, KeyError, IndexError):
+                        continue
+
     def _call_api(
         self,
         messages: List[Dict[str, str]],

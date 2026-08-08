@@ -6,12 +6,10 @@
 # LLM Configuration
 # =============================================================================
 llm:
-  provider: "openai"  # Options: openai, azure, ollama, deepseek
-  model: "gpt-4o"
-  deployment_name: "gpt-4o"
-  azure_endpoint: "https://YOUR_ENDPOINT.openai.azure.com/"
-  api_version: "2024-02-15-preview"
-  api_key: "YOUR_API_KEY_HERE"
+  provider: "deepseek"
+  model: "deepseek-v4-flash"
+  base_url: "https://api.deepseek.com"
+  api_key: ""  # Read credentials from DEEPSEEK_API_KEY
   temperature: 0.0
   max_tokens: 4096
 
@@ -19,32 +17,22 @@ llm:
 # Embedding Configuration
 # =============================================================================
 embedding:
-  provider: "openai"  # Options: openai, azure, ollama
-  model: "text-embedding-ada-002"
-  dimensions: 1536  # text-embedding-ada-002 固定维度 (不传递给API, 仅用于验证)
-  # Azure-compatible settings (azure_endpoint triggers Azure compat mode):
-  azure_endpoint: "https://YOUR_ENDPOINT.openai.azure.com/"
-  deployment_name: "text-embedding-ada-002"
-  api_version: "2024-02-15-preview"
-  api_key: "YOUR_API_KEY_HERE"
-  # OpenAI-specific settings (if provider is openai):
-  # api_key: "YOUR_API_KEY_HERE"
+  provider: "siliconflow"  # OpenAI-compatible embedding service
+  model: "BAAI/bge-m3"  # 通用高质量多语言向量模型（硅基流动/SiliconFlow 等平台支持）
+  dimensions: 1024     # bge-m3 输出维度
+  base_url: "https://api.siliconflow.cn/v1"
+  api_key: ""  # Read credentials from the environment
 
 # =============================================================================
 # Vision LLM Configuration (for Image Captioning)
 # =============================================================================
 vision_llm:
-  enabled: true  # Set to true to enable vision capabilities
-  provider: "openai"  # Options: openai, azure, ollama
-  model: "gpt-4o"  # Options: gpt-4o, gpt-4-vision-preview (OpenAI), llava (Ollama)
-  # Azure-compatible settings (azure_endpoint triggers Azure compat mode):
-  azure_endpoint: "https://YOUR_ENDPOINT.openai.azure.com/"
-  deployment_name: "gpt-4o"
-  api_version: "2024-02-15-preview"
-  api_key: "YOUR_API_KEY_HERE"
-  # Ollama-specific settings (if provider is ollama):
-  # base_url: "http://localhost:11434"
-  max_image_size: 2048  # Max dimension (width/height) for image compression
+  enabled: false  # DeepSeek 标准接口不保证支持视觉；确认模型支持后再开启
+  provider: "deepseek"
+  model: "deepseek-v4-flash"
+  base_url: "https://api.deepseek.com"
+  api_key: ""  # Read credentials from DEEPSEEK_API_KEY
+  max_image_size: 2048
 
 # =============================================================================
 # Vector Store Configuration
@@ -110,3 +98,12 @@ ingestion:
   metadata_enricher:
     use_llm: true  # Set to true to enable LLM-based enrichment (requires LLM config)
     # When use_llm is false or LLM call fails, falls back to rule-based enrichment
+
+# =============================================================================
+# Agent Configuration (Stage J: Agentic RAG Layer)
+# =============================================================================
+agent:
+  max_turns: 5                  # Maximum ReAct loop iterations
+  confidence_threshold: 0.7     # Minimum confidence to accept answer without retry
+  default_collection: "default" # Default collection for tool searches
+  top_k: 5                      # Default top-k for tool retrieval calls
