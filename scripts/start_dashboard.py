@@ -20,16 +20,27 @@ def main() -> None:
     parser.add_argument("--host", type=str, default="localhost", help="Host to bind to")
     args = parser.parse_args()
 
-    app_path = Path(__file__).resolve().parent.parent / "src" / "observability" / "dashboard" / "app.py"
+    app_path = (
+        Path(__file__).resolve().parent.parent / "src" / "observability" / "dashboard" / "app.py"
+    )
     if not app_path.exists():
         print(f"Error: Dashboard app not found at {app_path}")
         sys.exit(1)
 
     cmd = [
-        sys.executable, "-m", "streamlit", "run",
+        sys.executable,
+        "-m",
+        "streamlit",
+        "run",
         str(app_path),
-        "--server.port", str(args.port),
-        "--server.address", args.host,
+        "--server.port",
+        str(args.port),
+        "--server.address",
+        args.host,
+        "--server.headless",
+        "true",
+        "--browser.gatherUsageStats",
+        "false",
     ]
     print(f"Starting Dashboard: {' '.join(cmd)}")
     subprocess.run(cmd)

@@ -104,6 +104,10 @@ traces.jsonl
 # Claude Code IDE files
 .claude/
 
+# Local Reasonix workspace metadata
+.reasonix/
+reasonix.toml
+
 # Secrets
 .env.local
 .env.*.local

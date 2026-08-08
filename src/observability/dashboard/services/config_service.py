@@ -6,9 +6,8 @@ for the Overview page.
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
-from pathlib import Path
-from typing import Any, Dict, List, Optional
+from dataclasses import dataclass
+from typing import Any
 
 from src.core.settings import Settings, load_settings
 
@@ -20,7 +19,7 @@ class ComponentInfo:
     name: str
     provider: str
     model: str
-    extra: Dict[str, Any]
+    extra: dict[str, Any]
 
 
 class ConfigService:
@@ -30,9 +29,9 @@ class ConfigService:
         settings_path: Path to ``settings.yaml``.
     """
 
-    def __init__(self, settings_path: Optional[str] = None) -> None:
+    def __init__(self, settings_path: str | None = None) -> None:
         self._settings_path = settings_path
-        self._settings: Optional[Settings] = None
+        self._settings: Settings | None = None
 
     # ── lazy load ────────────────────────────────────────────────────
 
@@ -51,75 +50,89 @@ class ConfigService:
 
     # ── component cards ──────────────────────────────────────────────
 
-    def get_component_cards(self) -> List[ComponentInfo]:
+    def get_component_cards(self) -> list[ComponentInfo]:
         """Return a list of component summaries for the Overview page."""
         s = self._load()
-        cards: List[ComponentInfo] = []
+        cards: list[ComponentInfo] = []
 
         # LLM
-        cards.append(ComponentInfo(
-            name="LLM（大模型）",
-            provider=s.llm.provider,
-            model=s.llm.model,
-            extra={"temperature": s.llm.temperature, "max_tokens": s.llm.max_tokens},
-        ))
+        cards.append(
+            ComponentInfo(
+                name="LLM",
+                provider=s.llm.provider,
+                model=s.llm.model,
+                extra={"temperature": s.llm.temperature, "max_tokens": s.llm.max_tokens},
+            )
+        )
 
         # Embedding
-        cards.append(ComponentInfo(
-            name="Embedding（向量化）",
-            provider=s.embedding.provider,
-            model=s.embedding.model,
-            extra={"dimensions": s.embedding.dimensions},
-        ))
+        cards.append(
+            ComponentInfo(
+                name="Embedding",
+                provider=s.embedding.provider,
+                model=s.embedding.model,
+                extra={"dimensions": s.embedding.dimensions},
+            )
+        )
 
         # VectorStore
-        cards.append(ComponentInfo(
-            name="向量数据库",
-            provider=s.vector_store.provider,
-            model=s.vector_store.collection_name,
-            extra={"persist_directory": s.vector_store.persist_directory},
-        ))
+        cards.append(
+            ComponentInfo(
+                name="Vector Store",
+                provider=s.vector_store.provider,
+                model=s.vector_store.collection_name,
+                extra={"persist_directory": s.vector_store.persist_directory},
+            )
+        )
 
         # Retrieval
-        cards.append(ComponentInfo(
-            name="混合检索",
-            provider="hybrid",
-            model="dense + sparse + RRF",
-            extra={
-                "dense_top_k": s.retrieval.dense_top_k,
-                "sparse_top_k": s.retrieval.sparse_top_k,
-                "fusion_top_k": s.retrieval.fusion_top_k,
-            },
-        ))
+        cards.append(
+            ComponentInfo(
+                name="Retrieval",
+                provider="hybrid",
+                model="dense + sparse + RRF",
+                extra={
+                    "dense_top_k": s.retrieval.dense_top_k,
+                    "sparse_top_k": s.retrieval.sparse_top_k,
+                    "fusion_top_k": s.retrieval.fusion_top_k,
+                },
+            )
+        )
 
         # Rerank
-        cards.append(ComponentInfo(
-            name="重排序器",
-            provider=s.rerank.provider if s.rerank.enabled else "未启用",
-            model=s.rerank.model if s.rerank.enabled else "-",
-            extra={"enabled": s.rerank.enabled, "top_k": s.rerank.top_k},
-        ))
+        cards.append(
+            ComponentInfo(
+                name="Reranker",
+                provider=s.rerank.provider if s.rerank.enabled else "disabled",
+                model=s.rerank.model if s.rerank.enabled else "-",
+                extra={"enabled": s.rerank.enabled, "top_k": s.rerank.top_k},
+            )
+        )
 
         # Vision LLM
         if s.vision_llm and s.vision_llm.enabled:
-            cards.append(ComponentInfo(
-                name="视觉大模型",
-                provider=s.vision_llm.provider,
-                model=s.vision_llm.model,
-                extra={"max_image_size": s.vision_llm.max_image_size},
-            ))
+            cards.append(
+                ComponentInfo(
+                    name="Vision LLM",
+                    provider=s.vision_llm.provider,
+                    model=s.vision_llm.model,
+                    extra={"max_image_size": s.vision_llm.max_image_size},
+                )
+            )
 
         # Ingestion
         if s.ingestion:
-            cards.append(ComponentInfo(
-                name="文档导入",
-                provider=s.ingestion.splitter,
-                model="-",
-                extra={
-                    "chunk_size": s.ingestion.chunk_size,
-                    "chunk_overlap": s.ingestion.chunk_overlap,
-                    "batch_size": s.ingestion.batch_size,
-                },
-            ))
+            cards.append(
+                ComponentInfo(
+                    name="Ingestion",
+                    provider=s.ingestion.splitter,
+                    model="-",
+                    extra={
+                        "chunk_size": s.ingestion.chunk_size,
+                        "chunk_overlap": s.ingestion.chunk_overlap,
+                        "batch_size": s.ingestion.batch_size,
+                    },
+                )
+            )
 
         return cards
