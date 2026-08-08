@@ -7,7 +7,7 @@ can be used by AI assistants for source attribution.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
 from src.core.types import RetrievalResult

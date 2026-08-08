@@ -10,12 +10,15 @@ This module builds structured responses for MCP tools, combining:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from mcp import types
 
 from src.core.response.citation_generator import Citation, CitationGenerator
 from src.core.types import RetrievalResult
+
+if TYPE_CHECKING:
+    from src.core.response.multimodal_assembler import MultimodalAssembler
 
 
 @dataclass
@@ -216,7 +219,7 @@ class ResponseBuilder:
         Returns:
             MCPToolResponse indicating no results found.
         """
-        content = f"## 未找到相关结果\n\n"
+        content = "## 未找到相关结果\n\n"
         content += f"查询: **{query}**\n\n"
         
         if collection:
@@ -257,7 +260,7 @@ class ResponseBuilder:
         lines = []
         
         # Header
-        lines.append(f"## 检索结果\n")
+        lines.append("## 检索结果\n")
         lines.append(f"针对查询 **\"{query}\"** 找到 {len(results)} 条相关结果:\n")
         
         # Results section

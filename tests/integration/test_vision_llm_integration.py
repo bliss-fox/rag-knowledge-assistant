@@ -4,6 +4,9 @@ from src.core.settings import load_settings
 from src.core.types import Chunk
 from src.ingestion.transform.image_captioner import ImageCaptioner
 
+
+pytestmark = [pytest.mark.integration, pytest.mark.llm]
+
 @pytest.mark.integration
 def test_image_captioner_azure_integration():
     """Integration test for ImageCaptioner using real Azure OpenAI Vision LLM.

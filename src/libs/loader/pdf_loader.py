@@ -216,9 +216,6 @@ class PdfLoader(BaseLoader):
             # Open PDF with PyMuPDF
             doc = fitz.open(pdf_path)
             
-            # Track text offset for placeholder insertion
-            text_offset = 0
-            
             for page_num in range(len(doc)):
                 page = doc[page_num]
                 image_list = page.get_images(full=True)

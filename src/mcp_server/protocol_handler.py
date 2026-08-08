@@ -165,7 +165,7 @@ class ProtocolHandler:
                 ],
                 isError=True,
             )
-        except Exception as e:
+        except Exception:
             # Internal error - don't leak stack trace
             self._logger.exception("Internal error executing tool %s", name)
             return types.CallToolResult(
@@ -235,8 +235,10 @@ def create_mcp_server(
             server_version=server_version,
         )
 
-    # Register default tools if requested
-    if register_tools:
+    # A supplied handler is treated as an intentional custom registry.  Only
+    # populate defaults when the registry is empty, avoiding duplicate names
+    # and surprising mutation of pre-configured handlers.
+    if register_tools and not protocol_handler.tools:
         _register_default_tools(protocol_handler)
 
     # Create low-level server

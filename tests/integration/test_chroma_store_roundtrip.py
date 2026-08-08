@@ -6,12 +6,9 @@ correctness.
 """
 
 import tempfile
-from pathlib import Path
-from typing import Dict, List
 
 import pytest
 
-from src.core.settings import Settings
 from src.libs.vector_store.chroma_store import ChromaStore
 
 
@@ -47,6 +44,8 @@ def chroma_store(test_settings):
         store.clear()
     except Exception:
         pass
+    finally:
+        store.close()
 
 
 class TestChromaStoreBasicOperations:
@@ -357,24 +356,29 @@ class TestChromaStorePersistence:
         """Test that data persists when recreating ChromaStore instance."""
         # Create first instance and insert data
         store1 = ChromaStore(settings=test_settings)
-        records = [
-            {'id': 'persist_test', 'vector': [1.0, 2.0, 3.0], 'metadata': {'test': 'data'}}
-        ]
-        store1.upsert(records)
-        
-        # Create second instance (should load existing data)
-        store2 = ChromaStore(settings=test_settings)
-        
-        # Verify data is accessible from second instance
-        stats = store2.get_collection_stats()
-        assert stats['count'] == 1
-        
-        results = store2.query([1.0, 2.0, 3.0], top_k=1)
-        assert len(results) == 1
-        assert results[0]['id'] == 'persist_test'
-        
-        # Cleanup
-        store2.clear()
+        store2 = None
+        try:
+            records = [
+                {'id': 'persist_test', 'vector': [1.0, 2.0, 3.0], 'metadata': {'test': 'data'}}
+            ]
+            store1.upsert(records)
+
+            # Create second instance (should load existing data)
+            store2 = ChromaStore(settings=test_settings)
+
+            # Verify data is accessible from second instance
+            stats = store2.get_collection_stats()
+            assert stats['count'] == 1
+
+            results = store2.query([1.0, 2.0, 3.0], top_k=1)
+            assert len(results) == 1
+            assert results[0]['id'] == 'persist_test'
+
+            store2.clear()
+        finally:
+            if store2 is not None:
+                store2.close()
+            store1.close()
 
 
 class TestChromaStoreMetadataSanitization:

@@ -79,11 +79,17 @@ class TraceService:
         stages = trace.get("stages", [])
         timings: List[Dict[str, Any]] = []
         for s in stages:
-            # The raw stage dict has: stage, timestamp, data (dict), elapsed_ms
-            # Extract the inner 'data' dict directly rather than flattening
-            stage_data = s.get("data", {})
-            if not isinstance(stage_data, dict):
-                stage_data = {}
+            # Older traces stored stage-specific fields at the top level,
+            # while current TraceContext records them under ``data``.  Merge
+            # both layouts so existing trace logs remain readable.
+            stage_data = {
+                key: value
+                for key, value in s.items()
+                if key not in {"stage", "timestamp", "elapsed_ms", "data"}
+            }
+            nested_data = s.get("data", {})
+            if isinstance(nested_data, dict):
+                stage_data.update(nested_data)
             timings.append(
                 {
                     "stage_name": s.get("stage"),

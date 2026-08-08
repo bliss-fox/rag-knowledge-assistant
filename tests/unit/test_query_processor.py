@@ -8,14 +8,10 @@ Tests cover:
 - Configuration options
 """
 
-import pytest
 from src.core.query_engine.query_processor import (
     QueryProcessor,
     QueryProcessorConfig,
     create_query_processor,
-    DEFAULT_STOPWORDS,
-    CHINESE_STOPWORDS,
-    ENGLISH_STOPWORDS,
 )
 from src.core.types import ProcessedQuery
 
@@ -57,6 +53,15 @@ class TestQueryProcessorBasic:
         assert "模型" in result.keywords
         # Keywords should be non-empty (acceptance criteria)
         assert len(result.keywords) > 0
+
+    def test_preserves_compound_technical_identifiers(self):
+        """Index and query tokenization must preserve exact BM25 terms."""
+        result = QueryProcessor().process("GPT-4 machine-learning deep_learning 3.11")
+
+        assert "GPT-4" in result.keywords
+        assert "machine-learning" in result.keywords
+        assert "deep_learning" in result.keywords
+        assert "3.11" in result.keywords
 
 
 class TestStopwordFiltering:

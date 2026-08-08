@@ -135,6 +135,12 @@ class BaseVectorStore(ABC):
             
             if not vector:
                 raise ValueError(f"Record at index {i} has empty vector")
+
+    def close(self) -> None:
+        """Release provider resources.
+
+        Providers without persistent handles may keep the default no-op.
+        """
     
     def validate_query_vector(self, vector: List[float], top_k: int) -> None:
         """Validate query parameters.

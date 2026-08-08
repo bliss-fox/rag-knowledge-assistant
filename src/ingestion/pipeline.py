@@ -21,7 +21,6 @@ from typing import Callable, List, Optional, Dict, Any
 import time
 
 from src.core.settings import Settings, load_settings, resolve_path
-from src.core.types import Document, Chunk
 from src.core.trace.trace_context import TraceContext
 from src.observability.logger import get_logger
 
@@ -29,7 +28,6 @@ from src.observability.logger import get_logger
 from src.libs.loader.file_integrity import SQLiteIntegrityChecker
 from src.libs.loader.pdf_loader import PdfLoader
 from src.libs.embedding.embedding_factory import EmbeddingFactory
-from src.libs.vector_store.vector_store_factory import VectorStoreFactory
 
 # Ingestion layer imports
 from src.ingestion.chunking.document_chunker import DocumentChunker
@@ -221,10 +219,10 @@ class IngestionPipeline:
             if on_progress is not None:
                 on_progress(stage_name, step, _total_stages)
         
-        logger.info(f"=" * 60)
+        logger.info("=" * 60)
         logger.info(f"Starting Ingestion Pipeline for: {file_path}")
         logger.info(f"Collection: {self.collection}")
-        logger.info(f"=" * 60)
+        logger.info("=" * 60)
         
         try:
             # ─────────────────────────────────────────────────────────────
@@ -237,7 +235,7 @@ class IngestionPipeline:
             logger.info(f"  File hash: {file_hash[:16]}...")
             
             if not self.force and self.integrity_checker.should_skip(file_hash):
-                logger.info(f"  ⏭️  File already processed, skipping (use force=True to reprocess)")
+                logger.info("  ⏭️  File already processed, skipping (use force=True to reprocess)")
                 return PipelineResult(
                     success=True,
                     file_path=str(file_path),
@@ -497,6 +495,7 @@ class IngestionPipeline:
                     for img in images
                 ]
                 trace.record_stage("upsert", {
+                    "method": "vector+bm25+image",
                     "dense_store": {
                         "backend": "ChromaDB",
                         "collection": self.collection,
@@ -553,7 +552,15 @@ class IngestionPipeline:
     
     def close(self) -> None:
         """Clean up resources."""
-        self.image_storage.close()
+        for name, resource in (
+            ("vector store", self.vector_upserter),
+            ("image storage", self.image_storage),
+            ("integrity checker", self.integrity_checker),
+        ):
+            try:
+                resource.close()
+            except Exception as exc:
+                logger.warning("Failed to close %s: %s", name, exc)
 
 
 def run_pipeline(

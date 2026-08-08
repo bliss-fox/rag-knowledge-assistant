@@ -15,9 +15,8 @@ Design Principles:
 
 import json
 import math
-import os
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any, Optional
 
 
 class BM25Indexer:
@@ -212,7 +211,7 @@ class BM25Indexer:
             
             # Validate structure
             if "metadata" not in data or "index" not in data:
-                raise ValueError(f"Invalid index file structure: missing metadata or index")
+                raise ValueError("Invalid index file structure: missing metadata or index")
             
             self._metadata = data["metadata"]
             self._index = data["index"]
@@ -541,7 +540,7 @@ class BM25Indexer:
             # Atomic rename
             temp_path.replace(index_path)
             
-        except Exception as e:
+        except Exception:
             # Clean up temp file if write failed
             if temp_path.exists():
                 temp_path.unlink()
