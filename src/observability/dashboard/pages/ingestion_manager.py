@@ -36,12 +36,12 @@ def _run_ingestion(
         tmp_path = tmp.name
 
     _STAGE_LABELS = {
-        "integrity": "🔍 Checking file integrity…",
-        "load": "📄 Loading document…",
-        "split": "✂️ Chunking document…",
-        "transform": "🔄 Transforming chunks (LLM refine + enrich)…",
-        "embed": "🔢 Encoding vectors…",
-        "upsert": "💾 Storing to database…",
+        "integrity": "🔍 检查文件完整性…",
+        "load": "📄 加载文档…",
+        "split": "✂️ 切分文本块…",
+        "transform": "🔄 转换文本块（大模型精炼 + 元数据增强）…",
+        "embed": "🔢 生成向量…",
+        "upsert": "💾 写入数据库…",
     }
 
     def on_progress(stage: str, current: int, total: int) -> None:
@@ -62,10 +62,10 @@ def _run_ingestion(
             trace=trace,
             on_progress=on_progress,
         )
-        progress_bar.progress(1.0, text="✅ Complete")
-        status_text.success(f"Successfully ingested **{uploaded_file.name}** into collection **{collection}**.")
+        progress_bar.progress(1.0, text="✅ 导入完成")
+        status_text.success(f"已成功将 **{uploaded_file.name}** 导入集合 **{collection}**。")
     except Exception as exc:
-        status_text.error(f"Ingestion failed: {exc}")
+        status_text.error(f"导入失败: {exc}")
     finally:
         TraceCollector().collect(trace)
         # Clean up temp file
@@ -77,43 +77,43 @@ def _run_ingestion(
 
 def render() -> None:
     """Render the Ingestion Manager page."""
-    st.header("📥 Ingestion Manager")
+    st.header("📥 文档导入")
 
     # ── Upload section ─────────────────────────────────────────────
-    st.subheader("📤 Upload & Ingest")
+    st.subheader("📤 上传并导入")
 
     col1, col2 = st.columns([3, 1])
     with col1:
         uploaded = st.file_uploader(
-            "Select a file to ingest",
+            "选择要导入的文件",
             type=["pdf", "txt", "md", "docx"],
             key="ingest_uploader",
         )
     with col2:
-        collection = st.text_input("Collection", value="default", key="ingest_collection")
+        collection = st.text_input("知识库集合", value="default", key="ingest_collection")
 
     if uploaded is not None:
-        if st.button("🚀 Start Ingestion", key="btn_ingest"):
-            progress_bar = st.progress(0, text="Preparing…")
+        if st.button("🚀 开始导入", key="btn_ingest"):
+            progress_bar = st.progress(0, text="准备中…")
             status_text = st.empty()
             _run_ingestion(uploaded, collection.strip() or "default", progress_bar, status_text)
 
     st.divider()
 
     # ── Document management section ────────────────────────────────
-    st.subheader("🗑️ Manage Documents")
+    st.subheader("🗑️ 文档管理")
 
     try:
         svc = DataService()
         docs = svc.list_documents()
     except Exception as exc:
-        st.error(f"Failed to load documents: {exc}")
+        st.error(f"文档加载失败: {exc}")
         return
 
     if not docs:
         st.info(
-            "**No documents ingested yet.** "
-            "Upload a PDF, TXT, MD, or DOCX file above and click \"Start Ingestion\" to begin."
+            "**暂无已导入的文档。**"
+            "请在上方上传 PDF、TXT、MD 或 DOCX 文件，点击「开始导入」即可。"
         )
         return
 
@@ -122,12 +122,12 @@ def render() -> None:
         with col_info:
             st.markdown(
                 f"**{doc['source_path']}** — "
-                f"collection: `{doc.get('collection', '—')}` | "
-                f"chunks: {doc['chunk_count']} | "
-                f"images: {doc['image_count']}"
+                f"集合: `{doc.get('collection', '—')}` | "
+                f"文本块: {doc['chunk_count']} | "
+                f"图片: {doc['image_count']}"
             )
         with col_btn:
-            if st.button("🗑️ Delete", key=f"del_{idx}"):
+            if st.button("🗑️ 删除", key=f"del_{idx}"):
                 try:
                     result = svc.delete_document(
                         source_path=doc["source_path"],
@@ -136,11 +136,11 @@ def render() -> None:
                     )
                     if result.success:
                         st.success(
-                            f"Deleted: {result.chunks_deleted} chunks, "
-                            f"{result.images_deleted} images removed."
+                            f"已删除: {result.chunks_deleted} 个文本块，"
+                            f"{result.images_deleted} 张图片。"
                         )
                         st.rerun()
                     else:
-                        st.warning(f"Partial delete. Errors: {result.errors}")
+                        st.warning(f"部分删除。错误: {result.errors}")
                 except Exception as exc:
-                    st.error(f"Delete failed: {exc}")
+                    st.error(f"删除失败: {exc}")

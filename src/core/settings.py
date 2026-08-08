@@ -168,6 +168,14 @@ class VisionLLMSettings:
 
 
 @dataclass(frozen=True)
+class AgentSettings:
+    max_turns: int
+    confidence_threshold: float
+    default_collection: str
+    top_k: int
+
+
+@dataclass(frozen=True)
 class IngestionSettings:
     chunk_size: int
     chunk_overlap: int
@@ -188,6 +196,7 @@ class Settings:
     observability: ObservabilitySettings
     ingestion: Optional[IngestionSettings] = None
     vision_llm: Optional[VisionLLMSettings] = None
+    agent: Optional[AgentSettings] = None
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Settings":
@@ -227,6 +236,16 @@ class Settings:
                 azure_endpoint=vision_llm.get("azure_endpoint"),
                 deployment_name=vision_llm.get("deployment_name"),
                 base_url=vision_llm.get("base_url"),
+            )
+
+        agent_settings = None
+        if "agent" in data:
+            agent = _require_mapping(data, "agent", "settings")
+            agent_settings = AgentSettings(
+                max_turns=agent.get("max_turns", 5),
+                confidence_threshold=float(agent.get("confidence_threshold", 0.7)),
+                default_collection=agent.get("default_collection", "default"),
+                top_k=agent.get("top_k", 5),
             )
 
         settings = cls(
@@ -281,6 +300,7 @@ class Settings:
             ),
             ingestion=ingestion_settings,
             vision_llm=vision_llm_settings,
+            agent=agent_settings,
         )
 
         return settings

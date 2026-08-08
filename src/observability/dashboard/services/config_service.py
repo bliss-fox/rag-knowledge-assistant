@@ -58,7 +58,7 @@ class ConfigService:
 
         # LLM
         cards.append(ComponentInfo(
-            name="LLM",
+            name="LLM（大模型）",
             provider=s.llm.provider,
             model=s.llm.model,
             extra={"temperature": s.llm.temperature, "max_tokens": s.llm.max_tokens},
@@ -66,7 +66,7 @@ class ConfigService:
 
         # Embedding
         cards.append(ComponentInfo(
-            name="Embedding",
+            name="Embedding（向量化）",
             provider=s.embedding.provider,
             model=s.embedding.model,
             extra={"dimensions": s.embedding.dimensions},
@@ -74,7 +74,7 @@ class ConfigService:
 
         # VectorStore
         cards.append(ComponentInfo(
-            name="Vector Store",
+            name="向量数据库",
             provider=s.vector_store.provider,
             model=s.vector_store.collection_name,
             extra={"persist_directory": s.vector_store.persist_directory},
@@ -82,7 +82,7 @@ class ConfigService:
 
         # Retrieval
         cards.append(ComponentInfo(
-            name="Retrieval",
+            name="混合检索",
             provider="hybrid",
             model="dense + sparse + RRF",
             extra={
@@ -94,8 +94,8 @@ class ConfigService:
 
         # Rerank
         cards.append(ComponentInfo(
-            name="Reranker",
-            provider=s.rerank.provider if s.rerank.enabled else "disabled",
+            name="重排序器",
+            provider=s.rerank.provider if s.rerank.enabled else "未启用",
             model=s.rerank.model if s.rerank.enabled else "-",
             extra={"enabled": s.rerank.enabled, "top_k": s.rerank.top_k},
         ))
@@ -103,7 +103,7 @@ class ConfigService:
         # Vision LLM
         if s.vision_llm and s.vision_llm.enabled:
             cards.append(ComponentInfo(
-                name="Vision LLM",
+                name="视觉大模型",
                 provider=s.vision_llm.provider,
                 model=s.vision_llm.model,
                 extra={"max_image_size": s.vision_llm.max_image_size},
@@ -112,7 +112,7 @@ class ConfigService:
         # Ingestion
         if s.ingestion:
             cards.append(ComponentInfo(
-                name="Ingestion",
+                name="文档导入",
                 provider=s.ingestion.splitter,
                 model="-",
                 extra={

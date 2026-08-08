@@ -45,10 +45,10 @@ def _safe_collection_stats() -> Dict[str, Any]:
 
 def render() -> None:
     """Render the Overview page."""
-    st.header("📊 System Overview")
+    st.header("📊 系统概览")
 
     # ── Component configuration cards ──────────────────────────────
-    st.subheader("🔧 Component Configuration")
+    st.subheader("🔧 组件配置")
 
     try:
         config_service = ConfigService()
@@ -61,13 +61,13 @@ def render() -> None:
     for idx, card in enumerate(cards):
         with cols[idx % len(cols)]:
             st.markdown(f"**{card.name}**")
-            st.caption(f"Provider: `{card.provider}`  \nModel: `{card.model}`")
-            with st.expander("Details"):
+            st.caption(f"提供商: `{card.provider}`  \n模型: `{card.model}`")
+            with st.expander("详情"):
                 for k, v in card.extra.items():
                     st.text(f"{k}: {v}")
 
     # ── Collection statistics ──────────────────────────────────────
-    st.subheader("📁 Collection Statistics")
+    st.subheader("📁 知识库统计")
 
     stats = _safe_collection_stats()
     if stats:
@@ -80,12 +80,12 @@ def render() -> None:
                     st.caption("⚠️ Empty")
     else:
         st.warning(
-            "**No collections found or ChromaDB unavailable.** "
-            "Go to the Ingestion Manager page to upload and ingest documents."
+            "**未找到知识库集合或 ChromaDB 不可用。** "
+            "请前往「文档导入」页面上传并导入文档。"
         )
 
     # ── Trace file statistics ──────────────────────────────────────
-    st.subheader("📈 Trace Statistics")
+    st.subheader("📈 追踪统计")
 
     from src.core.settings import resolve_path
     traces_path = resolve_path("logs/traces.jsonl")
@@ -94,6 +94,6 @@ def render() -> None:
         if line_count > 0:
             st.metric("Total traces", line_count)
         else:
-            st.info("No traces recorded yet. Run a query or ingestion first.")
+            st.info("暂无追踪记录，请先执行一次查询或文档导入。")
     else:
-        st.info("No traces recorded yet. Run a query or ingestion first.")
+        st.info("暂无追踪记录，请先执行一次查询或文档导入。")

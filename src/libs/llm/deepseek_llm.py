@@ -8,7 +8,7 @@ its own endpoint and authentication.
 from __future__ import annotations
 
 import os
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Iterator, List, Optional
 
 from src.libs.llm.base_llm import BaseLLM, ChatResponse, Message
 
@@ -61,16 +61,24 @@ class DeepSeekLLM(BaseLLM):
         self.default_temperature = settings.llm.temperature
         self.default_max_tokens = settings.llm.max_tokens
         
-        # API key: explicit > env var
-        self.api_key = api_key or os.environ.get("DEEPSEEK_API_KEY")
+        # API key: explicit > settings > env var
+        self.api_key = (
+            api_key
+            or getattr(settings.llm, "api_key", None)
+            or os.environ.get("DEEPSEEK_API_KEY")
+        )
         if not self.api_key:
             raise ValueError(
                 "DeepSeek API key not provided. Set DEEPSEEK_API_KEY environment variable "
                 "or pass api_key parameter."
             )
-        
-        # Base URL: explicit > default
-        self.base_url = base_url or self.DEFAULT_BASE_URL
+
+        # Base URL: explicit > settings > default
+        self.base_url = (
+            base_url
+            or getattr(settings.llm, "base_url", None)
+            or self.DEFAULT_BASE_URL
+        )
         
         # Store any additional kwargs for future use
         self._extra_config = kwargs
@@ -136,6 +144,46 @@ class DeepSeekLLM(BaseLLM):
                 f"[DeepSeek] API call failed: {type(e).__name__}: {e}"
             ) from e
     
+    def stream_chat(
+        self,
+        messages: List[Message],
+        **kwargs: Any,
+    ) -> Iterator[str]:
+        """Stream tokens via DeepSeek SSE (OpenAI-compatible)."""
+        import json as _json
+        import httpx
+
+        self.validate_messages(messages)
+        api_messages = [{"role": m.role, "content": m.content} for m in messages]
+        payload = {
+            "model": kwargs.get("model", self.model),
+            "messages": api_messages,
+            "temperature": kwargs.get("temperature", self.default_temperature),
+            "max_tokens": kwargs.get("max_tokens", self.default_max_tokens),
+            "stream": True,
+        }
+        url = f"{self.base_url.rstrip('/')}/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+        }
+        with httpx.Client(timeout=120.0) as client:
+            with client.stream("POST", url, json=payload, headers=headers) as resp:
+                resp.raise_for_status()
+                for line in resp.iter_lines():
+                    if not line.startswith("data: "):
+                        continue
+                    data = line[6:]
+                    if data.strip() == "[DONE]":
+                        break
+                    try:
+                        chunk = _json.loads(data)
+                        delta = chunk["choices"][0]["delta"].get("content") or ""
+                        if delta:
+                            yield delta
+                    except (ValueError, KeyError, IndexError):
+                        continue
+
     def _call_api(
         self,
         messages: List[Dict[str, str]],

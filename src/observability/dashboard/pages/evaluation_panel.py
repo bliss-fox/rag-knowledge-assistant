@@ -27,25 +27,23 @@ EVAL_HISTORY_PATH = Path("logs/eval_history.jsonl")
 
 def render() -> None:
     """Render the Evaluation Panel page."""
-    st.header("📏 Evaluation Panel")
+    st.header("📏 评估面板")
     st.markdown(
-        "Run evaluation against a **golden test set** to measure retrieval "
-        "and generation quality. Results include per-query details and "
-        "aggregate metrics."
+        "基于**黄金测试集**评估检索质量和生成质量，输出逐条详情及汇总指标。"
     )
 
     # ── Configuration Section ──────────────────────────────────────
-    st.subheader("⚙️ Configuration")
+    st.subheader("⚙️ 评估配置")
 
     col1, col2, col3 = st.columns(3)
 
     with col1:
         backend = st.selectbox(
-            "Evaluator Backend",
+            "评估后端",
             options=["custom", "ragas", "composite"],
             index=0,
             key="eval_backend",
-            help="Select which evaluator backend to use.",
+            help="选择使用哪个评估后端。",
         )
 
     # Show info/warning based on selected backend
