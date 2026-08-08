@@ -210,7 +210,7 @@ def _execute_evaluation(
 
     from src.core.settings import load_settings
     from src.libs.evaluator.evaluator_factory import EvaluatorFactory
-    from src.observability.evaluation.eval_runner import EvalRunner, load_test_set
+    from src.observability.evaluation.eval_runner import EvalRunner
 
     settings = load_settings()
 

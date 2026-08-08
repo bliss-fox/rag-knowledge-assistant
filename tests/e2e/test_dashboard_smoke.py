@@ -17,7 +17,6 @@ Usage::
 from __future__ import annotations
 
 import logging
-from pathlib import Path
 from typing import Any, List
 from unittest.mock import MagicMock, patch
 
@@ -111,7 +110,7 @@ class TestDashboardSmoke:
             f"Overview page raised an exception: {at.exception}"
         )
         text = _collect_text(at)
-        assert "overview" in text.lower() or "system" in text.lower()
+        assert any(label in text.lower() for label in ("overview", "system", "系统概览"))
 
     # ------------------------------------------------------------------
     # 2. Data Browser page
@@ -141,7 +140,10 @@ class TestDashboardSmoke:
             f"Data Browser page raised an exception: {at.exception}"
         )
         text = _collect_text(at)
-        assert "data" in text.lower() or "browser" in text.lower() or "document" in text.lower()
+        assert any(
+            label in text.lower()
+            for label in ("data", "browser", "document", "知识库浏览", "文档")
+        )
 
     # ------------------------------------------------------------------
     # 3. Ingestion Manager page
@@ -199,7 +201,7 @@ class TestDashboardSmoke:
             f"Ingestion Traces page raised an exception: {at.exception}"
         )
         text = _collect_text(at)
-        assert "trace" in text.lower() or "ingestion" in text.lower()
+        assert any(label in text.lower() for label in ("trace", "ingestion", "导入追踪"))
 
     # ------------------------------------------------------------------
     # 5. Query Traces page
@@ -229,7 +231,7 @@ class TestDashboardSmoke:
             f"Query Traces page raised an exception: {at.exception}"
         )
         text = _collect_text(at)
-        assert "query" in text.lower() or "trace" in text.lower()
+        assert any(label in text.lower() for label in ("query", "trace", "查询追踪"))
 
     # ------------------------------------------------------------------
     # 6. Evaluation Panel page

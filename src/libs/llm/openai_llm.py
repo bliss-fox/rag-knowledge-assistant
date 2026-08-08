@@ -263,7 +263,7 @@ class OpenAILLM(BaseLLM):
                 return response.json()
         except httpx.TimeoutException as e:
             raise OpenAILLMError(
-                f"[OpenAI] Request timed out after 60 seconds"
+                "[OpenAI] Request timed out after 60 seconds"
             ) from e
         except httpx.RequestError as e:
             raise OpenAILLMError(

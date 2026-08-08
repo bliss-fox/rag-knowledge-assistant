@@ -7,7 +7,6 @@ a lightweight, open-source embedding database designed for local-first deploymen
 from __future__ import annotations
 
 import logging
-from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 try:
@@ -332,6 +331,12 @@ class ChromaStore(BaseVectorStore):
             raise RuntimeError(
                 f"Failed to clear collection '{collection_name or self.collection_name}': {e}"
             ) from e
+
+    def close(self) -> None:
+        """Release ChromaDB file handles held by the persistent client."""
+        close_client = getattr(self.client, "close", None)
+        if callable(close_client):
+            close_client()
 
     def delete_by_metadata(
         self,

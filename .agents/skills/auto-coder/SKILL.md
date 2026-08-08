@@ -25,7 +25,7 @@ Pause only at the end for commit confirmation. Run everything else autonomously.
 
 ## Reference Map
 
-All files under `.Codex/skills/auto-coder/references/`:
+All files under `.agents/skills/auto-coder/references/`:
 
 | File | Content | When to Read |
 |------|---------|-------------|
@@ -42,11 +42,11 @@ All files under `.Codex/skills/auto-coder/references/`:
 ### 1. Sync Spec
 
 ```powershell
-python .Codex/skills/auto-coder/scripts/sync_spec.py
+python .agents/skills/auto-coder/scripts/sync_spec.py
 ```
 
 Then read the schedule file to get task statuses:
-- Read `.Codex/skills/auto-coder/references/06-schedule.md`
+- Read `.agents/skills/auto-coder/references/06-schedule.md`
 
 Task markers:
 
@@ -68,7 +68,7 @@ Quick-check predecessor artifacts exist (file-level only). On mismatch, log a wa
 
 ### 3. Implement
 
-1. **Read relevant spec** from `.Codex/skills/auto-coder/references/`:
+1. **Read relevant spec** from `.agents/skills/auto-coder/references/`:
    - Architecture: `05-architecture.md`
    - Tech details: `03-tech-stack.md`
    - Testing conventions: `04-testing.md`
@@ -107,7 +107,7 @@ Round 3 still failing → STOP, show failure report to user
 ### 5. Persist
 
 1. **Update `DEV_SPEC.md`** (global file): change task marker `[ ]` → `[x]`
-2. **Re-sync**: `python .Codex/skills/auto-coder/scripts/sync_spec.py --force`
+2. **Re-sync**: `python .agents/skills/auto-coder/scripts/sync_spec.py --force`
 3. **Show summary & ask**:
 
 ```

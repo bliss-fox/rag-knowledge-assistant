@@ -9,7 +9,7 @@ Test Coverage:
 """
 
 import pytest
-from unittest.mock import Mock, MagicMock, patch
+from unittest.mock import Mock, patch
 from src.ingestion.storage.vector_upserter import VectorUpserter
 from src.core.types import Chunk
 from src.core.settings import Settings
@@ -82,6 +82,15 @@ def test_chunk_id_deterministic(upserter_with_mock_store, sample_chunk):
     assert id1 == id2 == id3, "Chunk ID must be deterministic"
 
 
+def test_close_releases_vector_store(upserter_with_mock_store):
+    """Closing the upserter must release persistent vector-store handles."""
+    upserter, vector_store = upserter_with_mock_store
+
+    upserter.close()
+
+    vector_store.close.assert_called_once_with()
+
+
 def test_chunk_id_format(upserter_with_mock_store, sample_chunk):
     """Test that chunk ID follows expected format."""
     upserter, _ = upserter_with_mock_store
@@ -149,7 +158,7 @@ def test_chunk_id_generation_missing_source_path(upserter_with_mock_store):
     
     # Chunk validation will catch this during initialization
     with pytest.raises(ValueError, match="source_path"):
-        chunk = Chunk(
+        Chunk(
             id="temp",
             text="Test",
             metadata={"chunk_index": 0},  # Missing source_path

@@ -2,7 +2,7 @@
 """QA Bootstrap — Set up / tear down system states for QA testing.
 
 Usage:
-    python .claude/skills/qa-tester/scripts/qa_bootstrap.py [command]
+    python .agents/skills/qa-tester/scripts/qa_bootstrap.py [command]
 
 Commands:
     baseline   Set up Baseline state (default collection + test_col + traces)

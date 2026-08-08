@@ -221,7 +221,7 @@ class AzureLLM(BaseLLM):
                 return response.json()
         except httpx.TimeoutException as e:
             raise AzureLLMError(
-                f"[Azure] Request timed out after 60 seconds"
+                "[Azure] Request timed out after 60 seconds"
             ) from e
         except httpx.RequestError as e:
             raise AzureLLMError(

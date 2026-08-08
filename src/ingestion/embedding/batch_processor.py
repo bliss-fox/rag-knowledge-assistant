@@ -11,7 +11,7 @@ Design Principles:
 - Deterministic: Same inputs produce same batching and results
 """
 
-from typing import List, Dict, Any, Optional, Tuple
+from typing import List, Dict, Any, Optional
 import time
 from dataclasses import dataclass
 

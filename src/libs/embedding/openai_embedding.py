@@ -12,6 +12,13 @@ from typing import Any, List, Optional
 from src.libs.embedding.base_embedding import BaseEmbedding
 
 
+def _optional_string(value: Any) -> Optional[str]:
+    """Return a non-empty string, ignoring dynamic mock-like attributes."""
+    if isinstance(value, str) and value.strip():
+        return value.strip()
+    return None
+
+
 class OpenAIEmbeddingError(RuntimeError):
     """Raised when OpenAI Embeddings API call fails."""
 
@@ -67,9 +74,9 @@ class OpenAIEmbedding(BaseEmbedding):
         
         # API key: explicit > settings > env var
         self.api_key = (
-            api_key
-            or getattr(settings.embedding, 'api_key', None)
-            or os.environ.get("OPENAI_API_KEY")
+            _optional_string(api_key)
+            or _optional_string(getattr(settings.embedding, "api_key", None))
+            or _optional_string(os.environ.get("OPENAI_API_KEY"))
         )
         if not self.api_key:
             raise ValueError(
@@ -78,21 +85,30 @@ class OpenAIEmbedding(BaseEmbedding):
             )
         
         # Azure-compatible mode detection
-        azure_endpoint = getattr(settings.embedding, 'azure_endpoint', None)
-        self.api_version = getattr(settings.embedding, 'api_version', None)
+        azure_endpoint = _optional_string(
+            getattr(settings.embedding, "azure_endpoint", None)
+        )
+        self.api_version = _optional_string(
+            getattr(settings.embedding, "api_version", None)
+        )
         self._use_azure_auth = False
         
         if base_url:
             self.base_url = base_url
         elif azure_endpoint:
             # Azure-compatible mode: construct deployment-based URL
-            deployment = getattr(settings.embedding, 'deployment_name', None) or self.model
+            deployment = (
+                _optional_string(getattr(settings.embedding, "deployment_name", None))
+                or self.model
+            )
             self.base_url = f"{azure_endpoint.rstrip('/')}/openai/deployments/{deployment}"
             self._use_azure_auth = True
             if not self.api_version:
                 self.api_version = "2024-02-15-preview"
         else:
-            settings_base_url = getattr(settings.embedding, 'base_url', None)
+            settings_base_url = _optional_string(
+                getattr(settings.embedding, "base_url", None)
+            )
             self.base_url = settings_base_url if settings_base_url else self.DEFAULT_BASE_URL
         
         # Store any additional kwargs for future use

@@ -13,6 +13,13 @@ from typing import Any, List, Optional
 from src.libs.embedding.base_embedding import BaseEmbedding
 
 
+def _optional_string(value: Any) -> Optional[str]:
+    """Return a non-empty string, ignoring dynamic mock-like attributes."""
+    if isinstance(value, str) and value.strip():
+        return value.strip()
+    return None
+
+
 class AzureEmbeddingError(RuntimeError):
     """Raised when Azure OpenAI Embeddings API call fails."""
 
@@ -62,19 +69,20 @@ class AzureEmbedding(BaseEmbedding):
         # Azure uses 'deployment_name' instead of 'model'
         # Try settings.embedding.deployment_name first, fallback to model
         self.deployment_name = (
-            getattr(settings.embedding, 'deployment_name', None) or 
+            _optional_string(getattr(settings.embedding, "deployment_name", None)) or
             settings.embedding.model
         )
         
         # Extract optional dimensions setting
         self.dimensions = getattr(settings.embedding, 'dimensions', None)
         
-        # API key: explicit parameter > settings.yaml > env var (fallback for backward compatibility)
+        # API key: explicit parameter > environment > settings.yaml.
+        # Environment variables are the preferred secret-injection mechanism.
         self.api_key = (
-            api_key or 
-            getattr(settings.embedding, 'api_key', None) or
-            os.environ.get("AZURE_OPENAI_API_KEY") or
-            os.environ.get("OPENAI_API_KEY")
+            _optional_string(api_key) or
+            _optional_string(os.environ.get("AZURE_OPENAI_API_KEY")) or
+            _optional_string(os.environ.get("OPENAI_API_KEY")) or
+            _optional_string(getattr(settings.embedding, "api_key", None))
         )
         if not self.api_key:
             raise ValueError(
@@ -82,11 +90,11 @@ class AzureEmbedding(BaseEmbedding):
                 "set AZURE_OPENAI_API_KEY environment variable, or pass api_key parameter."
             )
         
-        # Azure endpoint: explicit parameter > settings.yaml > env var (fallback)
+        # Azure endpoint: explicit parameter > environment > settings.yaml.
         self.azure_endpoint = (
-            azure_endpoint or
-            getattr(settings.embedding, 'azure_endpoint', None) or
-            os.environ.get("AZURE_OPENAI_ENDPOINT")
+            _optional_string(azure_endpoint) or
+            _optional_string(os.environ.get("AZURE_OPENAI_ENDPOINT")) or
+            _optional_string(getattr(settings.embedding, "azure_endpoint", None))
         )
         if not self.azure_endpoint:
             raise ValueError(
@@ -96,8 +104,8 @@ class AzureEmbedding(BaseEmbedding):
         
         # API version: explicit > settings > default
         self.api_version = (
-            api_version or
-            getattr(settings.embedding, 'api_version', None) or
+            _optional_string(api_version) or
+            _optional_string(getattr(settings.embedding, "api_version", None)) or
             self.DEFAULT_API_VERSION
         )
         

@@ -36,7 +36,7 @@ Optional modifiers: append section letter (`run QA G`) or test ID (`run QA G-01`
 > Find bugs, not confirmations. 10+ passes with zero bugs → re-examine your rigor.
 >
 > ### Rule 6: SECTION-END VALIDATION
-> After completing a section, run `python .Codex/skills/qa-tester/scripts/qa_validate_notes.py`.
+> After completing a section, run `python .agents/skills/qa-tester/scripts/qa_validate_notes.py`.
 > Re-execute any flagged test before moving to next section.
 
 ---
@@ -81,18 +81,18 @@ Optional modifiers: append section letter (`run QA G`) or test ID (`run QA G-01`
 ## Step 2: Set System State
 
 ```
-Empty          → python .Codex/skills/qa-tester/scripts/qa_bootstrap.py clear
-Baseline       → python .Codex/skills/qa-tester/scripts/qa_bootstrap.py baseline
-DeepSeek       → python .Codex/skills/qa-tester/scripts/qa_config.py apply deepseek
-Rerank_LLM     → python .Codex/skills/qa-tester/scripts/qa_config.py apply rerank_llm
-NoVision       → python .Codex/skills/qa-tester/scripts/qa_config.py apply no_vision
-InvalidKey     → python .Codex/skills/qa-tester/scripts/qa_config.py apply invalid_llm_key
-InvalidEmbedKey→ python .Codex/skills/qa-tester/scripts/qa_config.py apply invalid_embed_key
+Empty          → python .agents/skills/qa-tester/scripts/qa_bootstrap.py clear
+Baseline       → python .agents/skills/qa-tester/scripts/qa_bootstrap.py baseline
+DeepSeek       → python .agents/skills/qa-tester/scripts/qa_config.py apply deepseek
+Rerank_LLM     → python .agents/skills/qa-tester/scripts/qa_config.py apply rerank_llm
+NoVision       → python .agents/skills/qa-tester/scripts/qa_config.py apply no_vision
+InvalidKey     → python .agents/skills/qa-tester/scripts/qa_config.py apply invalid_llm_key
+InvalidEmbedKey→ python .agents/skills/qa-tester/scripts/qa_config.py apply invalid_embed_key
 Any            → no state change needed
 ```
 
-After config-profile tests → `python .Codex/skills/qa-tester/scripts/qa_config.py restore`
-Check state → `python .Codex/skills/qa-tester/scripts/qa_bootstrap.py status`
+After config-profile tests → `python .agents/skills/qa-tester/scripts/qa_config.py restore`
+Check state → `python .agents/skills/qa-tester/scripts/qa_bootstrap.py status`
 
 ---
 
@@ -151,7 +151,7 @@ Primary method: `pytest tests/e2e/test_mcp_client.py -v` covers most J-* cases.
 Tests with 3+ sequential steps **MUST** use the runner script:
 
 ```
-python .Codex/skills/qa-tester/scripts/qa_multistep.py <TEST_ID>
+python .agents/skills/qa-tester/scripts/qa_multistep.py <TEST_ID>
 ```
 
 **Supported:** `N-01`, `N-03`, `N-04`, `N-05`, `N-06`, `O-07`, `M-03`, `M-04`, `M-05`, `M-06`, `M-10`, `M-11`, `L-07`
@@ -215,7 +215,7 @@ Update in the same edit: `✅ Pass: X | ❌ Fail: Y | ⏭️ Skip: Z | 🔧 Fix:
 
 After each completed section:
 ```
-python .Codex/skills/qa-tester/scripts/qa_validate_notes.py
+python .agents/skills/qa-tester/scripts/qa_validate_notes.py
 ```
 Re-execute any flagged test. Do NOT proceed until 0 flags.
 

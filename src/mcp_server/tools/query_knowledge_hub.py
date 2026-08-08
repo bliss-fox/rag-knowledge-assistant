@@ -404,7 +404,7 @@ class QueryKnowledgeHubTool:
         Returns:
             MCPToolResponse indicating error.
         """
-        content = f"## 查询失败\n\n"
+        content = "## 查询失败\n\n"
         content += f"查询: **{query}**\n"
         content += f"集合: `{collection}`\n\n"
         content += f"**错误信息:** {error_message}\n\n"
@@ -500,7 +500,7 @@ async def query_knowledge_hub_handler(
             content=[
                 types.TextContent(
                     type="text",
-                    text=f"内部错误: 查询处理失败",
+                    text="内部错误: 查询处理失败",
                 )
             ],
             isError=True,

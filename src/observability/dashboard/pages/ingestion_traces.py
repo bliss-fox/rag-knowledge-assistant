@@ -14,7 +14,7 @@ Layout:
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 
 import streamlit as st
 
@@ -37,7 +37,6 @@ def render() -> None:
     st.subheader(f"📋 追踪记录（{len(traces)}）")
 
     for idx, trace in enumerate(traces):
-        trace_id = trace.get("trace_id", "unknown")
         started = trace.get("started_at", "—")
         total_ms = trace.get("elapsed_ms")
         total_label = f"{total_ms:.0f} ms" if total_ms is not None else "—"
