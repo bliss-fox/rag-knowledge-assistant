@@ -31,9 +31,11 @@ class TraceContext:
     stages: List[Dict[str, Any]] = field(default_factory=list)
     metadata: Dict[str, Any] = field(default_factory=dict)
 
-    # internal monotonic clock for accurate elapsed calculation
-    _start_mono: float = field(default_factory=time.monotonic, repr=False)
-    _finish_mono: Optional[float] = field(default=None, repr=False)
+    # Nanosecond performance counter avoids zero-duration traces on Windows
+    # hosts whose floating-point monotonic clock has coarse effective
+    # resolution for very short operations.
+    _start_perf_ns: int = field(default_factory=time.perf_counter_ns, repr=False)
+    _finish_perf_ns: Optional[int] = field(default=None, repr=False)
     _stage_timings: Dict[str, float] = field(default_factory=dict, repr=False)
 
     # ---- recording ---------------------------------------------------
@@ -59,7 +61,7 @@ class TraceContext:
             "data": data,
         }
         if elapsed_ms is not None:
-            entry["elapsed_ms"] = round(elapsed_ms, 2)
+            entry["elapsed_ms"] = float(elapsed_ms)
             self._stage_timings[stage_name] = elapsed_ms
         self.stages.append(entry)
 
@@ -67,7 +69,7 @@ class TraceContext:
 
     def finish(self) -> None:
         """Mark the trace as finished and record wall-clock end time."""
-        self._finish_mono = time.monotonic()
+        self._finish_perf_ns = time.perf_counter_ns()
         self.finished_at = datetime.now(timezone.utc).isoformat()
 
     # ---- timing helpers -----------------------------------------------
@@ -92,8 +94,8 @@ class TraceContext:
                 raise KeyError(f"Stage '{stage_name}' has no recorded timing")
             return self._stage_timings[stage_name]
 
-        end = self._finish_mono if self._finish_mono is not None else time.monotonic()
-        return (end - self._start_mono) * 1000.0
+        end_ns = self._finish_perf_ns if self._finish_perf_ns is not None else time.perf_counter_ns()
+        return max(end_ns - self._start_perf_ns, 1) / 1_000_000
 
     # ---- serialisation ------------------------------------------------
 
@@ -108,7 +110,9 @@ class TraceContext:
             "trace_type": self.trace_type,
             "started_at": self.started_at,
             "finished_at": self.finished_at,
-            "total_elapsed_ms": round(self.elapsed_ms(), 2),
+            # Preserve sub-centisecond precision.  Rounding here previously
+            # converted valid short traces to 0.0 before SQLite aggregation.
+            "total_elapsed_ms": self.elapsed_ms(),
             "stages": list(self.stages),
             "metadata": dict(self.metadata),
         }

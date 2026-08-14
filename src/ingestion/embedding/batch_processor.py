@@ -135,7 +135,10 @@ class BatchProcessor:
         if not chunks:
             raise ValueError("Cannot process empty chunks list")
         
-        start_time = time.time()
+        # ``time.time()`` can have coarse resolution on Windows runners and
+        # report zero for fast batches.  perf_counter_ns is monotonic and keeps
+        # sub-millisecond measurements useful for traces and latency metrics.
+        start_time_ns = time.perf_counter_ns()
         
         # Create batches
         batches = self._create_batches(chunks)
@@ -148,7 +151,7 @@ class BatchProcessor:
         failed_chunks = 0
         
         for batch_idx, batch in enumerate(batches):
-            batch_start = time.time()
+            batch_start_ns = time.perf_counter_ns()
             
             try:
                 # Dense encoding
@@ -170,7 +173,7 @@ class BatchProcessor:
                         {"error": str(e), "batch_size": len(batch)}
                     )
             
-            batch_duration = time.time() - batch_start
+            batch_duration = max(time.perf_counter_ns() - batch_start_ns, 1) / 1_000_000_000
             
             # Record batch timing if trace available
             if trace:
@@ -183,7 +186,7 @@ class BatchProcessor:
                     }
                 )
         
-        total_time = time.time() - start_time
+        total_time = max(time.perf_counter_ns() - start_time_ns, 1) / 1_000_000_000
         
         # Record overall processing statistics
         if trace:
