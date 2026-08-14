@@ -162,6 +162,17 @@ class TestCoreRerankerInit:
         assert reranker.config.enabled is True
         assert reranker.config.top_k == 5
 
+    def test_init_failure_is_preserved_for_observability(self, mock_settings):
+        """A configured provider failure must not look like an intentional disable."""
+        with patch(
+            "src.core.query_engine.reranker.RerankerFactory.create",
+            side_effect=RuntimeError("model unavailable"),
+        ):
+            reranker = CoreReranker(settings=mock_settings)
+
+        assert reranker.is_enabled is False
+        assert "model unavailable" in reranker.initialization_error
+
 
 # =============================================================================
 # Test: Normal Reranking Flow

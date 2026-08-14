@@ -1,0 +1,7 @@
+id: conversation_summary
+version: 1.0.0
+description: Summarize old conversation turns while preserving facts and decisions.
+required_variables: [dialogue]
+template: |-
+  用三到五句话总结以下对话，保留关键事实、决定和未完成事项：
+  {dialogue}

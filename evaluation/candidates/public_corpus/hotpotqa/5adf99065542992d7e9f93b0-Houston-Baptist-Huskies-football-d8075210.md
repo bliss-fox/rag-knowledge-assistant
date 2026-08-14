@@ -1,0 +1,3 @@
+# Houston Baptist Huskies football
+
+The Houston Baptist Huskies football program is the intercollegiate American football team for Houston Baptist University located in Houston, Texas, United States. The team currently competes in the NCAA Division I Football Championship Subdivision (FCS) as a full member of the Southland Conference. Houston Baptist's first football team was fielded in 2013 for a seven game developmental season. The Huskies finished 2013 with a 3-4 record. Since the 2013 games were played during a developmental season, records and statistics are considered unofficial. The team played most of its home games at Crusader Stadium in Houston, Texas that season with one home game being played at BBVA Compass Stadium.

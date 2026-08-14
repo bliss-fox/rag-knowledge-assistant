@@ -26,7 +26,7 @@ from src.observability.logger import get_logger
 
 # Libs layer imports
 from src.libs.loader.file_integrity import SQLiteIntegrityChecker
-from src.libs.loader.pdf_loader import PdfLoader
+from src.libs.loader.registry import LoaderRegistry, default_loader_registry
 from src.libs.embedding.embedding_factory import EmbeddingFactory
 
 # Ingestion layer imports
@@ -42,6 +42,67 @@ from src.ingestion.storage.vector_upserter import VectorUpserter
 from src.ingestion.storage.image_storage import ImageStorage
 
 logger = get_logger(__name__)
+
+
+def vector_store_observability_details(
+    settings: Settings,
+    vector_store: Any,
+    logical_collection: str,
+) -> Dict[str, str]:
+    """Return truthful vector-store identity and location for logs and traces."""
+    config = settings.vector_store
+    provider = str(config.provider).strip().lower()
+    backend = {
+        "chroma": "ChromaDB",
+        "chromadb": "ChromaDB",
+        "qdrant": "Qdrant",
+    }.get(provider, type(vector_store).__name__ or provider)
+    collection = str(getattr(vector_store, "collection_name", logical_collection))
+
+    if provider == "qdrant":
+        location = str(getattr(vector_store, "url", config.url))
+    else:
+        location = str(
+            getattr(vector_store, "persist_directory", config.persist_directory)
+        )
+
+    return {
+        "provider": provider,
+        "backend": backend,
+        "logical_collection": logical_collection,
+        "collection": collection,
+        "location": location,
+    }
+
+
+def pipeline_vector_store_details(pipeline: Any) -> Dict[str, str]:
+    """Resolve store identity at use time, including dependency-injected pipelines."""
+    cached = getattr(pipeline, "vector_store_details", None)
+    if isinstance(cached, dict) and {"backend", "collection"} <= cached.keys():
+        return cached
+    logical_collection = str(getattr(pipeline, "collection", "default"))
+    upserter = getattr(pipeline, "vector_upserter", None)
+    vector_store = getattr(upserter, "vector_store", None)
+    settings = getattr(pipeline, "settings", None)
+    if settings is not None and vector_store is not None:
+        details = vector_store_observability_details(
+            settings, vector_store, logical_collection,
+        )
+    else:
+        # Lightweight dependency-injected pipelines may deliberately omit settings.
+        # Preserve truthful generic metadata instead of assuming Chroma or Qdrant.
+        store_type = type(vector_store).__name__ if vector_store is not None else "VectorStore"
+        collection_value = getattr(vector_store, "collection_name", None)
+        collection = collection_value if isinstance(collection_value, str) else logical_collection
+        details = {
+            "provider": store_type.lower(),
+            "backend": store_type,
+            "logical_collection": logical_collection,
+            "collection": collection,
+            "location": "unknown",
+        }
+    pipeline.vector_store_details = details
+    return details
 
 
 class PipelineResult:
@@ -87,6 +148,7 @@ class PipelineResult:
             "chunk_count": self.chunk_count,
             "image_count": self.image_count,
             "vector_ids_count": len(self.vector_ids),
+            "vector_ids": list(self.vector_ids),
             "error": self.error,
             "stages": self.stages
         }
@@ -104,7 +166,7 @@ class IngestionPipeline:
     - Image captioning (Vision LLM)
     - Dense embedding (Azure text-embedding-ada-002)
     - Sparse encoding (BM25 term statistics)
-    - Vector storage (ChromaDB)
+    - Vector storage (configured provider, for example Qdrant or ChromaDB)
     - BM25 index building
     
     Example:
@@ -119,7 +181,8 @@ class IngestionPipeline:
         self,
         settings: Settings,
         collection: str = "default",
-        force: bool = False
+        force: bool = False,
+        loader_registry: Optional[LoaderRegistry] = None,
     ):
         """Initialize pipeline with all components.
         
@@ -140,11 +203,9 @@ class IngestionPipeline:
         logger.info("  ✓ FileIntegrityChecker initialized")
         
         # Stage 2: Loader
-        self.loader = PdfLoader(
-            extract_images=True,
-            image_storage_dir=str(resolve_path(f"data/images/{collection}"))
-        )
-        logger.info("  ✓ PdfLoader initialized")
+        self.loader_registry = loader_registry or default_loader_registry
+        self.loader = None
+        logger.info("  ✓ LoaderRegistry initialized")
         
         # Stage 3: Chunker
         self.chunker = DocumentChunker(settings)
@@ -179,6 +240,11 @@ class IngestionPipeline:
         
         # Stage 6: Storage
         self.vector_upserter = VectorUpserter(settings, collection_name=collection)
+        self.vector_store_details = vector_store_observability_details(
+            settings,
+            self.vector_upserter.vector_store,
+            collection,
+        )
         logger.info(f"  ✓ VectorUpserter initialized (provider={settings.vector_store.provider}, collection={collection})")
         
         self.bm25_indexer = BM25Indexer(index_dir=str(resolve_path(f"data/db/bm25/{collection}")))
@@ -253,7 +319,24 @@ class IngestionPipeline:
             _notify("load", 2)
             
             _t0 = time.monotonic()
-            document = self.loader.load(str(file_path))
+            loader_kwargs: Dict[str, Any] = {}
+            if file_path.suffix.lower() == ".pdf":
+                loader_kwargs = {
+                    "extract_images": True,
+                    "image_storage_dir": str(resolve_path(f"data/images/{self.collection}")),
+                }
+            elif self.settings.ingestion is not None:
+                loader_kwargs = {
+                    "max_bytes": self.settings.ingestion.max_file_size_mb * 1024 * 1024,
+                }
+            registry = getattr(self, "loader_registry", None)
+            if registry is not None:
+                loader = registry.create(file_path, **loader_kwargs)
+            else:
+                # Compatibility for dependency-injected pipelines and older callers
+                # that provide a concrete loader without calling __init__.
+                loader = self.loader
+            document = loader.load(str(file_path))
             _elapsed = (time.monotonic() - _t0) * 1000.0
             
             text_preview = document.text[:200].replace('\n', ' ') + "..." if len(document.text) > 200 else document.text
@@ -271,7 +354,7 @@ class IngestionPipeline:
             }
             if trace is not None:
                 trace.record_stage("load", {
-                    "method": "markitdown",
+                    "method": type(loader).__name__,
                     "doc_id": document.id,
                     "text_length": len(document.text),
                     "image_count": image_count,
@@ -431,12 +514,16 @@ class IngestionPipeline:
             _notify("upsert", 6)
             
             # 6a: Vector Upsert
-            logger.info("  6a. Vector Storage (ChromaDB)...")
+            vector_store_details = pipeline_vector_store_details(self)
+            logger.info(
+                "  6a. Vector Storage "
+                f"({vector_store_details['backend']})..."
+            )
             _t0_storage = time.monotonic()
             vector_ids = self.vector_upserter.upsert(chunks, dense_vectors, trace)
             logger.info(f"      Stored {len(vector_ids)} vectors")
 
-            # Align BM25 chunk_ids with Chroma vector IDs so the SparseRetriever
+            # Align BM25 chunk_ids with vector-store IDs so the SparseRetriever
             # can look up BM25 hits in the vector store after retrieval.
             for stat, vid in zip(sparse_stats, vector_ids):
                 stat["chunk_id"] = vid
@@ -479,8 +566,9 @@ class IngestionPipeline:
                     {
                         "chunk_id": c.id,
                         "vector_id": vector_ids[i] if i < len(vector_ids) else "—",
-                        "collection": self.collection,
-                        "store": "ChromaDB",
+                        "collection": vector_store_details["collection"],
+                        "logical_collection": self.collection,
+                        "store": vector_store_details["backend"],
                     }
                     for i, c in enumerate(chunks)
                 ]
@@ -497,10 +585,8 @@ class IngestionPipeline:
                 trace.record_stage("upsert", {
                     "method": "vector+bm25+image",
                     "dense_store": {
-                        "backend": "ChromaDB",
-                        "collection": self.collection,
+                        **vector_store_details,
                         "count": len(vector_ids),
-                        "path": "data/db/chroma/",
                     },
                     "sparse_store": {
                         "backend": "BM25",

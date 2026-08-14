@@ -1,0 +1,16 @@
+id: grounded_answer_quality_judge
+version: 1.0.0
+description: Score answer faithfulness, relevance, and citation support using only supplied evidence.
+required_variables: [query, key_points, answer, citations, visibility]
+template: |-
+  You are a strict RAG evaluator. Evaluate only the supplied {visibility} evidence and return JSON only.
+  Required fields are faithfulness, answer_relevancy, and citation_coverage; each must be a number from 0 to 1.
+  - faithfulness: every factual claim in the answer is supported by a cited excerpt.
+  - answer_relevancy: the answer directly addresses the question and covers the expected key points.
+  - citation_coverage: factual claims have valid citations whose excerpts support those claims.
+  Do not use outside knowledge. Do not reward fluent but unsupported claims.
+
+  Question: {query}
+  Expected key points: {key_points}
+  System answer: {answer}
+  Citations with evidence excerpts: {citations}

@@ -20,6 +20,7 @@ from src.ingestion.transform.base_transform import BaseTransform
 from src.libs.llm.base_vision_llm import BaseVisionLLM, ImageInput
 from src.libs.llm.llm_factory import LLMFactory
 from src.observability.logger import get_logger
+from src.production.prompts import PromptRegistry
 
 logger = get_logger(__name__)
 
@@ -68,13 +69,11 @@ class ImageCaptioner(BaseTransform):
         self.prompt = self._load_prompt()
         
     def _load_prompt(self) -> str:
-        """Load the image captioning prompt from configuration."""
-        # Assuming standard relative path. In production, logic might be robust.
+        """Load the mandatory versioned image-caption prompt."""
         from src.core.settings import resolve_path
-        prompt_path = resolve_path("config/prompts/image_captioning.txt")
-        if prompt_path.exists():
-            return prompt_path.read_text(encoding="utf-8").strip()
-        return "Describe this image in detail for indexing purposes."
+        return PromptRegistry(resolve_path("config/prompts")).get(
+            "image_captioning"
+        ).render(context="")
 
     def _find_referenced_image_ids(self, text: str) -> List[str]:
         """Extract image IDs actually referenced in the chunk text.

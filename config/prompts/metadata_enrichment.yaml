@@ -1,0 +1,7 @@
+id: metadata_enrichment
+version: 1.0.0
+description: Extract metadata grounded in the chunk.
+required_variables: [text]
+template: |-
+  从下列文本提取标题、标签和摘要，仅输出 JSON，不得添加文本中没有的信息：
+  {text}

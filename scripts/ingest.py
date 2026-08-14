@@ -24,10 +24,9 @@ Exit codes:
 """
 
 import argparse
-import os
 import sys
 from pathlib import Path
-from typing import List, Optional
+from typing import List
 
 # Ensure project root is on sys.path
 _SCRIPT_DIR = Path(__file__).resolve().parent
@@ -44,7 +43,7 @@ if sys.platform == "win32":
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from src.core.settings import load_settings, Settings
+from src.core.settings import load_settings
 from src.core.trace import TraceContext, TraceCollector
 from src.ingestion.pipeline import IngestionPipeline, PipelineResult
 from src.observability.logger import get_logger
@@ -115,7 +114,7 @@ def discover_files(path: str, extensions: List[str] = None) -> List[Path]:
         List of file paths to process
     """
     if extensions is None:
-        extensions = ['.pdf']
+        extensions = ['.pdf', '.md', '.markdown', '.txt']
     
     path = Path(path)
     
@@ -233,7 +232,7 @@ def main() -> int:
         return 0
     
     # Initialize pipeline
-    print(f"\n[INFO] Initializing pipeline...")
+    print("\n[INFO] Initializing pipeline...")
     print(f"   Collection: {args.collection}")
     print(f"   Force: {args.force}")
     
@@ -245,11 +244,20 @@ def main() -> int:
         )
     except Exception as e:
         print(f"[FAIL] Failed to initialize pipeline: {e}")
-        logger.exception("Pipeline initialization failed")
-        return 2
+        logger.error("Pipeline initialization failed: %s", e)
+        results = []
+        print("\n[INFO] Processing files...")
+        for i, file_path in enumerate(files, 1):
+            print(f"\n[{i}/{len(files)}] Processing: {file_path}")
+            print(f"   [FAIL] Service unavailable: {e}")
+            results.append(PipelineResult(success=False, file_path=str(file_path), error=str(e)))
+        print_summary(results, args.verbose)
+        # Configuration/path errors use 2 above. A correctly configured but
+        # unavailable runtime dependency is an operational failure (1).
+        return 1
     
     # Process files
-    print(f"\n[INFO] Processing files...")
+    print("\n[INFO] Processing files...")
     results: List[PipelineResult] = []
     
     collector = TraceCollector()
@@ -267,7 +275,7 @@ def main() -> int:
             if result.success:
                 skipped = result.stages.get("integrity", {}).get("skipped", False)
                 if skipped:
-                    print(f"   [SKIP] Skipped (already processed)")
+                    print("   [SKIP] Skipped (already processed)")
                 else:
                     print(f"   [OK] Success: {result.chunk_count} chunks, {result.image_count} images")
             else:

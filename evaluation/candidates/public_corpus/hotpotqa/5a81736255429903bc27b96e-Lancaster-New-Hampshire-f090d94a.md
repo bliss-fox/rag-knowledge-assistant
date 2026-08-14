@@ -1,0 +1,3 @@
+# Lancaster, New Hampshire
+
+Lancaster is a town in Coos County, New Hampshire, United States, on the Connecticut River. The town is named after the city of Lancaster in England. As of the 2010 census, the town population was 3,507, the second largest in the county after Berlin. It is the county seat of Coos County and gateway to the Great North Woods Region. Lancaster, which includes the villages of Grange and South Lancaster, is home to Weeks State Park and the Lancaster Fair. Part of the White Mountain National Forest is in the eastern portion. The town is part of the Berlin, NH−VT Micropolitan Statistical Area.

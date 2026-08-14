@@ -1,0 +1,3 @@
+# Joint Special Operations Command
+
+The Joint Special Operations Command (JSOC) is a component command of the United States Special Operations Command (USSOCOM) and is charged to study special operations requirements and techniques to ensure interoperability and equipment standardization; plan and conduct special operations exercises and training; develop joint special operations tactics; and execute special operations missions worldwide. It was established in 1980 on recommendation of Colonel Charlie Beckwith, in the aftermath of the failure of Operation Eagle Claw. It is located at Pope Field (Fort Bragg, North Carolina).

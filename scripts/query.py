@@ -40,13 +40,13 @@ if sys.platform == "win32":
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from src.core.settings import load_settings
-from src.core.query_engine.query_processor import QueryProcessor
-from src.core.query_engine.hybrid_search import create_hybrid_search
 from src.core.query_engine.dense_retriever import create_dense_retriever
-from src.core.query_engine.sparse_retriever import create_sparse_retriever
+from src.core.query_engine.hybrid_search import create_hybrid_search
+from src.core.query_engine.query_processor import QueryProcessor
 from src.core.query_engine.reranker import create_core_reranker
-from src.core.trace import TraceContext, TraceCollector
+from src.core.query_engine.sparse_retriever import create_sparse_retriever
+from src.core.settings import load_settings
+from src.core.trace import TraceCollector, TraceContext
 from src.ingestion.storage.bm25_indexer import BM25Indexer
 from src.libs.embedding.embedding_factory import EmbeddingFactory
 from src.libs.vector_store.vector_store_factory import VectorStoreFactory
@@ -258,24 +258,49 @@ def main() -> int:
     print("=" * 60)
     print(f"Collection: {args.collection}")
 
+    from src.production.runtime import Runtime
+
+    runtime = None
     try:
-        hybrid_search, reranker = _build_components(settings, args.collection)
+        runtime = Runtime.create(settings)
+        payload = runtime.rag.search(
+            query=args.query,
+            collection=args.collection,
+            top_k=args.top_k,
+            enable_rerank=not args.no_rerank,
+        )
+        if args.verbose:
+            for stage in ("dense", "sparse", "fusion"):
+                _print_service_results(payload["stages"][stage], stage.upper())
+            if payload.get("rerank_applied"):
+                _print_service_results(payload["stages"]["rerank"], "RERANK")
+            else:
+                print("[INFO] Reranking was not applied; final order is the RRF fusion order.")
+            if payload.get("degraded"):
+                print(f"[WARN] Retrieval degraded: {payload.get('degradation_reason')}")
+        _print_service_results(payload["results"], "RESULTS")
+        print(f"Trace ID: {payload['trace_id']}")
+        return 0
     except Exception as e:
-        print(f"[FAIL] Failed to initialize query components: {e}")
-        logger.exception("Query initialization failed")
-        return 2
+        print(f"[FAIL] Query failed: {e}")
+        logger.exception("Query failed")
+        return 1
+    finally:
+        if runtime is not None:
+            runtime.close()
 
-    use_rerank = not args.no_rerank
 
-    # Single-query mode
-    return _run_query(
-        hybrid_search=hybrid_search,
-        reranker=reranker,
-        query=args.query,
-        top_k=args.top_k,
-        use_rerank=use_rerank,
-        verbose=args.verbose,
-    )
+def _print_service_results(results: list[dict[str, Any]], title: str) -> None:
+    """Render the structured application-service response for CLI users."""
+    print("\n" + "=" * 60)
+    print(f"{title} (returned={len(results)})")
+    print("=" * 60)
+    for item in results:
+        metadata = item.get("metadata") or {}
+        snippet = str(item.get("text") or "").replace("\n", " ")[:200]
+        print(f"#{item['rank']:02d}  score={item['score']:.4f}  id={item['chunk_id']}")
+        print(f"     source={metadata.get('source_uri') or metadata.get('source_path', '')}")
+        print(f"     text={snippet}...")
 
 
 if __name__ == "__main__":

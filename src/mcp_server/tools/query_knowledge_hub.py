@@ -17,7 +17,7 @@ from __future__ import annotations
 import asyncio
 import logging
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from mcp import types
 
@@ -29,6 +29,7 @@ from src.core.types import RetrievalResult
 if TYPE_CHECKING:
     from src.core.query_engine.hybrid_search import HybridSearch
     from src.core.query_engine.reranker import CoreReranker
+    from src.production.services import RAGApplicationService
 
 logger = logging.getLogger(__name__)
 
@@ -109,6 +110,7 @@ class QueryKnowledgeHubTool:
         hybrid_search: Optional[HybridSearch] = None,
         reranker: Optional[CoreReranker] = None,
         response_builder: Optional[ResponseBuilder] = None,
+        application_service: Optional[RAGApplicationService] = None,
     ) -> None:
         """Initialize QueryKnowledgeHubTool.
         
@@ -125,10 +127,22 @@ class QueryKnowledgeHubTool:
         self._reranker = reranker
         self._embedding_client = None
         self._response_builder = response_builder or ResponseBuilder()
+        self._application_service = application_service
         
         # Track initialization state
         self._initialized = False
         self._current_collection: Optional[str] = None
+
+    def _get_application_service(self) -> RAGApplicationService:
+        """Return the shared application service used by API, CLI, and MCP."""
+        if self._application_service is None:
+            from src.production.runtime import Runtime
+
+            global _runtime_instance
+            if _runtime_instance is None:
+                _runtime_instance = Runtime.create(self.settings)
+            self._application_service = _runtime_instance.rag
+        return self._application_service
     
     @property
     def settings(self) -> Settings:
@@ -258,6 +272,41 @@ class QueryKnowledgeHubTool:
         trace.metadata["source"] = "mcp"
 
         try:
+            # Keep legacy dependency injection available for focused component
+            # tests, but production MCP requests always use the same service as
+            # FastAPI and therefore share ranking, fallback, and SQLite traces.
+            if self._hybrid_search is None:
+                payload = await asyncio.to_thread(
+                    self._get_application_service().search,
+                    query,
+                    effective_collection,
+                    effective_top_k,
+                    None,
+                    self.config.enable_rerank,
+                )
+                results = [
+                    RetrievalResult(
+                        chunk_id=item["chunk_id"],
+                        score=float(item["score"]),
+                        text=item.get("text", ""),
+                        metadata=item.get("metadata") or {},
+                    )
+                    for item in payload["results"]
+                ]
+                response = self._response_builder.build(
+                    results=results,
+                    query=query,
+                    collection=effective_collection,
+                )
+                response.metadata.update({
+                    "status": payload["status"],
+                    "trace_id": payload["trace_id"],
+                    "retrieval_method": payload.get("retrieval_method"),
+                    "degraded": payload.get("degraded", False),
+                    "degradation_reason": payload.get("degradation_reason"),
+                })
+                return response
+
             # Initialize components for collection
             # Run blocking I/O (embedding API, ChromaDB, BM25) in a thread
             # to avoid blocking the async event loop / MCP stdio transport
@@ -309,7 +358,9 @@ class QueryKnowledgeHubTool:
             return response
             
         except Exception as e:
-            logger.exception(f"query_knowledge_hub failed: {e}")
+            # Expected dependency outages must not fill the MCP stderr pipe with
+            # multi-page transport tracebacks and deadlock stdio clients.
+            logger.warning("query_knowledge_hub failed: %s: %s", type(e).__name__, e)
             TraceCollector().collect(trace)
             # Return error response
             return self._build_error_response(query, effective_collection, str(e))
@@ -427,6 +478,7 @@ class QueryKnowledgeHubTool:
 
 # Module-level tool instance (lazy-initialized)
 _tool_instance: Optional[QueryKnowledgeHubTool] = None
+_runtime_instance: Any | None = None
 
 
 def get_tool_instance(settings: Optional[Settings] = None) -> QueryKnowledgeHubTool:

@@ -10,43 +10,56 @@ Usage:
 
 from __future__ import annotations
 
+import argparse
 import sys
-import copy
+from dataclasses import replace
 from pathlib import Path
 
-if sys.platform == "win32":
+
+def configure_windows_console() -> None:
+    """Use UTF-8 for CLI output without mutating streams when imported in tests."""
+    if sys.platform != "win32":
+        return
     import io
+
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8")
 
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
-
-import argparse
 
 
 def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("--collection", default="benchmark")
-    p.add_argument("--fast", action="store_true", default=True,
-                   help="Disable LLM enrichment (default: True)")
     return p.parse_args()
 
 
+def deterministic_benchmark_settings(settings):
+    """Disable nondeterministic/costly transforms without changing production defaults."""
+    ingestion = replace(
+        settings.ingestion,
+        chunk_refiner={**(settings.ingestion.chunk_refiner or {}), "use_llm": False},
+        metadata_enricher={
+            **(settings.ingestion.metadata_enricher or {}),
+            "use_llm": False,
+        },
+    )
+    vision_llm = (
+        replace(settings.vision_llm, enabled=False) if settings.vision_llm is not None else None
+    )
+    return replace(settings, ingestion=ingestion, vision_llm=vision_llm)
+
+
 def main() -> int:
+    configure_windows_console()
     args = parse_args()
 
     from src.core.settings import load_settings
-    settings = load_settings()
 
-    # Optionally disable LLM-based enrichment for speed
-    if args.fast:
-        if hasattr(settings, "ingestion") and settings.ingestion:
-            if isinstance(settings.ingestion.chunk_refiner, dict):
-                settings.ingestion.chunk_refiner["use_llm"] = False
-            if isinstance(settings.ingestion.metadata_enricher, dict):
-                settings.ingestion.metadata_enricher["use_llm"] = False
-        print("⚡ Fast mode: LLM enrichment disabled")
+    settings = deterministic_benchmark_settings(load_settings())
+    print("Benchmark mode: LLM refinement, metadata enrichment, and vision disabled")
 
     from src.ingestion.pipeline import IngestionPipeline
 
@@ -86,10 +99,10 @@ def main() -> int:
             print(f"❌ {e}")
             failed += 1
 
-    print(f"\n{'='*50}")
+    print(f"\n{'=' * 50}")
     print(f"  ✅ Success: {success}   ❌ Failed: {failed}")
-    print(f"  Run: python scripts/run_benchmark.py --skip-ingest")
-    print(f"{'='*50}")
+    print("  Run: python scripts/run_benchmark.py --skip-ingest")
+    print(f"{'=' * 50}")
     return 0 if failed == 0 else 1
 
 

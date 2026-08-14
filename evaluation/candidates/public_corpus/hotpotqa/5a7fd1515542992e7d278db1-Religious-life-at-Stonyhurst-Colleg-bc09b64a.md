@@ -1,0 +1,3 @@
+# Religious life at Stonyhurst College
+
+Stonyhurst College is Roman Catholic and has had a significant place in English Catholic history for many centuries (including more chequered moments such as the Popish Plot and Gunpowder Plot conspiracies). In 1803 the Society of Jesus was re-established in Britain at Stonyhurst and the school became the headquarters of the English Province. Until the 1920s Jesuit priests were trained on site in what is today the preparatory school. The school continues to place Catholicism and Jesuit philosophy at its core. The present chaplain is Father John Twist, SJ.

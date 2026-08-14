@@ -115,6 +115,11 @@ class TestHybridSearchTrace:
         engine.search("hello world", trace=trace)
         stage_names = [s["stage"] for s in trace.stages]
         assert "fusion" in stage_names
+        fusion = next(s for s in trace.stages if s["stage"] == "fusion")["data"]
+        assert fusion["rrf_k"] == 60
+        assert fusion["chunks"][0]["rank"] == 1
+        assert "dense_contribution" in fusion["chunks"][0]
+        assert "sparse_contribution" in fusion["chunks"][0]
 
     def test_all_stages_have_elapsed_ms(self) -> None:
         engine = self._build_engine()
@@ -195,6 +200,8 @@ class TestCoreRerankerTrace:
         reranker.rerank("query", self._sample_results(), trace=trace)
         rerank_entry = next(s for s in trace.stages if s["stage"] == "rerank")
         assert "method" in rerank_entry["data"]
+        assert rerank_entry["data"]["input_order"][0]["rank"] == 1
+        assert rerank_entry["data"]["output_order"][0]["rank"] == 1
 
     def test_no_trace_no_crash(self) -> None:
         reranker = self._build_reranker()

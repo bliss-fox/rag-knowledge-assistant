@@ -117,13 +117,11 @@ class ConversationMemory:
             return query  # nothing to resolve
 
         context_str = "\n".join(f"- {q}" for q in recent)
-        prompt = (
-            "Given the following recent questions from a conversation:\n"
-            f"{context_str}\n\n"
-            "Rewrite this follow-up question as a fully self-contained query that "
-            "does not rely on pronouns or implicit references:\n"
-            f'"{query}"\n\n'
-            "Output ONLY the rewritten question, nothing else."
+        from src.core.settings import resolve_path
+        from src.production.prompts import PromptRegistry
+
+        prompt = PromptRegistry(resolve_path("config/prompts")).get("query_rewrite").render(
+            recent_questions=context_str, question=query,
         )
         from src.libs.llm.base_llm import Message
         try:
@@ -159,11 +157,12 @@ class ConversationMemory:
         dialogue = "\n".join(
             f"{t.role.capitalize()}: {t.content}" for t in turns_to_summarise
         )
-        prompt = (
-            "Summarise the following conversation in 3-5 sentences, "
-            "preserving the key facts and decisions:\n\n"
-            f"{dialogue}"
-        )
+        from src.core.settings import resolve_path
+        from src.production.prompts import PromptRegistry
+
+        prompt = PromptRegistry(resolve_path("config/prompts")).get(
+            "conversation_summary"
+        ).render(dialogue=dialogue)
         from src.libs.llm.base_llm import Message
         try:
             response = llm.chat([Message(role="user", content=prompt)])

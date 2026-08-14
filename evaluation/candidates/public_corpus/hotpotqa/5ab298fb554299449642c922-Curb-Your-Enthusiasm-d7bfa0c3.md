@@ -1,0 +1,3 @@
+# Curb Your Enthusiasm
+
+Curb Your Enthusiasm is an American comedy television series produced and broadcast by HBO that premiered on October 15, 2000. The series was created by Larry David, who stars as a fictionalized version of himself. The series follows Larry in his life as a semi-retired television writer and producer in Los Angeles and later New York City. Also starring are Cheryl Hines as his wife, Cheryl; Jeff Garlin as his manager, Jeff; and Susie Essman as Jeff's wife, Susie. "Curb Your Enthusiasm" often features guest stars, and many of these appearances are by celebrities playing versions of themselves fictionalized to varying degrees.

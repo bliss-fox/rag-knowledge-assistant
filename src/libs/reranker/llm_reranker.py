@@ -1,20 +1,20 @@
 """LLM-based Reranker implementation.
 
 This module implements reranking using Large Language Models to evaluate
-the relevance of candidate passages to a given query. It reads prompts from
-config/prompts/rerank.txt and structures LLM outputs for downstream processing.
+the relevance of candidate passages to a given query. Production prompts are
+loaded from the versioned YAML registry.
 """
 
 from __future__ import annotations
 
 import json
-from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from src.core.settings import resolve_path
 from src.libs.llm.base_llm import BaseLLM, Message
 from src.libs.llm.llm_factory import LLMFactory
 from src.libs.reranker.base_reranker import BaseReranker
+from src.production.prompts import PromptRegistry
 
 
 class LLMRerankError(RuntimeError):
@@ -54,7 +54,7 @@ class LLMReranker(BaseReranker):
             **kwargs: Additional provider-specific parameters.
         """
         self.settings = settings
-        self.prompt_path = prompt_path or str(resolve_path("config/prompts/rerank.txt"))
+        self.prompt_path = prompt_path
         self.llm = llm or LLMFactory.create(settings)
         self.kwargs = kwargs
         
@@ -64,7 +64,7 @@ class LLMReranker(BaseReranker):
         except Exception as e:
             raise LLMRerankError(f"Failed to load rerank prompt from {self.prompt_path}: {e}") from e
     
-    def _load_prompt_template(self, path: str) -> str:
+    def _load_prompt_template(self, path: Optional[str]) -> str:
         """Load the rerank prompt template from file.
         
         Args:
@@ -77,6 +77,10 @@ class LLMReranker(BaseReranker):
             FileNotFoundError: If prompt file doesn't exist.
             IOError: If file can't be read.
         """
+        if path is None:
+            return PromptRegistry(resolve_path("config/prompts")).get("llm_rerank").template
+        from pathlib import Path
+
         prompt_file = Path(path)
         if not prompt_file.exists():
             raise FileNotFoundError(f"Rerank prompt file not found: {path}")
@@ -102,10 +106,12 @@ class LLMReranker(BaseReranker):
         
         candidates_str = "\n".join(candidates_text)
         
-        # Construct full prompt
-        full_prompt = f"{self.prompt_template}\n\nQuery: {query}\n\nPassages:\n{candidates_str}\n\nOutput your response as a JSON array of objects, one per passage."
-        
-        return full_prompt
+        if self.prompt_path is None:
+            return self.prompt_template.format(query=query, candidates=candidates_str)
+        return (
+            f"{self.prompt_template}\n\nQuery: {query}\n\nPassages:\n{candidates_str}"
+            "\n\nOutput your response as a JSON array of objects, one per passage."
+        )
     
     def _parse_llm_response(self, response_text: str) -> List[Dict[str, Any]]:
         """Parse and validate LLM response.

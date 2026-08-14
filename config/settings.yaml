@@ -6,13 +6,13 @@
 # LLM Configuration
 # =============================================================================
 llm:
-  provider: "deepseek"  # API key is read from DEEPSEEK_API_KEY
-  model: "deepseek-chat"
+  provider: "ollama"
+  model: "qwen3:8b"
   deployment_name: ""
   azure_endpoint: ""
   api_version: ""
   api_key: ""
-  base_url: "https://api.deepseek.com"
+  base_url: "http://127.0.0.1:11434"
   temperature: 0.0
   max_tokens: 4096
 
@@ -47,9 +47,13 @@ vision_llm:
 # Vector Store Configuration
 # =============================================================================
 vector_store:
-  provider: "chroma"  # Options: chroma, qdrant, pinecone
+  provider: "qdrant"
   persist_directory: "./data/db/chroma"
-  collection_name: "knowledge_hub"
+  collection_name: "default"
+  url: "http://127.0.0.1:6333"
+  api_key: ""
+  collection_prefix: "modular_rag"
+  index_version: "v1"
 
 # =============================================================================
 # Retrieval Configuration
@@ -65,9 +69,14 @@ retrieval:
 # =============================================================================
 rerank:
   enabled: true
-  provider: "llm"  # Uses the configured DeepSeek LLM
-  model: "deepseek-chat"
+  provider: "cross_encoder"
+  model: "BAAI/bge-reranker-v2-m3"
   top_k: 5
+  candidate_top_k: 20
+  timeout: 30
+  device: "auto"
+  # Persistent across EXE upgrades; resolves to %LOCALAPPDATA%\ModularRAG\models\huggingface.
+  cache_dir: "user"
 
 # =============================================================================
 # Evaluation Configuration
@@ -88,6 +97,8 @@ observability:
   trace_enabled: true
   trace_file: "./logs/traces.jsonl"
   structured_logging: true
+  sqlite_path: "./data/db/production.db"
+  content_retention_days: 30
 
 # =============================================================================
 # Ingestion Configuration
@@ -97,6 +108,8 @@ ingestion:
   chunk_overlap: 200
   splitter: "recursive"  # Options: recursive, semantic, fixed_length
   batch_size: 100
+  max_file_size_mb: 100
+  allowed_extensions: [".pdf", ".md", ".markdown", ".txt"]
   
   # Chunk Refiner Configuration (C5)
   chunk_refiner:
@@ -116,3 +129,27 @@ agent:
   confidence_threshold: 0.7     # Minimum confidence to accept answer without retry
   default_collection: "default" # Default collection for tool searches
   top_k: 5                      # Default top-k for tool retrieval calls
+
+server:
+  host: "0.0.0.0"
+  port: 8766
+  dashboard_port: 8501
+  access_token_minutes: 15
+  refresh_token_days: 7
+  max_query_length: 2000
+  upload_max_mb: 100
+  rate_limit_per_minute: 60
+
+evidence:
+  min_top_score: 0.35
+  min_evidence_count: 1
+  min_citation_coverage: 0.95
+  # Must become "calibrated" only after public/private dev-split threshold calibration.
+  calibration_status: "pending"
+  calibration_artifact: null
+
+web_crawler:
+  max_depth: 1
+  max_pages: 20
+  max_response_mb: 5
+  timeout_seconds: 15

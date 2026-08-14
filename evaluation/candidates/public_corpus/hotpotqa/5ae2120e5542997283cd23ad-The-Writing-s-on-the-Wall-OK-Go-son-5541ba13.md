@@ -1,0 +1,3 @@
+# The Writing's on the Wall (OK Go song)
+
+"The Writing's on the Wall" is a song by American rock band OK Go. It was released on June 17, 2014, as part of the band's EP "Upside Out", and is also the first single from the band's fourth studio album "Hungry Ghosts". On the same day, the band released a music video in which the members use props to create optical illusions, reflecting the song's description of a relationship that fails because the couple has different points of view. Like previous OK Go videos, it is structured as a one-shot music video. The many YouTube views of the video caused the song to debut in the top ten of the US "Billboard" Hot Rock Songs chart, as well as number one on the Bubbling Under Hot 100 Singles chart.

@@ -66,6 +66,7 @@ def test_load_settings_success(tmp_path: Path) -> None:
     assert settings.vector_store.collection_name == "knowledge_hub"
     assert settings.retrieval.rrf_k == 60
     assert settings.rerank.provider == "none"
+    assert settings.rerank.cache_dir == "./data/models/huggingface"
     assert settings.evaluation.metrics == ["hit_rate", "mrr"]
     assert settings.observability.log_level == "INFO"
     assert settings.ingestion is not None

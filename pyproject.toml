@@ -24,6 +24,8 @@ classifiers = [
 ]
 
 dependencies = [
+    "argon2-cffi>=23.1.0",
+    "fastapi>=0.116.0,<1.0.0",
     "pyyaml>=6.0",
     "langchain>=0.3.0,<1.0.0",
     "langchain-community>=0.3.0,<0.4.0",
@@ -36,7 +38,11 @@ dependencies = [
     "markitdown[pdf]>=0.1.0",
     "pymupdf>=1.24.0",
     "python-dotenv>=1.0.0",
+    "python-multipart>=0.0.20",
+    "qdrant-client>=1.15.0,<2.0.0",
+    "sentence-transformers>=3.0.0,<6.0.0",
     "streamlit>=1.30.0",
+    "uvicorn>=0.35.0,<1.0.0",
     "ragas>=0.1.0,<0.2.0",
     "datasets>=2.0.0",
 ]
@@ -51,9 +57,15 @@ dev = [
     "mypy>=1.0",
     "openai>=1.0",
 ]
+desktop = [
+    "pyinstaller>=6.0.0",
+]
 
 [project.scripts]
 mcp-server = "main:main"
+rag-api = "src.production.api:main"
+rag-worker = "src.production.worker:main"
+rag-launcher = "src.production.launcher:main"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
