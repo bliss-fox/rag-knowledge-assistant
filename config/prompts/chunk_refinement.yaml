@@ -1,0 +1,7 @@
+id: chunk_refinement
+version: 1.0.0
+description: Clean a chunk without adding facts.
+required_variables: [text]
+template: |-
+  清理下列文本的格式和断行，不得增加、推断或删除事实：
+  {text}

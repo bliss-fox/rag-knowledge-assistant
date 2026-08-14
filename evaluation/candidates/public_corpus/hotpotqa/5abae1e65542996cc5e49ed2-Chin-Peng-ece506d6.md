@@ -1,0 +1,3 @@
+# Chin Peng
+
+Chin Peng (), former OBE, (21 October 1924 – 16 September 2013) born Ong Boon Hua () was a long-time leader of the Malayan Communist Party (MCP). A determined anti-colonialist, he led the party's guerrilla insurgency in the Malayan Emergency, fighting against British and Commonwealth forces in an attempt to establish an independent communist state. After the MCP's defeat and subsequent Malayan independence, Chin waged a second campaign against Malaya and, after 1963, the new state of Malaysia in an attempt to replace its government with a communist one from exile, until signing the Peace Agreement of Hat Yai 1989 with the Malaysian government in 1989.

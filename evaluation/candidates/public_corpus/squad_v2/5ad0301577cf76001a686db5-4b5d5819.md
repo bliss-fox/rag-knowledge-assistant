@@ -1,0 +1,3 @@
+# Imperialism
+
+The concept environmental determinism served as a moral justification for domination of certain territories and peoples. It was believed that a certain person's behaviours were determined by the environment in which they lived and thus validated their domination. For example, people living in tropical environments were seen as "less civilized" therefore justifying colonial control as a civilizing mission. Across the three waves of European colonialism (first in the Americas, second in Asia and lastly in Africa), environmental determinism was used to categorically place indigenous people in a racial hierarchy. This takes two forms, orientalism and tropicality.

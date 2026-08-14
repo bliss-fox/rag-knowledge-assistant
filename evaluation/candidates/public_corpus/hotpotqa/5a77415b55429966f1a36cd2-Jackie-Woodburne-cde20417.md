@@ -1,0 +1,3 @@
+# Jackie Woodburne
+
+Jacqueline Anne "Jackie" Woodburne (born 5 February 1956) is a Northern Ireland born Australian actress best known for her television roles in soap operas "Prisoner" and "Neighbours".

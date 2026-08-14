@@ -1,0 +1,3 @@
+# Tragic Hero Records
+
+Tragic Hero Records is a record label founded in Raleigh, North Carolina in March 2005 to represent the growing metalcore and post-hardcore scene of North Carolina. The label was founded by Tommy LaCombe, David Varnedoe and Jason Ganthner. Alesana was the first band the label signed. Among Tragic Hero's best-known signees are Strawberry Girls and A Skylit Drive, whose most recent album reached No. 64 on the "Billboard" 200; Alesana, who later signed with Fearless Records, Letlive, who later signed with Epitaph Records, and He Is Legend, who signed with Tragic Hero for their most recent album after several successful full-lengths on other labels.

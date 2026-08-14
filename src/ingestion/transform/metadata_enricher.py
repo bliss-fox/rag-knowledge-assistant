@@ -12,6 +12,7 @@ from src.ingestion.transform.base_transform import BaseTransform
 from src.libs.llm.llm_factory import LLMFactory
 from src.libs.llm.base_llm import BaseLLM, Message
 from src.observability.logger import get_logger
+from src.production.prompts import PromptRegistry
 
 logger = get_logger(__name__)
 
@@ -59,7 +60,7 @@ class MetadataEnricher(BaseTransform):
         self.settings = settings
         self._llm = llm
         self._prompt_template: Optional[str] = None
-        self._prompt_path = prompt_path or str(resolve_path("config/prompts/metadata_enrichment.txt"))
+        self._prompt_path = prompt_path
         
         # Determine if LLM should be used
         enricher_config = {}
@@ -471,7 +472,7 @@ class MetadataEnricher(BaseTransform):
             prompt = self._load_prompt()
             
             # Build prompt with text
-            formatted_prompt = prompt.replace("{chunk_text}", text[:2000])  # Limit text length
+            formatted_prompt = prompt.replace("{text}", text[:2000])  # Limit text length
             
             # Call LLM
             messages = [Message(role="user", content=formatted_prompt)]
@@ -522,6 +523,11 @@ class MetadataEnricher(BaseTransform):
         if self._prompt_template is not None:
             return self._prompt_template
         
+        if self._prompt_path is None:
+            self._prompt_template = PromptRegistry(
+                resolve_path("config/prompts")
+            ).get("metadata_enrichment").template
+            return self._prompt_template
         prompt_path = Path(self._prompt_path)
         if not prompt_path.exists():
             raise FileNotFoundError(f"Prompt file not found: {self._prompt_path}")

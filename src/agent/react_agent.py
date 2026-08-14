@@ -7,20 +7,19 @@ import logging
 import re
 import time
 from dataclasses import dataclass, field
-from pathlib import Path
 from typing import Any, Dict, Generator, List, Optional, TYPE_CHECKING
 
 from src.agent.agent_state import AgentState, Turn, ToolCall
 from src.agent.tool_registry import ToolRegistry, ToolDispatchError
 from src.libs.llm.base_llm import Message
+from src.core.settings import resolve_path
+from src.production.prompts import PromptRegistry
 
 if TYPE_CHECKING:
     from src.core.settings import Settings
     from src.libs.llm.base_llm import BaseLLM
 
 logger = logging.getLogger(__name__)
-
-_PROMPT_PATH = Path(__file__).resolve().parents[2] / "config" / "prompts" / "react_agent.txt"
 
 _FINAL_ANSWER_RE = re.compile(r"Final Answer\s*:\s*(.*)", re.IGNORECASE | re.DOTALL)
 _THOUGHT_RE = re.compile(r"Thought\s*:\s*(.*?)(?=\nAction|\nFinal Answer|$)", re.IGNORECASE | re.DOTALL)
@@ -254,22 +253,13 @@ class ReActAgent:
     # ------------------------------------------------------------------
 
     def _load_prompt(self) -> str:
-        try:
-            return _PROMPT_PATH.read_text(encoding="utf-8")
-        except FileNotFoundError:
-            logger.warning("react_agent.txt not found at %s; using inline fallback.", _PROMPT_PATH)
-            return (
-                "You are a helpful research assistant.\n"
-                "Available tools:\n{tools_description}\n\n"
-                "Question: {question}\n{history}\n"
-                "Respond with Thought/Action/Action Input or Final Answer."
-            )
+        return PromptRegistry(resolve_path("config/prompts")).get("react_agent").template
 
     def _build_prompt(self, state: AgentState) -> str:
         return self._prompt_template.format(
-            tools_description=self.tool_registry.get_tools_prompt(),
+            tools=self.tool_registry.get_tools_prompt(),
             question=state.question,
-            history=state.format_history(),
+            memory=state.format_history(),
         )
 
     def _call_llm(self, state: AgentState) -> str:

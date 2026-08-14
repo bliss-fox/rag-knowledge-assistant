@@ -1,0 +1,82 @@
+{
+  "artifact_type": "golden_set_seed",
+  "name": "modular-rag-public-golden",
+  "version": "1.0.1",
+  "visibility": "public",
+  "review_status": "seed set; requires human review and expansion before baseline freeze",
+  "eligible_for_quality_gate": false,
+  "cases": [
+    {
+      "query_id": "pub-dev-001",
+      "query": "RRF 融合公式中的默认平滑参数是多少？",
+      "category": "精确事实",
+      "expected_document_ids": ["doc_148b71f5c9162dd2"],
+      "answer_key_points": ["默认 k 为 60"],
+      "answerable": true,
+      "source": "tests/fixtures/sample_documents/chinese_technical_doc.pdf",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy"
+    },
+    {
+      "query_id": "pub-dev-002",
+      "query": "Cross-Encoder 和 Bi-Encoder 分别适合粗排还是精排？",
+      "category": "同义词与缩写",
+      "expected_document_ids": ["doc_148b71f5c9162dd2"],
+      "answer_key_points": ["Bi-Encoder 用于粗排", "Cross-Encoder 用于精排"],
+      "answerable": true,
+      "source": "tests/fixtures/sample_documents/chinese_technical_doc.pdf",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "medium"
+    },
+    {
+      "query_id": "pub-dev-003",
+      "query": "文档是否说明了火星基地的氧气产量？",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "manual-negative",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy"
+    },
+    {
+      "query_id": "pub-final-001",
+      "query": "What embedding providers are supported by the modular RAG system?",
+      "category": "精确事实",
+      "expected_document_ids": ["doc_bbdf40b7a011a8f4"],
+      "answer_key_points": ["OpenAI", "Azure OpenAI", "Ollama", "Sentence Transformers"],
+      "answerable": true,
+      "source": "tests/fixtures/sample_documents/complex_technical_doc.pdf",
+      "split": "final",
+      "language": "en",
+      "difficulty": "easy"
+    },
+    {
+      "query_id": "pub-final-002",
+      "query": "混合检索加 Cross-Encoder 的 NDCG@10 和平均延迟是多少？",
+      "category": "表格/列表信息",
+      "expected_document_ids": ["doc_cb73e07b5de20bfa"],
+      "answer_key_points": ["NDCG@10 为 0.88", "平均延迟为 89ms"],
+      "answerable": true,
+      "source": "tests/fixtures/sample_documents/chinese_table_chart_doc.pdf",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "medium"
+    },
+    {
+      "query_id": "pub-final-003",
+      "query": "资料中是否列出了 2035 年量子网络的生产事故？",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "manual-negative",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "medium"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+# James Brown (Elvis impersonator)
+
+James "The King" Brown (born 1968) is a Belfast-born Elvis Presley tribute act known for his covers of songs done in the style of Elvis. In the vein of "songs that Elvis should have done," Brown performs songs like "Whole Lotta Rosie", originally by AC/DC, and "Crazy Little Thing Called Love", originally by Queen.

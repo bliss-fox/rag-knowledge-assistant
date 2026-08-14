@@ -1,0 +1,10 @@
+id: query_rewrite
+version: 1.0.0
+description: Rewrite a conversational follow-up into a standalone retrieval query.
+required_variables: [recent_questions, question]
+template: |-
+  根据最近的问题，将追问改写为不依赖代词或隐含指代的独立检索问题。
+  最近的问题：
+  {recent_questions}
+  追问：{question}
+  只输出改写后的问题，不要解释。

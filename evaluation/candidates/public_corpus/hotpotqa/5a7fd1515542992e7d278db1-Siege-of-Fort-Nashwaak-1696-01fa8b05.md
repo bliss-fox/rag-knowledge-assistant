@@ -1,0 +1,3 @@
+# Siege of Fort Nashwaak (1696)
+
+The Siege of Fort Nashwaak occurred during King William's War when New England forces from Boston attacked the capital of Acadia, Fort Nashwaak, at present-day Fredericton, New Brunswick. The siege was in retaliation for the French and Indian Siege of Pemaquid (1696) at present day Bristol, Maine. In the English Province of Massachusetts Bay. Colonel John Hathorne and Major Benjamin Church were the leaders of the New England force of 400 men. The siege lasted two days, between October 18–20, 1696, and formed part of a larger expedition by Church against a number of other Acadian communities.

@@ -1,0 +1,5 @@
+{
+  "status": "pending_reproducible_freeze",
+  "description": "Replace only after the public final split is human-reviewed and reproduced.",
+  "metrics": {}
+}

@@ -1,0 +1,10 @@
+id: grounded_self_check
+version: 1.0.0
+description: Judge grounding without correcting the candidate answer.
+required_variables: [question, context, answer]
+template: |-
+  检查候选答案的每个明确事实是否被证据支持。不要改写或纠正答案。
+  仅返回 JSON：{{"is_grounded":true或false,"confidence":0到1,"missing_aspects":[],"should_retry":true或false}}。
+  问题：{question}
+  证据：{context}
+  候选答案：{answer}

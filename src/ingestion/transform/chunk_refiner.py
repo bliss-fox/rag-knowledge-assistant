@@ -12,6 +12,7 @@ from src.ingestion.transform.base_transform import BaseTransform
 from src.libs.llm.llm_factory import LLMFactory
 from src.libs.llm.base_llm import BaseLLM, Message
 from src.observability.logger import get_logger
+from src.production.prompts import PromptRegistry
 
 logger = get_logger(__name__)
 
@@ -53,7 +54,7 @@ class ChunkRefiner(BaseTransform):
         self.settings = settings
         self._llm = llm
         self._prompt_template: Optional[str] = None
-        self._prompt_path = prompt_path or str(resolve_path("config/prompts/chunk_refinement.txt"))
+        self._prompt_path = prompt_path
         
         # Determine if LLM should be used
         self.use_llm = getattr(
@@ -405,6 +406,11 @@ class ChunkRefiner(BaseTransform):
             return self._prompt_template
         
         try:
+            if self._prompt_path is None:
+                self._prompt_template = PromptRegistry(
+                    resolve_path("config/prompts")
+                ).get("chunk_refinement").template
+                return self._prompt_template
             prompt_path = Path(self._prompt_path)
             if not prompt_path.exists():
                 logger.warning(f"Prompt file not found: {self._prompt_path}")

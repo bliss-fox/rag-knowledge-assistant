@@ -1,0 +1,6 @@
+id: image_captioning
+version: 1.0.0
+description: Describe visible image content for retrieval.
+required_variables: [context]
+template: |-
+  根据图像本身和相邻文本生成客观检索描述，不得猜测不可见信息。相邻文本：{context}

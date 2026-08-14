@@ -116,14 +116,18 @@ class CoreReranker:
         # Initialize reranker backend
         if reranker is not None:
             self._reranker = reranker
+            self.initialization_error: str | None = None
         elif not self.config.enabled:
             self._reranker = NoneReranker(settings=settings)
+            self.initialization_error = None
         else:
             try:
                 self._reranker = RerankerFactory.create(settings)
+                self.initialization_error = None
             except Exception as e:
                 logger.warning(f"Failed to create reranker, using NoneReranker: {e}")
                 self._reranker = NoneReranker(settings=settings)
+                self.initialization_error = f"{type(e).__name__}: {e}"
         
         # Determine reranker type for result reporting
         self._reranker_type = self._get_reranker_type()
@@ -307,6 +311,14 @@ class CoreReranker:
                     "provider": self._reranker_type,
                     "input_count": len(candidates),
                     "output_count": len(final_results),
+                    "input_order": [
+                        {"rank": rank, "chunk_id": item.chunk_id, "score": round(item.score, 6)}
+                        for rank, item in enumerate(results, 1)
+                    ],
+                    "output_order": [
+                        {"rank": rank, "chunk_id": item.chunk_id, "score": round(item.score, 6)}
+                        for rank, item in enumerate(final_results, 1)
+                    ],
                     "chunks": [
                         {
                             "chunk_id": r.chunk_id,
@@ -327,6 +339,14 @@ class CoreReranker:
             
         except Exception as e:
             logger.warning(f"Reranking failed, using fallback: {e}")
+            if trace is not None:
+                trace.record_stage("rerank", {
+                    "method": self._reranker_type,
+                    "used_fallback": True,
+                    "fallback_reason": str(e),
+                    "input_order": [item.chunk_id for item in results],
+                    "output_order": [item.chunk_id for item in results[:effective_top_k]],
+                })
             
             if self.config.fallback_on_error:
                 # Return original order as fallback

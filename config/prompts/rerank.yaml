@@ -1,0 +1,8 @@
+id: llm_rerank
+version: 1.0.0
+description: Rank evidence candidates by direct relevance.
+required_variables: [query, candidates]
+template: |-
+  根据问题对候选片段按直接证据相关性排序。仅输出 JSON ID 数组。
+  问题：{query}
+  候选：{candidates}

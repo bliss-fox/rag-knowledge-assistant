@@ -8,8 +8,13 @@ and API-based endpoints.
 from __future__ import annotations
 
 import logging
+import os
+from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import TimeoutError as FutureTimeoutError
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from src.core.settings import resolve_path
 from src.libs.reranker.base_reranker import BaseReranker
 
 logger = logging.getLogger(__name__)
@@ -55,6 +60,13 @@ class CrossEncoderReranker(BaseReranker):
         self.settings = settings
         self.timeout = timeout
         self.kwargs = kwargs
+        self.device = self._resolve_device(
+            kwargs.get("device", getattr(settings.rerank, "device", "auto"))
+        )
+        cache_dir = kwargs.get(
+            "cache_dir", getattr(settings.rerank, "cache_dir", "./data/models/huggingface")
+        )
+        self.cache_dir = self._resolve_cache_dir(cache_dir)
         
         # Initialize or inject model
         if model is not None:
@@ -114,7 +126,13 @@ class CrossEncoderReranker(BaseReranker):
         
         try:
             logger.info(f"Loading Cross-Encoder model: {model_name}")
-            model = CrossEncoder(model_name)
+            logger.info("Cross-Encoder device: %s", self.device)
+            if self.cache_dir is not None:
+                self.cache_dir.mkdir(parents=True, exist_ok=True)
+            model = CrossEncoder(
+                model_name, device=self.device,
+                cache_folder=str(self.cache_dir) if self.cache_dir is not None else None,
+            )
             logger.info(f"Cross-Encoder model loaded successfully: {model_name}")
             return model
         except Exception as e:
@@ -219,7 +237,18 @@ class CrossEncoderReranker(BaseReranker):
         """
         try:
             # Use model.predict() to score all pairs in batch
-            scores = self.model.predict(pairs)
+            executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="cross-encoder")
+            try:
+                future = executor.submit(self.model.predict, pairs)
+                try:
+                    scores = future.result(timeout=self.timeout)
+                except FutureTimeoutError as exc:
+                    future.cancel()
+                    raise CrossEncoderRerankError(
+                        f"Cross-Encoder scoring exceeded {self.timeout:.1f}s timeout"
+                    ) from exc
+            finally:
+                executor.shutdown(wait=False, cancel_futures=True)
             
             # Convert numpy array to list if needed
             if hasattr(scores, 'tolist'):
@@ -231,6 +260,32 @@ class CrossEncoderReranker(BaseReranker):
             raise CrossEncoderRerankError(
                 f"Failed to score pairs with Cross-Encoder: {e}"
             ) from e
+
+    def warmup(self) -> None:
+        """Materialize model weights and kernels before serving requests."""
+        self._score_pairs([("warmup", "warmup")])
+
+    @staticmethod
+    def _resolve_device(configured: str) -> str:
+        if configured != "auto":
+            return configured
+        try:
+            import torch
+
+            return "cuda" if torch.cuda.is_available() else "cpu"
+        except ImportError:
+            return "cpu"
+
+    @staticmethod
+    def _resolve_cache_dir(configured: str | None) -> Path | None:
+        if not configured:
+            return None
+        if configured == "user":
+            local_app_data = os.environ.get("LOCALAPPDATA")
+            if local_app_data:
+                return (Path(local_app_data) / "ModularRAG" / "models" / "huggingface").resolve()
+            return (Path.home() / ".modular-rag" / "models" / "huggingface").resolve()
+        return resolve_path(str(configured))
     
     def _attach_scores_and_sort(
         self,

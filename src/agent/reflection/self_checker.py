@@ -8,6 +8,9 @@ import re
 from dataclasses import dataclass
 from typing import Any, Dict, List, TYPE_CHECKING
 
+from src.core.settings import resolve_path
+from src.production.prompts import PromptRegistry
+
 if TYPE_CHECKING:
     from src.core.types import RetrievalResult
     from src.libs.llm.base_llm import BaseLLM
@@ -38,28 +41,6 @@ class CheckResult:
         }
 
 
-_SELF_CHECK_PROMPT = """\
-You are a fact-checking assistant. Given a question, a candidate answer, \
-and the retrieved context passages, evaluate the answer quality.
-
-Question: {question}
-
-Retrieved context:
-{context}
-
-Candidate answer:
-{answer}
-
-Evaluate the answer on these dimensions and respond ONLY with valid JSON:
-{{
-  "confidence": <float 0.0-1.0 — how confident you are the answer is correct and complete>,
-  "is_grounded": <true/false — every claim in the answer is supported by the context>,
-  "missing_aspects": [<string>, ...],  // aspects of the question not addressed
-  "should_retry": <true/false — would another retrieval round meaningfully improve the answer>
-}}
-"""
-
-
 class SelfChecker:
     """LLM-based grounding checker for ReAct agent answers.
 
@@ -80,6 +61,7 @@ class SelfChecker:
     ) -> None:
         self.llm = llm
         self.confidence_threshold = confidence_threshold
+        self.prompt = PromptRegistry(resolve_path("config/prompts")).get("grounded_self_check")
 
     def check(
         self,
@@ -107,7 +89,7 @@ class SelfChecker:
             )
 
         context_text = self._format_context(context)
-        prompt = _SELF_CHECK_PROMPT.format(
+        prompt = self.prompt.render(
             question=question,
             context=context_text or "(no context retrieved)",
             answer=answer,

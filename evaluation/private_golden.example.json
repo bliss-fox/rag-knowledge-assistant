@@ -1,0 +1,22 @@
+{
+  "artifact_type": "golden_set_template",
+  "name": "private-golden-template",
+  "version": "0.1.0",
+  "visibility": "private",
+  "review_status": "template_requires_human_review",
+  "eligible_for_quality_gate": false,
+  "cases": [
+    {
+      "query_id": "private-dev-001",
+      "query": "替换为人工复核的问题",
+      "category": "精确事实",
+      "expected_document_ids": ["stable-document-id"],
+      "answer_key_points": ["人工复核的答案要点"],
+      "answerable": true,
+      "source": "local-only",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy"
+    }
+  ]
+}

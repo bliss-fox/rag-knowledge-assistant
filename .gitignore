@@ -89,11 +89,17 @@ dmypy.json
 
 # Ruff
 .ruff_cache/
+.uv-cache/
 
 # Project-specific
 data/
 cache/
 logs/
+config/private_evaluation*.json
+private_evaluation*.json
+evaluation/private_golden.json
+evaluation/private_*.json
+!evaluation/private_golden.example.json
 *.log
 traces.jsonl
 

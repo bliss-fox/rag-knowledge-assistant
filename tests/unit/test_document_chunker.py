@@ -223,6 +223,7 @@ def test_source_ref_points_to_document(chunker, sample_document):
     for chunk in chunks:
         assert chunk.metadata["source_ref"] == sample_document.id, \
             f"source_ref should point to document ID '{sample_document.id}'"
+        assert chunk.metadata["document_id"] == sample_document.id
 
 
 def test_source_ref_added_to_all_chunks(chunker, sample_document):
@@ -399,6 +400,7 @@ def test_end_to_end_smoke(chunker, sample_document):
         assert chunk.metadata["source_path"] == sample_document.metadata["source_path"]
         assert chunk.metadata["chunk_index"] == i
         assert chunk.metadata["source_ref"] == sample_document.id
+        assert chunk.metadata["document_id"] == sample_document.id
         
         # Type requirements
         assert isinstance(chunk, Chunk)

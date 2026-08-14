@@ -1,0 +1,3 @@
+# Chanhassen High School
+
+Chanhassen High School (CNS) is a public high school located in Chanhassen, Minnesota, a southwestern suburb of the Minneapolis-Saint Paul area. CNS has a grade 9–12 school program. Construction of the school was approved by voters in 2006 in response to rapidly growing enrollment in Carver County and overcrowding at Chaska High School, the district's other high school. Chanhassen had an enrollment of 1,576 students during the 2014-15 school year, with an 18:1 student teacher ratio. There are 82 teachers at the school, and more than 80 percent of them have a master's degree or higher. The student body makeup is 52 percent male and 48 percent female, and the total minority enrollment is 9 percent.

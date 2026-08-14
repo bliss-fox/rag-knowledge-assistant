@@ -1,408 +1,213 @@
-<div align="center">
+# Modular RAG MCP Server
 
-# 智能知识检索与问答系统
+面向单台 Windows 服务器、局域网多人使用的 RAG 系统：管理员导入 PDF、Markdown、TXT、网页或只读同步本地知识库，用户通过浏览器获得带稳定引用的回答；证据不足时系统在生成前后双重拒答。
 
-**Agentic RAG · Hybrid Search · MCP Protocol · Full Observability**
+这是单节点交付方案，不是高可用集群。默认日常问答只调用服务器本机的 Ollama、Qdrant 和 SQLite；只有公开语料的 PR 质量评测可调用 DeepSeek Judge。
 
-![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Tests](https://img.shields.io/badge/Tests-1200%2B-brightgreen)
-![Code](https://img.shields.io/badge/Core_Code-2600%2B_lines-blue)
-![Stages](https://img.shields.io/badge/Dev_Stages-9_phases_·_68_tasks-orange)
+> 面试官快速入口：[5 分钟项目讲解与高频追问](docs/INTERVIEW_GUIDE.md) · [生产验收记录](docs/PRODUCTION_ACCEPTANCE_2026-08-13.md) · [部署与安全边界](docs/PRODUCTION_DEPLOYMENT.md)
 
-**从零构建的生产级 Agentic RAG 系统**
+## 我解决的工程问题
 
-ReAct Agent 自主多步推理 · Dense + BM25 混合检索 · MCP 协议服务端 · Streamlit 全链路可观测平台
-6 大核心组件全部可通过配置文件零代码切换
+这个项目的重点不是“把文档塞进向量库后调用一次大模型”，而是补齐演示型 RAG 到可交付单机产品之间的工程缺口：
 
-</div>
+- **答案可信度**：检索前置 EvidenceGate 与生成后 claim/citation 校验共同约束回答；证据不足时不调用 LLM 或返回拒答。
+- **检索可解释性**：完整保留 BM25、Dense、RRF 与 Cross-Encoder 的分数、排名变化和降级原因，而不是只返回最终文本。
+- **数据可维护性**：目录和网页使用稳定 ID、manifest、增量同步与精确删除；任务崩溃可恢复，同一来源互斥执行。
+- **行为可复现性**：Prompt、配置、模型和索引全部带版本；评测冻结 corpus、参数和运行环境，CI 对缺失 Judge、未冻结 baseline 等情况 fail-closed。
+- **问题可定位性**：SQLite Trace 记录检索、重排、Prompt、响应、Token、P50/P95、引用覆盖和 deployment event，可把异常窗口关联到具体变更。
 
----
+## 可验证的工程证据
 
-## 项目亮点
+| 证据 | 当前结果 | 如何复核 |
+|---|---|---|
+| 自动化回归 | 1,501 passed、4 skipped，覆盖 Unit / Integration / E2E（2026-08-14） | `pytest -m "not llm"` |
+| 真实检索链路 | 隔离 Qdrant collection 完成 Ollama embedding、Dense/BM25/RRF 单文档 roundtrip | [验收记录](docs/PRODUCTION_ACCEPTANCE_2026-08-13.md#qdrant--ollama-roundtrip) |
+| 本地知识库同步 | 2 个允许文件成功同步；二次运行 `processed=0`、`unchanged=2` | [验收记录](docs/PRODUCTION_ACCEPTANCE_2026-08-13.md#本地知识库只读同步) |
+| Windows 交付 | PyInstaller 启动 API、Worker、Dashboard；父进程退出后回收整棵子进程树 | [验收记录](docs/PRODUCTION_ACCEPTANCE_2026-08-13.md#windows-启动器) |
+| Prompt 治理 | 10 个版本化 YAML Prompt，变量和 SHA-256 启动校验 | [`config/prompts`](config/prompts) |
+| 质量诚信 | 公开黄金集仍为 6 条种子样例，正式 baseline 保持 pending，CI 不会伪造通过 | [测试与评测](#测试与评测) |
 
-| 维度 | 指标 |
-|------|------|
-| **代码规模** | ~2,600 行核心代码，116 个 Python 文件 |
-| **检索质量** | Hit@5 = **100%**（21 题双语黄金集，四种模式全部达成）|
-| **关键词检索** | BM25 Hit@1 = **90.5%**，端到端延迟仅 **14 ms** |
-| **测试覆盖** | **1,200+** 自动化测试（Unit · Integration · E2E 三层金字塔）|
-| **可插拔架构** | **6** 大组件：LLM · Embedding · VectorStore · Reranker · Splitter · Evaluator |
-| **开发完整度** | **9** 阶段 · **68** 子任务 · 全部闭环完成 |
+自动化测试数量证明的是工程回归面，不代表检索或回答质量提升；正式质量结论必须等人工复核黄金集和冻结 baseline 后再给出。
 
----
+## 已实现能力
 
-## 系统架构
+- FastAPI 统一后端；Streamlit 只通过 API 操作，MCP 与 CLI 共用 `RAGApplicationService`。
+- Argon2id 本地账号、`admin`/`user` RBAC、短期访问令牌、可撤销刷新会话和审计事件。
+- PDF / Markdown / TXT Loader Registry；受限同域网页抓取含 SSRF、重定向、深度、页数和响应大小防护。
+- `D:\AI-KnowledgeBase\documents` 只读增量同步；SHA-256、mtime、稳定文件 ID 和精确 document→chunk 删除清单。
+- 独立版本化 Qdrant collection，默认 `modular_rag_<logical>_v1`；禁止使用或清理 `local_knowledge`。
+- BM25 + Dense + RRF + `BAAI/bge-reranker-v2-m3`，重排超时/失败显式降级并记录 Trace。
+- 独立 EvidenceGate、生成后 claim 引用覆盖检查，以及 `answered/refused/degraded/error` 结构化状态。
+- 十个版本化 YAML Prompt，启动校验变量和 SHA-256；生产路径不使用未版本化内联 Prompt。
+- SQLite WAL 持久任务、Trace、阶段耗时、Token、审计、deployment event 和 30 天正文清理。
+- 公开/私有黄金集 schema、dev/final 隔离、检索消融、答案质量指标与 DeepSeek CI 门禁框架。
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│                  用户 / Claude Desktop / CLI                      │
-└───────────────────┬──────────────────────┬───────────────────────┘
-                    │ MCP JSON-RPC 2.0     │ Streamlit Dashboard
-                    ▼                      ▼
-        ┌─────────────────┐    ┌────────────────────────────────┐
-        │   MCP Server    │    │        可观测性管理平台          │
-        │ (stdio 传输)    │    │  系统总览 · Agent 对话 · 知识库  │
-        │ query_knowledge │    │  摄取管理 · 导入追踪 · 评估面板  │
-        │ list_collections│    └────────────────────────────────┘
-        │ get_doc_summary │
-        └────────┬────────┘
-                 │
-                 ▼
-        ┌────────────────────────────────────────────────────┐
-        │                    ReAct Agent                     │
-        │                                                    │
-        │  ┌────────────┐  Thought/Action/Observation        │
-        │  │  LLM 推理  │◄──────────────────────────────┐   │
-        │  └────────────┘                               │   │
-        │  ┌────────────┐                    ┌──────────▼─┐ │
-        │  │SelfChecker │  幻觉检测 · 置信度   │ToolRegistry│ │
-        │  └────────────┘  打分（0.0–1.0）    │ 5 个工具   │ │
-        │  ┌────────────┐                    └────────────┘ │
-        │  │ 多轮对话记忆│  滑动窗口历史管理                   │
-        │  └────────────┘                                   │
-        └────────┬───────────────────────────────────────────┘
-                 │
-                 ▼
-        ┌────────────────────────────────────────────────────┐
-        │                  混合检索引擎                        │
-        │   Query Processor（jieba 分词 + 语义过滤）            │
-        │          │                     │                   │
-        │   ┌──────▼──────┐     ┌────────▼──────┐           │
-        │   │ Dense 检索   │     │  Sparse 检索   │           │
-        │   │ BGE-m3 向量  │并行  │   BM25 倒排    │           │
-        │   │ + ChromaDB  │     │  + jieba 分词  │           │
-        │   └──────┬──────┘     └────────┬──────┘           │
-        │          └──────────┬───────────┘                  │
-        │                     ▼                              │
-        │              RRF 融合（k=60）                       │
-        │                     ▼                              │
-        │         Cross-Encoder 精排（可插拔，可选）            │
-        └────────────────────────────────────────────────────┘
-                 ▲
-                 │ 数据摄取（6 阶段流水线）
-        ┌────────────────────────────────────────────────────┐
-        │ ①完整性校验 → ②PDF解析 → ③智能分块                  │
-        │ → ④LLM增强Transform → ⑤双路编码 → ⑥存储            │
-        └────────────────────────────────────────────────────┘
-                 │
-                 ▼
-        ┌────────────────────────────────────────────────────┐
-        │               可插拔 Provider 层                    │
-        │  LLM:       OpenAI · Azure · DeepSeek · Ollama     │
-        │  Embedding: OpenAI · SiliconFlow · Azure · Ollama   │
-        │  VectorStore: ChromaDB（Qdrant / Milvus 规划中）    │
-        └────────────────────────────────────────────────────┘
+## 架构
+
+```text
+LAN browser ──> Streamlit ──> FastAPI ──> RAGApplicationService
+MCP stdio ───────────────────────┘            │
+CLI ──────────────────────────────────────────┘
+                                               ├─ BM25
+                                               ├─ Ollama embedding ──> Qdrant
+                                               ├─ Cross-Encoder rerank
+                                               ├─ EvidenceGate ──> Ollama qwen3:8b
+                                               └─ SQLite WAL Trace / jobs / auth
+
+Admin API ──> persistent job queue ──> Worker ──> loaders / sync / evaluation
+Windows EXE ──> API + Worker + Streamlit + browser
 ```
 
----
+## 关键技术取舍
 
-## 核心模块
+| 决策 | 原因 | 代价 / 边界 |
+|---|---|---|
+| BM25 + Dense 通过 RRF 融合 | 两路分数量纲不同，按排名融合避免脆弱的手工归一化 | RRF 不学习业务权重，仍需黄金集验证 |
+| 独立 Cross-Encoder 精排 | 对候选逐对建模，并允许超时后显式退回 RRF | CPU 延迟高；当前候选评测没有证明净收益 |
+| 规则化 EvidenceGate 独立于 LLM | “是否有足够证据”不能只让生成模型自我裁决 | 阈值必须基于公开和私有 dev split 校准 |
+| SQLite WAL + 单 Worker | Windows 单机部署简单、任务与 Trace 事务一致 | 不支持多主机高可用或横向扩容 |
+| Qdrant collection 版本 + alias 切换 | 重建索引时不原地污染旧版本，便于验证和回滚 | 需要快照、容量与旧版本清理策略 |
+| Streamlit 只调用 FastAPI | UI、MCP、CLI 共享应用服务层和权限/拒答逻辑 | 多一个服务边界，需要合约与健康检查 |
 
-### Agentic RAG — 自主多步推理
+## 三分钟启动
 
-从零实现 ReAct（Reasoning + Acting）主循环，不依赖 LangChain Agent 框架：
+前置服务：Ollama `http://127.0.0.1:11434`、Qdrant `http://127.0.0.1:6333`。本机应已有：
 
-- **ToolRegistry**：Registry 模式，工具注册与 LLM 调度解耦，新增工具只需一行 `register()` 调用
-- **5 个 RAG 工具**：`hybrid_search` · `semantic_search` · `keyword_search` · `document_summary` · `list_documents`
-- **SelfChecker**：LLM-as-judge，在 Agent 给出最终答案后判断答案是否有文档支撑，输出置信度（0.0–1.0）
-- **ConversationMemory**：滑动窗口多轮历史管理，支持 `format_for_prompt()` 直接注入 Prompt
-- **流式生成器**：`run_stream()` 每完成一个推理步骤立即 `yield AgentStreamEvent`，Dashboard 实时展示推理轨迹
-- **防死循环**：`max_turns` 硬性截断 + `Final Answer:` 正则检测双重保险，超时 fallback 不返回空响应
-
-```
-Thought → Action → Observation → Thought → ... → Final Answer
-              ↑每步 yield，Dashboard 实时刷新↑
-```
-
----
-
-### Hybrid Search — 混合检索引擎
-
-| 路径 | 技术 | 优势 |
-|------|------|------|
-| Dense 检索 | BGE-m3（1024-dim）+ ChromaDB HNSW | 语义理解，跨语言，同义词命中 |
-| Sparse 检索 | BM25 + jieba 中文分词 | 精确匹配，专有名词，低延迟（14ms）|
-| 融合策略 | RRF（Reciprocal Rank Fusion，k=60） | 无需归一化，rank-agnostic，稳定可靠 |
-| 精排（可选）| Cross-Encoder / LLM Rerank | 高精度场景最终排序优化 |
-
-**为什么选 RRF 而非加权求和**：Dense 输出 cosine 相似度，BM25 输出 TF-IDF 分数，量纲完全不同。RRF 只看排名不看分值，天然规避了归一化问题，实测无需调参。
-
-并行检索实现：`ThreadPoolExecutor(max_workers=2)` 并发执行双路，任意一路失败自动 Graceful Degradation，不中断整个查询。
-
----
-
-### 数据摄取流水线 — 6 阶段智能处理
-
-```
-①完整性校验  →  ②PDF解析  →  ③递归分块  →  ④Transform  →  ⑤双路编码  →  ⑥存储
-SHA256幂等        MarkItDown      chunk_size      ChunkRefiner     Dense+Sparse    ChromaDB
-hash guard       → Markdown       =1000          MetadataEnricher  并行批处理      + BM25索引
-                 图像提取占位符    overlap=200    ImageCaptioner               + ImageStore
+```powershell
+ollama pull qwen3:8b
+ollama pull qwen3-embedding:0.6b
 ```
 
-- **幂等摄取**：SHA256 hash 存入 SQLite，重复文件直接跳过，任何时候重跑都安全
-- **LLM 增强 Transform**：ChunkRefiner（去噪重组）· MetadataEnricher（自动补 Title/Tags/Summary）· ImageCaptioner（Vision LLM 生成图像描述）
-- **Image-to-Text**：PDF 图像 → Vision LLM Caption → 缝入 Chunk 文本 → 走统一检索链路，无需引入 CLIP 等多模态向量库
-- **LLM 失败 Fallback**：Transform 三步骤均支持 LLM 方案和规则方案，LLM 不可用时自动切换
+安装并启动：
 
----
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e ".[dev]"
+.\.venv\Scripts\python.exe -m src.production.launcher
+```
 
-### MCP Server — 接入 Claude Desktop
+打开 `http://<服务器IP>:8501`，首次启动创建管理员（无默认密码）。API 是 `http://<服务器IP>:8766`，健康检查：
 
-实现标准 **JSON-RPC 2.0 + stdio transport** 协议：
+```powershell
+Invoke-RestMethod http://127.0.0.1:8766/health/ready
+```
+
+服务也可分开运行：
+
+```powershell
+.\.venv\Scripts\python.exe -m src.production.api
+.\.venv\Scripts\python.exe -m src.production.worker
+.\.venv\Scripts\python.exe -m streamlit run src/observability/dashboard/app.py
+```
+
+## API 与权限
+
+主要接口包括 `/auth/*`、`/users`、`/data-sources`、`/documents/upload`、`/jobs/*`、`/search`、`/answer`、`/traces`、`/metrics/*` 和 `/evaluations`。管理员可在 Streamlit 的“离线评测”页面启动 dev/final 任务，查看 BM25/Dense/Hybrid/Rerank 消融、Faithfulness、Answer Relevancy、引用覆盖率、正确/错误拒答率、P50/P95 和逐查询失败分析；普通用户只可查询并查看自己的任务和 Trace。
+
+默认绑定 `0.0.0.0` 供局域网访问，但不会配置公网入口、TLS、企业 SSO 或多节点高可用。生产 LAN 仍应由防火墙限制来源，公网访问应在受管反向代理后单独完成威胁建模。
+
+## 测试与评测
+
+```powershell
+# 全量离线自动化测试（不调用真实云模型）
+.\.venv\Scripts\python.exe -m pytest -m "not llm"
+
+# Prompt 与黄金集 schema
+.\.venv\Scripts\python.exe scripts/validate_production_assets.py
+
+# 编译与新增代码静态检查
+.\.venv\Scripts\python.exe -m compileall -q src scripts
+.\.venv\Scripts\python.exe -m ruff check src scripts --select F
+```
+
+公开集位于 `evaluation/public_golden.json`；私有集复制 `evaluation/private_golden.example.json` 为 `evaluation/private_golden.json`，后者已被 Git 忽略。每条样例包含 query ID、类别、预期文档、答案要点、是否可回答、来源、dev/final、语言和难度。
+
+后台 Worker 的答案 Judge 使用当前配置的模型并记录模型、Prompt 版本与 SHA-256。私有集只允许本地 `ollama` provider；配置为云端 provider 时任务会在发送内容前失败。评测报告只保留 query ID、分类、状态、耗时、分数和错误类型，不保存私有问题、答案或引用全文。Judge 失败时相关指标明确标记为不可用，不会用启发式分数冒充 Faithfulness。
+
+当前公开集仅有 6 条种子样例，明确未达到计划中的约 100 条人工复核规模，并设置 `eligible_for_quality_gate=false`。生产资产校验和云端 Judge 现在都采用默认拒绝策略：只有同时满足 `eligible_for_quality_gate=true` 与 `review_status=human_reviewed` 的正式数据集才会运行。`evaluation/baseline.pending.json` 继续让质量门禁主动失败；只有扩充、人工复核并在固定 corpus/chunk/k/硬件/重复次数下复现后，才能冻结正式 baseline。不得把种子集结果作为生产质量指标。
+
+`evaluation/candidates/public_golden_candidate.json` 是固定版本 CMRC 2018、SQuAD 2.0 和 HotpotQA 生成的 100 条候选原料（45 中文事实、15 英文事实、15 无答案、25 多跳），同时包含 324 个公开 corpus 文档。它明确设置 `eligible_for_quality_gate=false`，CI Judge 会拒绝将其当作正式 final 集；逐条人工复核并正式提升前不能称为黄金集。可用以下命令确定性重建：
+
+```powershell
+.\.venv\Scripts\python.exe scripts\build_public_golden_candidates.py
+```
+
+管理员可在 Dashboard 的“黄金集复核”页逐条查看问题、答案要点和证据全文，并标记为批准、退回或待定。复核状态保存在 SQLite schema v3 的 `golden_reviews` 表，并绑定候选文件 SHA-256；候选文件改变后旧审批不会沿用。只有全部候选均获批准时，Dashboard 才允许导出 `evaluation/reviewed/public_golden_reviewed-<sha>.json`。该导出物仍保持 `eligible_for_quality_gate=false`，不会自动覆盖 `evaluation/public_golden.json`；正式提升和 baseline 冻结必须作为独立、可审查的仓库变更完成。
+
+复核者确认导出物后，用独立命令生成正式文件；该命令会核对逐条审核记录、样例 ID 和 schema，并原子替换目标文件：
+
+```powershell
+.\.venv\Scripts\python.exe scripts\promote_reviewed_golden.py `
+  --reviewed evaluation/reviewed/public_golden_reviewed-<sha>.json `
+  --output evaluation/public_golden.json `
+  --version 2.0.0
+```
+
+正式公开集保留完整 corpus manifest。云端质量流程按每条样例的全部 `expected_document_ids` 导入证据，可正确覆盖 HotpotQA 多文档问题；无答案样例的相关公开 passage 也会被导入，避免把拒答测试简化成空语料测试。所有路径仍必须位于仓库内。
+
+正式提升后的公开集和本机私有集都必须显式设置 `review_status=human_reviewed` 与 `eligible_for_quality_gate=true`。完成两套 dev split 建索引后，使用实际生产检索链路校准 EvidenceGate：
+
+```powershell
+.\.venv\Scripts\python.exe scripts\calibrate_evidence_gate.py `
+  --public evaluation/public_golden.json `
+  --private evaluation/private_golden.json `
+  --public-collection public_evidence_calibration `
+  --private-collection default
+```
+
+脚本要求公开和私有 dev 集各自同时含有答案与无答案样例，拒绝使用降级检索，输出 `evaluation/evidence_calibration.json`，但不会自动修改生产配置。人工检查产物后，把其中阈值写入 `config/settings.yaml`，设置 `calibration_status: calibrated` 和 `calibration_artifact: evaluation/evidence_calibration.json`。启动时会重新验证数据集哈希、公开/私有 dev 覆盖、阈值可复现性，以及 embedding、reranker、检索、chunk 和索引配置指纹；任一不一致都会拒绝启动，要求重新校准。
+
+质量门槛代码已固定为 Faithfulness ≥ 0.85、引用覆盖率 ≥ 0.95、Recall@5 ≥ 0.80、相对主分支回退 ≤ 0.02。DeepSeek Job 缺 Secret、Judge 失败或 baseline 未冻结都会失败，不会静默跳过。
+
+### 真实候选检索评测（非正式 baseline）
+
+2026-08-13 在 Windows 11、CPU-only、Qdrant `modular_rag_benchmark_v1`、Ollama `qwen3-embedding:0.6b` 与 `BAAI/bge-reranker-v2-m3` 上，对 21 条 legacy candidate query 每种模式重复 5 次。四种模式各 105 次测量，错误、降级和不可用模式均为 0：
+
+| 模式 | Hit@1 | Hit@5 | MRR@10 | P50 | P95 |
+|---|---:|---:|---:|---:|---:|
+| Dense | 66.67% | 100% | 0.8135 | 2149.8 ms | 2182.0 ms |
+| BM25 | 90.48% | 100% | 0.9524 | 8.6 ms | 30.7 ms |
+| Hybrid RRF | 85.71% | 100% | 0.9087 | 2158.2 ms | 2177.2 ms |
+| Hybrid + Cross-Encoder | 85.71% | 100% | 0.9206 | 16349.0 ms | 17144.9 ms |
+
+报告位于 `data/eval_results/benchmark_candidate_5x.json`（运行产物，不提交语料全文），固定了 corpus/query SHA-256、模型、维度、RRF k、Python 与平台。该小样本只证明评测链路可复现；其中 BM25 最优，Cross-Encoder 仅轻微改善 MRR，却把 P50 增加到约 16.3 秒，因此不能声称 Rerank 在当前 CPU 部署上带来净收益，更不能替代约 100 条人工复核公开 final 集的正式 baseline。
+
+## Windows EXE
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -e ".[desktop]"
+.\scripts\build_windows.ps1
+```
+
+EXE 是服务器启动器，不把 Ollama、Qdrant 或模型权重打包进单文件。它检查端口、启动 API/Worker/Dashboard、等待 API 存活检查、打开浏览器并在退出时安全终止子进程。Windows Job Object 会在启动器正常关闭或异常退出时回收整个子进程树，避免 API、Worker 或 Dashboard 残留占用端口。生产就绪状态仍由 `/health/ready` 单独报告；EvidenceGate 未校准或 Reranker 不可用时返回 503，但不会阻断管理员进入首次配置界面。未校准时 `/answer` 和共享应用服务会在检索/LLM 调用前 fail-closed；`/search` 保持可用，以支持索引诊断和阈值校准。
+
+Cross-Encoder 模型默认缓存于 `%LOCALAPPDATA%\ModularRAG\models\huggingface`，不会因替换 `dist\ModularRAGLauncher` 而丢失。首次下载和预热在 API 后台执行：`/health/live` 与管理员界面立即可用，`/health/ready` 在模型完成预热前保持 503，避免把未加载好 Reranker 的实例接入生产流量。
+
+`rerank.cache_dir` 可配置为其他明确目录；默认值 `user` 会覆盖机器上遗留的 `HF_HOME` 路径选择，不依赖或写入原知识库的模型目录。Windows 构建脚本也把依赖分析阶段的 Hugging Face 缓存显式指向同一用户缓存目录。
+
+## 已知限制
+
+- 需要独立启动 Qdrant；当前环境若 6333 未监听，摄取和查询会返回明确的服务不可用错误。
+- SQLite WAL 适合单节点服务，不支持跨主机 Worker 或自动故障转移。
+- EvidenceGate 阈值目前是保守配置值，`calibration_status` 仍为 `pending`；校准工具和启动校验已就绪，但目标规模公开/私有 dev 集尚未完成复核和实测，因此不能宣称质量门槛已经达成。
+- 公开黄金集尚未扩充到 50–200 条，私有黄金集必须由管理员在本机人工整理。
+- DeepSeek 公共 final 评测只允许仓库公开语料；私有知识库不得进入该流程。
+- Windows EXE 已完成当前工作树 PyInstaller 构建、API/Worker/Dashboard 联合启动、健康探测和父进程异常退出的整棵子进程树回收验证；首次模型下载会正确写入用户缓存。
+- Qdrant + Ollama 单文档生产链路已用隔离的 `modular_rag_production_acceptance_20260813_v1` collection 完成真实摄取和 Dense/BM25/RRF 查询验收，三路均命中预期稳定文档。`--no-rerank` 已验证不会实例化 Cross-Encoder，且会明确标记最终顺序来自 RRF。
+- `D:\AI-KnowledgeBase\documents` 已通过只读目录数据源同步到隔离的 `modular_rag_production_local_acceptance_20260813_v1`：2 个允许文件、2 个 Qdrant point、0 失败；第二次同步为 `unchanged=2`、`processed=0`。中文查询的 Dense、BM25 和 RRF 均命中正确 Markdown。公开质量 baseline 仍需在人工标注完成后执行。
+
+## MCP
 
 ```json
-// claude_desktop_config.json 添加一行即可接入
-{ "mcpServers": { "rag": { "command": "python", "args": ["-m", "main"] } } }
+{
+  "mcpServers": {
+    "modular-rag": {
+      "command": "D:\\path\\to\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "src.mcp_server.server"],
+      "cwd": "D:\\path\\to\\MODULAR-RAG-MCP-SERVER"
+    }
+  }
+}
 ```
 
-暴露 3 个 MCP Tools：`query_knowledge_hub` · `list_collections` · `get_document_summary`
-
-stdout 纯净输出 JSON-RPC 响应，stderr 输出结构化日志，符合 MCP 协议规范。
-
----
-
-### 可观测性平台 — Streamlit Dashboard
-
-| 页面 | 功能 |
-|------|------|
-| 系统总览 | 配置摘要、各组件健康状态、知识库统计 |
-| 知识库浏览 | Chunk 列表、元数据查看、图像预览 |
-| 文档摄取 | 文件上传、实时进度条、`on_progress` 回调 |
-| 摄取追踪 | 6 阶段耗时、成功/失败状态 |
-| 查询追踪 | Dense vs Sparse 结果对比、Rerank 前后变化 |
-| 评估面板 | 运行 Ragas / Custom 评估，查看 Faithfulness/MRR 等指标 |
-| **Agent 对话** | 多会话 ChatGPT 风格，ReAct 推理轨迹**实时流式可视化** |
-
-**Agent 流式推理轨迹**（使用 `st.empty()` 原位刷新）：
-
-```
-💭 THOUGHT: 需要先搜索 BM25 的相关内容...       ← Turn 1 完成
-⚡ ACTION:  hybrid_search  ● 工具执行中…
-────────────────────────────────────────
-💭 THOUGHT: 找到了相关定义，再补充对比信息...    ← Turn 2 推理中...
-⚡ ACTION:  semantic_search  ● 工具执行中…
-         ↓  done 事件到达
-[最终答案] · [置信度 0.87] · [2 轮] · [1.3s]
-```
-
----
-
-### 可插拔架构 — Factory + 配置驱动
-
-6 大组件均遵循同一模式：`Base 抽象类 → Factory 注册 → YAML 配置切换`
-
-```yaml
-# 切换 LLM Provider：只改 settings.yaml，零代码修改
-llm:
-  provider: "DeepSeek"     # openai / azure / deepseek / ollama
-  model: "deepseek-v4-flash"
-  api_key: "sk-..."
-```
-
-```python
-# Factory Pattern：新增 Provider 3 步完成
-class MoonshotLLM(BaseLLM):
-    def chat(self, messages): ...           # Step 1: 实现接口
-
-LLMFactory.register_provider("moonshot", MoonshotLLM)  # Step 2: 注册
-
-# settings.yaml: provider: "moonshot"      # Step 3: 配置
-```
-
-同一 Factory 模式应用于：`LLMFactory` · `EmbeddingFactory` · `VectorStoreFactory` · `RerankerFactory` · `SplitterFactory` · `EvaluatorFactory`
-
----
-
-## 评测结果
-
-**测试集**：21 条手工标注双语问答对（中文 + 英文技术文档，70 chunks，覆盖事实型、对比型、概念型、多步推理型）
-
-| 检索模式 | Hit@1 | Hit@5 | MRR@10 | 平均延迟 |
-|---------|-------|-------|--------|---------|
-| Dense Only（BGE-m3） | 66.7% | **100%** | 0.794 | 315 ms |
-| **Sparse Only（BM25）** | **90.5%** | **100%** | **0.952** | **14 ms** |
-| Hybrid / RRF 融合 | 76.2% | **100%** | 0.881 | 259 ms |
-
-> 四种模式 Hit@5 均达到 100%，验证知识库构建质量和分块策略合理性。完整方法论与逐题分析见 [EVALUATION_REPORT.md](EVALUATION_REPORT.md)。
-
-**Hybrid vs Dense 相对提升**：Hit@1 +9.5pp，MRR@10 +11.0%
-
-**BM25 在中文技术领域的优势**：领域专有名词（BM25、RRF、ChromaDB、LoRA 等）精确匹配能力强，且延迟为 Dense 的 **1/22**（14ms vs 315ms）。
-
----
-
-## 工程实践
-
-### 三层测试金字塔
-
-```
-tests/
-├── unit/               # 快速，纯 Python，无外部依赖
-│   ├── test_rrf_fusion.py         # RRF 算法正确性验证
-│   ├── test_react_agent.py        # Agent 循环（Mock LLM + Mock 工具）
-│   ├── test_conversation_memory.py
-│   └── test_self_checker.py
-│
-├── integration/        # 需要 ChromaDB / LLM API
-│   ├── test_ingestion_pipeline.py
-│   ├── test_hybrid_search.py
-│   └── test_mcp_server.py
-│
-└── e2e/                # 完整业务流程验证
-    ├── test_data_ingestion.py     # 上传 → 检索 → 验证
-    ├── test_mcp_client.py         # 真实 MCP 协议调用
-    └── test_recall.py             # Golden Set 召回率回归
-```
-
-```bash
-pytest tests/unit -v                         # 仅单元测试（秒级）
-pytest tests/ -m "not llm" -v               # 跳过需要 API 的测试
-pytest tests/ --cov=src --cov-report=html   # 生成覆盖率报告
-```
-
-### 关键设计决策
-
-| 决策 | 方案 | 理由 |
-|------|------|------|
-| 检索融合 | RRF（rank-based）而非加权求和 | 无需归一化，免调参，鲁棒性强 |
-| 图像检索 | Image-to-Text（Vision LLM Caption）| 复用纯文本链路，无需 CLIP，部署简单 |
-| 流式 Agent | Turn 级 `yield AgentStreamEvent` | 比 Token 级流式延迟更低，UI 实现更简洁 |
-| 摄取幂等 | SHA256 hash + SQLite 记录 | 任何时候重跑脚本都安全，无重复数据 |
-| LLM Fallback | Transform 阶段 LLM → 规则 | LLM 不可用时系统降级继续运行 |
-| 数据契约 | `src/core/types.py` dataclass | 模块间解耦，只通过 `Chunk` / `RetrievalResult` 等类型通信 |
-
----
-
-## 技术栈
-
-| 层次 | 技术选型 |
-|------|---------|
-| **Agent** | 自研 ReAct 主循环 · SelfChecker · ConversationMemory |
-| **检索** | ChromaDB HNSW · rank-bm25 · jieba · RRF Fusion |
-| **精排** | sentence-transformers（Cross-Encoder）· LLM Rerank |
-| **LLM / Embedding** | OpenAI · Azure · DeepSeek · Ollama · SiliconFlow |
-| **MCP 协议** | `mcp` SDK · JSON-RPC 2.0 · stdio transport |
-| **可观测性** | Streamlit · TraceContext · JSONL 结构化日志 |
-| **评估** | Ragas · 自定义 Hit@K / MRR@K 指标 |
-| **数据解析** | MarkItDown（PDF → Markdown）· langchain-text-splitters |
-| **运行时** | Python 3.10+ · uv 包管理 |
-| **测试** | pytest · Unit / Integration / E2E 三层 |
-
----
-
-## 快速开始
-
-```bash
-# 1. 克隆并安装
-git clone <repo-url>
-cd <project-dir>
-pip install uv && uv sync
-
-# 2. 配置 API Key
-cp config/settings.yaml config/settings.local.yaml
-# 编辑 llm.api_key 和 embedding.api_key
-
-# 3. 摄取文档
-python scripts/ingest.py --source path/to/your/docs
-
-# 4. 启动 Streamlit 管理平台
-python scripts/start_dashboard.py
-
-# 5. 命令行单次查询
-python scripts/query.py "RRF 算法的原理是什么？"
-
-# 6. 命令行多轮 Agent 对话
-python scripts/agent.py
-
-# 7. 运行检索评测基准
-python scripts/run_benchmark.py
-
-# 8. 接入 Claude Desktop（MCP 模式）
-# claude_desktop_config.json 添加：
-# {"mcpServers": {"rag": {"command": "python", "args": ["-m", "main"]}}}
-python -m main
-```
-
-**支持的 LLM Provider**：`openai` · `azure` · `deepseek` · `ollama`  
-**支持的 Embedding Provider**：`openai` · `azure` · `siliconflow` · `ollama`
-
----
-
-## 项目结构
-
-```
-src/
-├── agent/              # ReAct Agent 核心
-│   ├── react_agent.py  # 主循环（run / run_stream）
-│   ├── tool_registry.py
-│   ├── tools/          # 5 个 RAG 工具实现
-│   ├── memory/         # ConversationMemory
-│   └── reflection/     # SelfChecker（LLM 幻觉检测）
-│
-├── core/
-│   ├── query_engine/   # HybridSearch · DenseRetriever · SparseRetriever · RRF
-│   ├── response/       # 答案组装 · Citation 生成
-│   ├── trace/          # TraceContext · TraceCollector
-│   ├── types.py        # 全项目数据契约（Document / Chunk / RetrievalResult）
-│   └── settings.py     # YAML 配置加载与验证
-│
-├── ingestion/          # 6 阶段摄取流水线
-│   ├── pipeline.py     # IngestionPipeline.run()
-│   ├── chunking/       # RecursiveCharacterTextSplitter 适配
-│   ├── embedding/      # Dense + Sparse 双路批处理
-│   ├── storage/        # ChromaDB · BM25 Index · Image Store
-│   └── transform/      # ChunkRefiner · MetadataEnricher · ImageCaptioner
-│
-├── libs/               # 可插拔抽象层
-│   ├── llm/            # BaseLLM + OpenAI/Azure/Ollama/DeepSeek 实现
-│   ├── embedding/      # BaseEmbedding + 各 Provider 实现
-│   ├── reranker/       # BaseReranker + Cross-Encoder / LLM Rerank
-│   ├── splitter/       # BaseSplitter + RecursiveSplitter
-│   ├── vector_store/   # BaseVectorStore + ChromaDB 实现
-│   ├── evaluator/      # BaseEvaluator + Ragas / Custom / Composite
-│   └── loader/         # PDF 解析 · 文件完整性校验
-│
-├── mcp_server/         # MCP Server 实现
-│   ├── server.py       # stdio 传输入口
-│   ├── protocol_handler.py
-│   └── tools/          # query_knowledge_hub / list_collections / get_doc_summary
-│
-└── observability/      # 可观测性层
-    ├── logger.py        # 结构化日志
-    ├── evaluation/      # Ragas + Custom 评估运行器
-    └── dashboard/       # Streamlit 7 页面管理平台
-
-scripts/
-├── ingest.py            # 文档摄取 CLI
-├── query.py             # 单次查询 CLI
-├── agent.py             # 多轮 Agent 对话 CLI
-├── run_benchmark.py     # 4 模式检索基准测试
-└── evaluate.py          # Ragas 评估运行器
-
-config/
-├── settings.yaml        # 全局配置（LLM · Embedding · 检索 · Agent）
-└── prompts/
-    └── react_agent.txt  # ReAct Prompt 模板（外置，支持热更新）
-
-tests/
-├── unit/                # 单元测试（无外部依赖）
-├── integration/         # 集成测试（需 ChromaDB / LLM API）
-└── e2e/                 # 端到端测试（完整业务流程）
-```
-
----
-
-## 深入了解
-
-| 文档 | 内容 |
-|------|------|
-| [TECHNICAL_DOC.md](TECHNICAL_DOC.md) | 架构设计详解、关键算法、设计模式、面试高频问答 |
-| [EVALUATION_REPORT.md](EVALUATION_REPORT.md) | 评测方法论、逐题分析、配置建议、可复现脚本 |
-
----
-
-## License
-
-MIT
+暴露 `query_knowledge_hub`、`list_collections` 和 `get_document_summary` 三个工具；依赖服务不可用时返回结构化 Tool 错误而不会破坏 stdio 协议。

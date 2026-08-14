@@ -48,12 +48,13 @@ def _snapshot_results(
         return []
     return [
         {
+            "rank": rank,
             "chunk_id": r.chunk_id,
             "score": round(r.score, 4),
             "text": r.text or "",
             "source": r.metadata.get("source_path", r.metadata.get("source", "")),
         }
-        for r in results
+        for rank, r in enumerate(results, 1)
     ]
 
 
@@ -624,12 +625,31 @@ class HybridSearch:
         )
         _elapsed = (time.monotonic() - _t0) * 1000.0
         if trace is not None:
+            dense_ranks = {item.chunk_id: rank for rank, item in enumerate(dense_results, 1)}
+            sparse_ranks = {item.chunk_id: rank for rank, item in enumerate(sparse_results, 1)}
+            rrf_k = int(getattr(self.fusion, "k", 60))
             trace.record_stage("fusion", {
                 "method": "rrf",
+                "rrf_k": rrf_k,
                 "input_lists": len(ranking_lists),
                 "top_k": top_k,
                 "result_count": len(fused),
-                "chunks": _snapshot_results(fused),
+                "chunks": [
+                    {
+                        **item,
+                        "dense_rank": dense_ranks.get(item["chunk_id"]),
+                        "sparse_rank": sparse_ranks.get(item["chunk_id"]),
+                        "dense_contribution": (
+                            1.0 / (rrf_k + dense_ranks[item["chunk_id"]])
+                            if item["chunk_id"] in dense_ranks else 0.0
+                        ),
+                        "sparse_contribution": (
+                            1.0 / (rrf_k + sparse_ranks[item["chunk_id"]])
+                            if item["chunk_id"] in sparse_ranks else 0.0
+                        ),
+                    }
+                    for item in _snapshot_results(fused)
+                ],
             }, elapsed_ms=_elapsed)
         return fused
     
