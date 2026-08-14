@@ -1,0 +1,3 @@
+# State Netball and Hockey Centre
+
+State Netball Hockey Centre (also known as the State Netball and Hockey Centre) is a multipurpose sporting facility located in Melbourne, Australia. It is a home arena of the Melbourne United basketball team of the National Basketball League and the Victorian Vikings hockey team of the Australian Hockey League. The facility is located in Royal Park, Parkville next to the Melbourne Zoo. The arena was opened on 16 March 2001, and is run as a non-profit facility by the State Sport Centres Trust. and consists of two outdoor hockey fields, four outdoor and five indoor netball courts.

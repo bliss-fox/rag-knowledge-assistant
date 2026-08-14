@@ -1,0 +1,3 @@
+# Henderson State Reddies football
+
+The Henderson State Reddies football program is a college football team that represents Henderson State University. The team is a member of the Great American Conference which is in the Division II of the National Collegiate Athletic Association (NCAA). The Reddies are currently coached by Scott Maxfield, who is in his seventh year at the university. Home games are played at Carpenter-Haygood Stadium in Arkadelphia, Arkansas. Henderson State shares the longest rivalry in Division II football with Ouachita Baptist University Tigers, the Battle of the Ravine, which began in 1895.

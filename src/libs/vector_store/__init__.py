@@ -18,8 +18,15 @@ except ImportError:
     # ChromaDB not installed, skip registration
     pass
 
+try:
+    from src.libs.vector_store.qdrant_store import QdrantStore
+    VectorStoreFactory.register_provider("qdrant", QdrantStore)
+except ImportError:
+    pass
+
 __all__ = [
     'BaseVectorStore',
     'VectorStoreFactory',
     'ChromaStore',
+    'QdrantStore',
 ]

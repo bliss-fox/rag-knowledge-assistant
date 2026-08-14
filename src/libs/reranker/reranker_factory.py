@@ -109,6 +109,12 @@ class RerankerFactory:
             )
         
         try:
+            if provider_name == "cross_encoder":
+                override_kwargs.setdefault("timeout", float(getattr(rerank_settings, "timeout", 30.0)))
+                override_kwargs.setdefault("device", getattr(rerank_settings, "device", "auto"))
+                override_kwargs.setdefault(
+                    "cache_dir", getattr(rerank_settings, "cache_dir", "./data/models/huggingface")
+                )
             return provider_class(settings=settings, **override_kwargs)
         except Exception as e:
             raise RuntimeError(

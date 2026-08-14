@@ -1,9 +1,10 @@
 """Tests for Cross-Encoder based Reranker implementation."""
 
-from typing import Any, Dict, List
+from typing import List
 from unittest.mock import Mock, patch
 
 import pytest
+import time
 
 from src.core.settings import RerankSettings, Settings
 from src.libs.reranker.cross_encoder_reranker import (
@@ -120,6 +121,35 @@ class TestCrossEncoderRerankerInit:
         
         mock_load.assert_called_once_with("cross-encoder/ms-marco-MiniLM-L-6-v2")
         assert reranker.model is not None
+
+    def test_model_loader_uses_project_cache_instead_of_global_hf_home(
+        self, mock_settings, tmp_path, monkeypatch,
+    ):
+        mock_settings.rerank.cache_dir = str(tmp_path / "project-cache")
+        mock_settings.rerank.device = "cpu"
+        cross_encoder = Mock(return_value=MockCrossEncoder())
+        monkeypatch.setattr(
+            "sentence_transformers.CrossEncoder", cross_encoder,
+        )
+
+        CrossEncoderReranker(settings=mock_settings)
+
+        cross_encoder.assert_called_once_with(
+            "cross-encoder/ms-marco-MiniLM-L-6-v2",
+            device="cpu",
+            cache_folder=str(tmp_path / "project-cache"),
+        )
+
+    def test_user_cache_resolves_outside_replaceable_application_directory(
+        self, mock_settings, tmp_path, monkeypatch,
+    ):
+        local_app_data = tmp_path / "LocalAppData"
+        monkeypatch.setenv("LOCALAPPDATA", str(local_app_data))
+        mock_settings.rerank.cache_dir = "user"
+        reranker = CrossEncoderReranker(settings=mock_settings, model=MockCrossEncoder())
+        assert reranker.cache_dir == (
+            local_app_data / "ModularRAG" / "models" / "huggingface"
+        ).resolve()
 
 
 class TestCrossEncoderRerankerValidation:
@@ -267,6 +297,22 @@ class TestCrossEncoderRerankerScoring:
         
         assert mock_model.call_count == 1
         assert mock_model.last_pairs == pairs
+
+    def test_score_pairs_timeout_is_explicit(self, mock_settings):
+        class SlowModel:
+            def predict(self, pairs):
+                time.sleep(0.1)
+                return [0.0] * len(pairs)
+
+        reranker = CrossEncoderReranker(settings=mock_settings, model=SlowModel(), timeout=0.01)
+        with pytest.raises(CrossEncoderRerankError, match="timeout"):
+            reranker._score_pairs([("query", "passage")])
+
+    def test_explicit_device_is_honored(self, mock_settings):
+        reranker = CrossEncoderReranker(
+            settings=mock_settings, model=MockCrossEncoder(), device="cpu",
+        )
+        assert reranker.device == "cpu"
 
 
 class TestCrossEncoderRerankerSorting:

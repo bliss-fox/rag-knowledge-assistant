@@ -219,6 +219,8 @@ class DocumentChunker:
         # Add chunk-specific fields
         chunk_metadata["chunk_index"] = chunk_index
         chunk_metadata["source_ref"] = document.id
+        # Stable document-level identity used by citations and golden-set labels.
+        chunk_metadata["document_id"] = document.id
         
         # Extract image_refs from chunk text by finding [IMAGE: xxx] placeholders
         image_refs = []

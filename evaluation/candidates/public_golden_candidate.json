@@ -1,0 +1,4371 @@
+{
+  "artifact_type": "golden_set_candidate",
+  "name": "modular-rag-public-golden-candidate",
+  "version": "2026.08.13.1",
+  "visibility": "public",
+  "review_status": "requires_human_review",
+  "eligible_for_quality_gate": false,
+  "promotion_requirements": [
+    "review every query and answer key point",
+    "verify every expected document supports the query",
+    "review category, difficulty and dev/final assignment",
+    "record reviewer identity and review date"
+  ],
+  "sources": [
+    {
+      "dataset": "hfl/cmrc2018",
+      "revision": "137f2c45a24275fb68f6961c4d357f46288886aa",
+      "license": "cc-by-sa-4.0",
+      "homepage": "https://huggingface.co/datasets/hfl/cmrc2018"
+    },
+    {
+      "dataset": "rajpurkar/squad_v2",
+      "revision": "3ffb306f725f7d2ce8394bc1873b24868140c412",
+      "license": "cc-by-sa-4.0",
+      "homepage": "https://huggingface.co/datasets/rajpurkar/squad_v2"
+    },
+    {
+      "dataset": "hotpotqa/hotpot_qa",
+      "revision": "1908d6afbbead072334abe2965f91bd2709910ab",
+      "license": "cc-by-sa-4.0",
+      "homepage": "https://huggingface.co/datasets/hotpotqa/hotpot_qa"
+    }
+  ],
+  "corpus": [
+    {
+      "document_id": "doc_e8b4aa41385e8117",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1008_QUERY_1-e8b4aa41.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_1008_QUERY_1",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_1d48975dff97a481",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1040_QUERY_2-1d48975d.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_1040_QUERY_2",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_8a8ae7f8741eaa82",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1062_QUERY_2-8a8ae7f8.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_1062_QUERY_2",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_2dfc0f520fe9e753",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1076_QUERY_0-2dfc0f52.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_1076_QUERY_0",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_6818453f82b4c7e1",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1090_QUERY_1-6818453f.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_1090_QUERY_1",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_4c3845077d35688e",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1124_QUERY_0-4c384507.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_1124_QUERY_0",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_b4189cbecff7a5d4",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1136_QUERY_1-b4189cbe.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_1136_QUERY_1",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_fa823321bff2f334",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1161_QUERY_0-fa823321.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_1161_QUERY_0",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_0a4e07a8225021f0",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_146_QUERY_3-0a4e07a8.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_146_QUERY_3",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_69a965592e066f04",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1525_QUERY_2-69a96559.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_1525_QUERY_2",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_d2fe867d25e1bbdb",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1543_QUERY_4-d2fe867d.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_1543_QUERY_4",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_c3169a202565267d",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1575_QUERY_0-c3169a20.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_1575_QUERY_0",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_f6d8afcfeaa0dc85",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1603_QUERY_3-f6d8afcf.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_1603_QUERY_3",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_7173de283ebd8b13",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_160_QUERY_0-7173de28.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_160_QUERY_0",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_bbe21c2a71b22309",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1666_QUERY_4-bbe21c2a.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_1666_QUERY_4",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_11b9527fd01c82e6",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1710_QUERY_3-11b9527f.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_1710_QUERY_3",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_cf08615526a4c8e2",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_183_QUERY_0-cf086155.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_183_QUERY_0",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_6a0e039e355589d5",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_189_QUERY_0-6a0e039e.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_189_QUERY_0",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_47eb6c9c74adac6c",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1931_QUERY_2-47eb6c9c.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_1931_QUERY_2",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_ad52a15c8a332517",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_194_QUERY_3-ad52a15c.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_194_QUERY_3",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_f28b567463f191da",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_209_QUERY_0-f28b5674.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_209_QUERY_0",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_a7a800e7d152142e",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_20_QUERY_1-a7a800e7.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_20_QUERY_1",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_a27141bf53a8a6a8",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_215_QUERY_0-a27141bf.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_215_QUERY_0",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_4dd177f9ab62e704",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_223_QUERY_0-4dd177f9.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_223_QUERY_0",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_03268f1f74f1a2ca",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_228_QUERY_2-03268f1f.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_228_QUERY_2",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_12d308bc005a6ce7",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_25_QUERY_2-12d308bc.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_25_QUERY_2",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_8ec87408a2892432",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_304_QUERY_1-8ec87408.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_304_QUERY_1",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_e5daf120d410bd72",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_315_QUERY_1-e5daf120.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_315_QUERY_1",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_ea4a04e0b197337c",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_326_QUERY_2-ea4a04e0.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_326_QUERY_2",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_9147b2efe2ce8935",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_330_QUERY_1-9147b2ef.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_330_QUERY_1",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_a294d226c008254b",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_345_QUERY_2-a294d226.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_345_QUERY_2",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_e8915588bbe013de",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_35_QUERY_1-e8915588.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_35_QUERY_1",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_91a742d506146612",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_382_QUERY_1-91a742d5.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_382_QUERY_1",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_86301b75263bb398",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_385_QUERY_2-86301b75.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_385_QUERY_2",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_68b85eeb819f6f79",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_437_QUERY_2-68b85eeb.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_437_QUERY_2",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_2f92de1aaaad2422",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_440_QUERY_0-2f92de1a.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_440_QUERY_0",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_3f584577f8c9ee91",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_467_QUERY_1-3f584577.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_467_QUERY_1",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_7de03995ea1660d5",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_477_QUERY_1-7de03995.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_477_QUERY_1",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_ee6c47793f72dcf1",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_533_QUERY_1-ee6c4779.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_533_QUERY_1",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_ac61438a02064c89",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_551_QUERY_4-ac61438a.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_551_QUERY_4",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_eeb37e5bbdd379d5",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_557_QUERY_2-eeb37e5b.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_557_QUERY_2",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_730a5afb585e8f4f",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_567_QUERY_3-730a5afb.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_567_QUERY_3",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_78ef75f42bc24fcb",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_582_QUERY_3-78ef75f4.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_582_QUERY_3",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_af6ddf011bd70763",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_605_QUERY_0-af6ddf01.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_605_QUERY_0",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_2353a7eeedb76c4e",
+      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_82_QUERY_1-2353a7ee.md",
+      "source_dataset": "cmrc2018",
+      "source_record_id": "DEV_82_QUERY_1",
+      "title": "CMRC 2018 passage"
+    },
+    {
+      "document_id": "doc_837a800863e65a56",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a77415b55429966f1a36cd2-Beauty-and-the-Beast-Stevie-Nicks-s-837a8008.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a77415b55429966f1a36cd2-Beauty and the Beast (Stevie Nicks song)",
+      "title": "Beauty and the Beast (Stevie Nicks song)"
+    },
+    {
+      "document_id": "doc_f9634c1ca1d63d37",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a77415b55429966f1a36cd2-Great-Britain-at-the-2016-Summer-Ol-f9634c1c.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a77415b55429966f1a36cd2-Great Britain at the 2016 Summer Olympics",
+      "title": "Great Britain at the 2016 Summer Olympics"
+    },
+    {
+      "document_id": "doc_cde2041706754059",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a77415b55429966f1a36cd2-Jackie-Woodburne-cde20417.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a77415b55429966f1a36cd2-Jackie Woodburne",
+      "title": "Jackie Woodburne"
+    },
+    {
+      "document_id": "doc_b93ae0f4d9647526",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a77415b55429966f1a36cd2-James-Brown-Elvis-impersonator-b93ae0f4.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a77415b55429966f1a36cd2-James Brown (Elvis impersonator)",
+      "title": "James Brown (Elvis impersonator)"
+    },
+    {
+      "document_id": "doc_1c5c40059ad41f06",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a77415b55429966f1a36cd2-John-Cameron-musician-1c5c4005.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a77415b55429966f1a36cd2-John Cameron (musician)",
+      "title": "John Cameron (musician)"
+    },
+    {
+      "document_id": "doc_0a2c449e713e521a",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a77415b55429966f1a36cd2-Martin-McCann-actor-0a2c449e.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a77415b55429966f1a36cd2-Martin McCann (actor)",
+      "title": "Martin McCann (actor)"
+    },
+    {
+      "document_id": "doc_3b3cfe7dc496c380",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a77415b55429966f1a36cd2-Northern-Ireland-Association-of-Aer-3b3cfe7d.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a77415b55429966f1a36cd2-Northern Ireland Association of Aeromodellers",
+      "title": "Northern Ireland Association of Aeromodellers"
+    },
+    {
+      "document_id": "doc_c8f9dd21683ac17a",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a77415b55429966f1a36cd2-There-s-a-Whole-Lot-of-Loving-c8f9dd21.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a77415b55429966f1a36cd2-There's a Whole Lot of Loving",
+      "title": "There's a Whole Lot of Loving"
+    },
+    {
+      "document_id": "doc_580e40a8904a76ea",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a77415b55429966f1a36cd2-Whole-Lotta-Sole-580e40a8.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a77415b55429966f1a36cd2-Whole Lotta Sole",
+      "title": "Whole Lotta Sole"
+    },
+    {
+      "document_id": "doc_b50897dcddfefdc5",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a77415b55429966f1a36cd2-Whole-Lotta-Trouble-b50897dc.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a77415b55429966f1a36cd2-Whole Lotta Trouble",
+      "title": "Whole Lotta Trouble"
+    },
+    {
+      "document_id": "doc_d21878f3c25ce51a",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a79ced45542994bb94570cb-Bamboo-Union-d21878f3.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a79ced45542994bb94570cb-Bamboo Union",
+      "title": "Bamboo Union"
+    },
+    {
+      "document_id": "doc_e4194afb4a04424b",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a79ced45542994bb94570cb-Chris-Bratton-drummer-e4194afb.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a79ced45542994bb94570cb-Chris Bratton (drummer)",
+      "title": "Chris Bratton (drummer)"
+    },
+    {
+      "document_id": "doc_1f39fe318a3854c5",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a79ced45542994bb94570cb-Fascist-paramilitary-1f39fe31.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a79ced45542994bb94570cb-Fascist paramilitary",
+      "title": "Fascist paramilitary"
+    },
+    {
+      "document_id": "doc_0d092bc3fa560ebb",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a79ced45542994bb94570cb-National-Socialist-black-metal-0d092bc3.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a79ced45542994bb94570cb-National Socialist black metal",
+      "title": "National Socialist black metal"
+    },
+    {
+      "document_id": "doc_de019492d7dc0f55",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a79ced45542994bb94570cb-Nicke-Andersson-de019492.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a79ced45542994bb94570cb-Nicke Andersson",
+      "title": "Nicke Andersson"
+    },
+    {
+      "document_id": "doc_7bde20b3b815ed8f",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a79ced45542994bb94570cb-Problematization-7bde20b3.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a79ced45542994bb94570cb-Problematization",
+      "title": "Problematization"
+    },
+    {
+      "document_id": "doc_28a7bc0525ec9d51",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a79ced45542994bb94570cb-Sandinista-ideology-28a7bc05.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a79ced45542994bb94570cb-Sandinista ideology",
+      "title": "Sandinista ideology"
+    },
+    {
+      "document_id": "doc_797701a733e75f69",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a79ced45542994bb94570cb-Torment-Six-Feet-Under-album-797701a7.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a79ced45542994bb94570cb-Torment (Six Feet Under album)",
+      "title": "Torment (Six Feet Under album)"
+    },
+    {
+      "document_id": "doc_14519cc095139384",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a79ced45542994bb94570cb-Torment-band-14519cc0.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a79ced45542994bb94570cb-Torment (band)",
+      "title": "Torment (band)"
+    },
+    {
+      "document_id": "doc_6d4994fb0549e7ef",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a79ced45542994bb94570cb-Young-Civilians-6d4994fb.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a79ced45542994bb94570cb-Young Civilians",
+      "title": "Young Civilians"
+    },
+    {
+      "document_id": "doc_49da219d15bb4e84",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7e05f75542995f4f402394-China-Blue-49da219d.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7e05f75542995f4f402394-China Blue",
+      "title": "China Blue"
+    },
+    {
+      "document_id": "doc_2f739cab7403fa9f",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7e05f75542995f4f402394-Girl-in-the-Sunny-Place-2f739cab.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7e05f75542995f4f402394-Girl in the Sunny Place",
+      "title": "Girl in the Sunny Place"
+    },
+    {
+      "document_id": "doc_46e2333f73a36860",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7e05f75542995f4f402394-Hot-Girls-46e2333f.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7e05f75542995f4f402394-Hot Girls",
+      "title": "Hot Girls"
+    },
+    {
+      "document_id": "doc_24093512cd2d8c7c",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7e05f75542995f4f402394-Hot-Girls-Bad-Boys-24093512.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7e05f75542995f4f402394-Hot Girls, Bad Boys",
+      "title": "Hot Girls, Bad Boys"
+    },
+    {
+      "document_id": "doc_56cec7742c3f2bb8",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7e05f75542995f4f402394-Hot-Girls-Wanted-56cec774.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7e05f75542995f4f402394-Hot Girls Wanted",
+      "title": "Hot Girls Wanted"
+    },
+    {
+      "document_id": "doc_03252de6abca0b4f",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7e05f75542995f4f402394-Jill-Bauer-03252de6.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7e05f75542995f4f402394-Jill Bauer",
+      "title": "Jill Bauer"
+    },
+    {
+      "document_id": "doc_d4301549cb1654e2",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7e05f75542995f4f402394-Keep-It-Up-d4301549.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7e05f75542995f4f402394-Keep It Up",
+      "title": "Keep It Up"
+    },
+    {
+      "document_id": "doc_326f42461ca6f468",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7e05f75542995f4f402394-Mary-Anne-Franks-326f4246.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7e05f75542995f4f402394-Mary Anne Franks",
+      "title": "Mary Anne Franks"
+    },
+    {
+      "document_id": "doc_d02d3467092dd769",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7e05f75542995f4f402394-Songs-from-the-Trees-d02d3467.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7e05f75542995f4f402394-Songs from the Trees",
+      "title": "Songs from the Trees"
+    },
+    {
+      "document_id": "doc_51ba3d798660cef4",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7e05f75542995f4f402394-Tyler-Strickland-51ba3d79.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7e05f75542995f4f402394-Tyler Strickland",
+      "title": "Tyler Strickland"
+    },
+    {
+      "document_id": "doc_0769fe8cc3c37076",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Cambridge-Blackfriars-0769fe8c.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7fd1515542992e7d278db1-Cambridge Blackfriars",
+      "title": "Cambridge Blackfriars"
+    },
+    {
+      "document_id": "doc_2dbd364762b9ea98",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Daniel-Coxe-Jr.-2dbd3647.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7fd1515542992e7d278db1-Daniel Coxe, Jr.",
+      "title": "Daniel Coxe, Jr."
+    },
+    {
+      "document_id": "doc_55bfd79b854ee725",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Diocese-of-Lincoln-55bfd79b.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7fd1515542992e7d278db1-Diocese of Lincoln",
+      "title": "Diocese of Lincoln"
+    },
+    {
+      "document_id": "doc_a3ce6440683ea2d9",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Grimsby-Minster-a3ce6440.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7fd1515542992e7d278db1-Grimsby Minster",
+      "title": "Grimsby Minster"
+    },
+    {
+      "document_id": "doc_f0267c5fcdb79ec2",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Raid-on-Chignecto-1696-f0267c5f.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7fd1515542992e7d278db1-Raid on Chignecto (1696)",
+      "title": "Raid on Chignecto (1696)"
+    },
+    {
+      "document_id": "doc_bc09b64afafe9ad9",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Religious-life-at-Stonyhurst-Colleg-bc09b64a.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7fd1515542992e7d278db1-Religious life at Stonyhurst College",
+      "title": "Religious life at Stonyhurst College"
+    },
+    {
+      "document_id": "doc_01fa8b057c1ad7dd",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Siege-of-Fort-Nashwaak-1696-01fa8b05.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7fd1515542992e7d278db1-Siege of Fort Nashwaak (1696)",
+      "title": "Siege of Fort Nashwaak (1696)"
+    },
+    {
+      "document_id": "doc_32c6ba399ab03751",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-St-James-School-Grimsby-32c6ba39.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7fd1515542992e7d278db1-St James' School, Grimsby",
+      "title": "St James' School, Grimsby"
+    },
+    {
+      "document_id": "doc_386db3ba1136daf8",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Timothy-Radcliffe-386db3ba.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7fd1515542992e7d278db1-Timothy Radcliffe",
+      "title": "Timothy Radcliffe"
+    },
+    {
+      "document_id": "doc_41abac0b816e8499",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-York-Shire-Province-of-New-York-41abac0b.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a7fd1515542992e7d278db1-York Shire (Province of New York)",
+      "title": "York Shire (Province of New York)"
+    },
+    {
+      "document_id": "doc_f49f0475f78a2f15",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a81736255429903bc27b96e-Clarence-Aquatic-Centre-f49f0475.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a81736255429903bc27b96e-Clarence Aquatic Centre",
+      "title": "Clarence Aquatic Centre"
+    },
+    {
+      "document_id": "doc_c0de0d2baa2399c0",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a81736255429903bc27b96e-Coos-Bay-Oregon-c0de0d2b.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a81736255429903bc27b96e-Coos Bay, Oregon",
+      "title": "Coos Bay, Oregon"
+    },
+    {
+      "document_id": "doc_1257e2d234de4493",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a81736255429903bc27b96e-Garcelon-Civic-Centre-1257e2d2.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a81736255429903bc27b96e-Garcelon Civic Centre",
+      "title": "Garcelon Civic Centre"
+    },
+    {
+      "document_id": "doc_f090d94ad043a3be",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a81736255429903bc27b96e-Lancaster-New-Hampshire-f090d94a.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a81736255429903bc27b96e-Lancaster, New Hampshire",
+      "title": "Lancaster, New Hampshire"
+    },
+    {
+      "document_id": "doc_aac68896f925a1c9",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a81736255429903bc27b96e-Milan-New-Hampshire-aac68896.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a81736255429903bc27b96e-Milan, New Hampshire",
+      "title": "Milan, New Hampshire"
+    },
+    {
+      "document_id": "doc_6df3635a6529185c",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a81736255429903bc27b96e-Nansen-Ski-Jump-6df3635a.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a81736255429903bc27b96e-Nansen Ski Jump",
+      "title": "Nansen Ski Jump"
+    },
+    {
+      "document_id": "doc_fc74c123caeea8ef",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a81736255429903bc27b96e-Pictou-County-Wellness-Centre-fc74c123.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a81736255429903bc27b96e-Pictou County Wellness Centre",
+      "title": "Pictou County Wellness Centre"
+    },
+    {
+      "document_id": "doc_7e80ddfc0b5cc8d4",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a81736255429903bc27b96e-Rath-Eastlink-Community-Centre-7e80ddfc.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a81736255429903bc27b96e-Rath Eastlink Community Centre",
+      "title": "Rath Eastlink Community Centre"
+    },
+    {
+      "document_id": "doc_7635d765942a6182",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a81736255429903bc27b96e-Sir-Bruce-Small-Park-7635d765.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a81736255429903bc27b96e-Sir Bruce Small Park",
+      "title": "Sir Bruce Small Park"
+    },
+    {
+      "document_id": "doc_6521b7cf6826188a",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a81736255429903bc27b96e-State-Netball-and-Hockey-Centre-6521b7cf.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a81736255429903bc27b96e-State Netball and Hockey Centre",
+      "title": "State Netball and Hockey Centre"
+    },
+    {
+      "document_id": "doc_0a57d91c06c96782",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Alismataceae-0a57d91c.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a835e215542992ef85e2296-Alismataceae",
+      "title": "Alismataceae"
+    },
+    {
+      "document_id": "doc_3863ba1c0a3e036a",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Butea-3863ba1c.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a835e215542992ef85e2296-Butea",
+      "title": "Butea"
+    },
+    {
+      "document_id": "doc_29877c39d3f1538c",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-File-sharing-in-Canada-29877c39.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a835e215542992ef85e2296-File sharing in Canada",
+      "title": "File sharing in Canada"
+    },
+    {
+      "document_id": "doc_4e34eb1d26b9977d",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Honeyguide-4e34eb1d.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a835e215542992ef85e2296-Honeyguide",
+      "title": "Honeyguide"
+    },
+    {
+      "document_id": "doc_ced57786e9bcbbc7",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Lophodermium-ced57786.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a835e215542992ef85e2296-Lophodermium",
+      "title": "Lophodermium"
+    },
+    {
+      "document_id": "doc_70351e75cb3a967b",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Ocimum-70351e75.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a835e215542992ef85e2296-Ocimum",
+      "title": "Ocimum"
+    },
+    {
+      "document_id": "doc_f666c1f805add329",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Pine-f666c1f8.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a835e215542992ef85e2296-Pine",
+      "title": "Pine"
+    },
+    {
+      "document_id": "doc_3ca37518dad6f8c3",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Quinault-Rainforest-3ca37518.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a835e215542992ef85e2296-Quinault Rainforest",
+      "title": "Quinault Rainforest"
+    },
+    {
+      "document_id": "doc_b2a74372f0ab2156",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Sea-cucumber-b2a74372.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a835e215542992ef85e2296-Sea cucumber",
+      "title": "Sea cucumber"
+    },
+    {
+      "document_id": "doc_0eeeda1f23d1a508",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Yellow-pine-0eeeda1f.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a835e215542992ef85e2296-Yellow pine",
+      "title": "Yellow pine"
+    },
+    {
+      "document_id": "doc_3d07a3f2a0019a39",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Andrew-Kaplan-3d07a3f2.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a83697e5542996488c2e441-Andrew Kaplan",
+      "title": "Andrew Kaplan"
+    },
+    {
+      "document_id": "doc_b7d29fa513a04a39",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Fight-for-My-Way-b7d29fa5.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a83697e5542996488c2e441-Fight for My Way",
+      "title": "Fight for My Way"
+    },
+    {
+      "document_id": "doc_33ccd2541b685c49",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Hindsight-TV-series-33ccd254.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a83697e5542996488c2e441-Hindsight (TV series)",
+      "title": "Hindsight (TV series)"
+    },
+    {
+      "document_id": "doc_ada56d1273ad66e6",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Khamani-Griffin-ada56d12.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a83697e5542996488c2e441-Khamani Griffin",
+      "title": "Khamani Griffin"
+    },
+    {
+      "document_id": "doc_5e70aa3a2108dfc1",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Michael-Stephenson-filmmaker-5e70aa3a.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a83697e5542996488c2e441-Michael Stephenson (filmmaker)",
+      "title": "Michael Stephenson (filmmaker)"
+    },
+    {
+      "document_id": "doc_6d3e18fd25881223",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Park-Seo-joon-6d3e18fd.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a83697e5542996488c2e441-Park Seo-joon",
+      "title": "Park Seo-joon"
+    },
+    {
+      "document_id": "doc_6dc00026a5bf9fb9",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Peggy-Cartwright-6dc00026.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a83697e5542996488c2e441-Peggy Cartwright",
+      "title": "Peggy Cartwright"
+    },
+    {
+      "document_id": "doc_8cb286c846f89ce2",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Robert-Wightman-8cb286c8.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a83697e5542996488c2e441-Robert Wightman",
+      "title": "Robert Wightman"
+    },
+    {
+      "document_id": "doc_333d9bea16e4ee38",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Salmi-Manja-333d9bea.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a83697e5542996488c2e441-Salmi Manja",
+      "title": "Salmi Manja"
+    },
+    {
+      "document_id": "doc_ace0e622ef987d5c",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-The-Fountain-in-the-Park-ace0e622.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a83697e5542996488c2e441-The Fountain in the Park",
+      "title": "The Fountain in the Park"
+    },
+    {
+      "document_id": "doc_ca0d7acf28779845",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Agua-Dulce-Mountains-ca0d7acf.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a873ec75542996432c57244-Agua Dulce Mountains",
+      "title": "Agua Dulce Mountains"
+    },
+    {
+      "document_id": "doc_f9724fb50960c70b",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Bald-Knob-Cross-f9724fb5.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a873ec75542996432c57244-Bald Knob Cross",
+      "title": "Bald Knob Cross"
+    },
+    {
+      "document_id": "doc_5f2c2d1bb8f6edd7",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Bo-e-5f2c2d1b.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a873ec75542996432c57244-Bořeň",
+      "title": "Bořeň"
+    },
+    {
+      "document_id": "doc_fb7657b29aabaa45",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Devils-Tower-fb7657b2.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a873ec75542996432c57244-Devils Tower",
+      "title": "Devils Tower"
+    },
+    {
+      "document_id": "doc_0d14b123ed1e2285",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Gile-Mountain-0d14b123.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a873ec75542996432c57244-Gile Mountain",
+      "title": "Gile Mountain"
+    },
+    {
+      "document_id": "doc_30f6022a7c0b6ce9",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Hoher-Eichham-30f6022a.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a873ec75542996432c57244-Hoher Eichham",
+      "title": "Hoher Eichham"
+    },
+    {
+      "document_id": "doc_ecd38d68df748929",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Holston-Mountain-ecd38d68.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a873ec75542996432c57244-Holston Mountain",
+      "title": "Holston Mountain"
+    },
+    {
+      "document_id": "doc_6c51631a1e7409ca",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-M-hukona-6c51631a.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a873ec75542996432c57244-Māhukona",
+      "title": "Māhukona"
+    },
+    {
+      "document_id": "doc_d067bbc1a30b6b0f",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Stony-Man-Mountain-d067bbc1.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a873ec75542996432c57244-Stony Man Mountain",
+      "title": "Stony Man Mountain"
+    },
+    {
+      "document_id": "doc_508a6f39ccf26481",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Tidal-flooding-508a6f39.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a873ec75542996432c57244-Tidal flooding",
+      "title": "Tidal flooding"
+    },
+    {
+      "document_id": "doc_88e78c5d3ab86a99",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a88d7fc5542993b751ca879-2015-New-York-City-FC-season-88e78c5d.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a88d7fc5542993b751ca879-2015 New York City FC season",
+      "title": "2015 New York City FC season"
+    },
+    {
+      "document_id": "doc_dda361472da87bcd",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a88d7fc5542993b751ca879-2016-New-York-City-FC-season-dda36147.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a88d7fc5542993b751ca879-2016 New York City FC season",
+      "title": "2016 New York City FC season"
+    },
+    {
+      "document_id": "doc_f370c24eac065401",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a88d7fc5542993b751ca879-2017-New-York-City-FC-season-f370c24e.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a88d7fc5542993b751ca879-2017 New York City FC season",
+      "title": "2017 New York City FC season"
+    },
+    {
+      "document_id": "doc_69367bebbdedab55",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a88d7fc5542993b751ca879-City-FC-69367beb.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a88d7fc5542993b751ca879-City FC",
+      "title": "City FC"
+    },
+    {
+      "document_id": "doc_f1d4b2d653547846",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a88d7fc5542993b751ca879-David-Villa-f1d4b2d6.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a88d7fc5542993b751ca879-David Villa",
+      "title": "David Villa"
+    },
+    {
+      "document_id": "doc_e69ae058c9f21e2d",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a88d7fc5542993b751ca879-E-aut-Zubikarai-e69ae058.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a88d7fc5542993b751ca879-Eñaut Zubikarai",
+      "title": "Eñaut Zubikarai"
+    },
+    {
+      "document_id": "doc_03cad2165c18dc53",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a88d7fc5542993b751ca879-Futbolita-03cad216.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a88d7fc5542993b751ca879-Futbolita",
+      "title": "Futbolita"
+    },
+    {
+      "document_id": "doc_75a234b136aee168",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a88d7fc5542993b751ca879-New-York-City-FC-Stadium-75a234b1.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a88d7fc5542993b751ca879-New York City FC Stadium",
+      "title": "New York City FC Stadium"
+    },
+    {
+      "document_id": "doc_5ba394f778e28713",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a88d7fc5542993b751ca879-Rafa-Jord-5ba394f7.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a88d7fc5542993b751ca879-Rafa Jordà",
+      "title": "Rafa Jordà"
+    },
+    {
+      "document_id": "doc_586184444647f108",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a88d7fc5542993b751ca879-Win-58618444.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a88d7fc5542993b751ca879-Win!",
+      "title": "Win!"
+    },
+    {
+      "document_id": "doc_7272efd33d0dcc6d",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8ad6805542992d82986f93-Akissforjersey-7272efd3.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8ad6805542992d82986f93-Akissforjersey",
+      "title": "Akissforjersey"
+    },
+    {
+      "document_id": "doc_cb92ad435e1b7432",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8ad6805542992d82986f93-Germanic-hero-cb92ad43.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8ad6805542992d82986f93-Germanic hero",
+      "title": "Germanic hero"
+    },
+    {
+      "document_id": "doc_d2e93f3b1149eaba",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8ad6805542992d82986f93-Leonard-Whiting-d2e93f3b.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8ad6805542992d82986f93-Leonard Whiting",
+      "title": "Leonard Whiting"
+    },
+    {
+      "document_id": "doc_e1d9d3c4cd659a9c",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8ad6805542992d82986f93-Love-Theme-from-Romeo-and-Juliet-e1d9d3c4.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8ad6805542992d82986f93-Love Theme from Romeo and Juliet",
+      "title": "Love Theme from Romeo and Juliet"
+    },
+    {
+      "document_id": "doc_6529cc6495e9d028",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8ad6805542992d82986f93-Romeo-6529cc64.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8ad6805542992d82986f93-Romeo",
+      "title": "Romeo"
+    },
+    {
+      "document_id": "doc_e73033b6e04c98d3",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8ad6805542992d82986f93-Romeo.Juliet-e73033b6.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8ad6805542992d82986f93-Romeo.Juliet",
+      "title": "Romeo.Juliet"
+    },
+    {
+      "document_id": "doc_699a4e0af39e2cc8",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8ad6805542992d82986f93-Social-Suicide-film-699a4e0a.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8ad6805542992d82986f93-Social Suicide (film)",
+      "title": "Social Suicide (film)"
+    },
+    {
+      "document_id": "doc_a511a2dafc45993e",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8ad6805542992d82986f93-Tragic-Hero-Records-a511a2da.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8ad6805542992d82986f93-Tragic Hero Records",
+      "title": "Tragic Hero Records"
+    },
+    {
+      "document_id": "doc_96d10cc6f4b21b41",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8ad6805542992d82986f93-Tragic-hero-96d10cc6.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8ad6805542992d82986f93-Tragic hero",
+      "title": "Tragic hero"
+    },
+    {
+      "document_id": "doc_44816f581767383a",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8ad6805542992d82986f93-William-Whiting-footballer-44816f58.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8ad6805542992d82986f93-William Whiting (footballer)",
+      "title": "William Whiting (footballer)"
+    },
+    {
+      "document_id": "doc_92aee729f79f044d",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-Backpacker-murders-92aee729.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8b057255429971feec4611-Backpacker murders",
+      "title": "Backpacker murders"
+    },
+    {
+      "document_id": "doc_2c23b7063949a907",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-Catching-Milat-2c23b706.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8b057255429971feec4611-Catching Milat",
+      "title": "Catching Milat"
+    },
+    {
+      "document_id": "doc_3b66ce6433f7e371",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-Coffin-Rock-3b66ce64.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8b057255429971feec4611-Coffin Rock",
+      "title": "Coffin Rock"
+    },
+    {
+      "document_id": "doc_b605095f5a685bde",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-David-Lightfoot-b605095f.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8b057255429971feec4611-David Lightfoot",
+      "title": "David Lightfoot"
+    },
+    {
+      "document_id": "doc_de9a90ec6c90e7c7",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-Mark-Tedeschi-de9a90ec.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8b057255429971feec4611-Mark Tedeschi",
+      "title": "Mark Tedeschi"
+    },
+    {
+      "document_id": "doc_c5c590078e415d24",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-Rock-a-Doodle-c5c59007.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8b057255429971feec4611-Rock-a-Doodle",
+      "title": "Rock-a-Doodle"
+    },
+    {
+      "document_id": "doc_dd9d40df0b1d43c2",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-The-Long-Island-Serial-Killer-film-dd9d40df.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8b057255429971feec4611-The Long Island Serial Killer (film)",
+      "title": "The Long Island Serial Killer (film)"
+    },
+    {
+      "document_id": "doc_e58b160b64e76fb2",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-Wanted-2008-film-e58b160b.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8b057255429971feec4611-Wanted (2008 film)",
+      "title": "Wanted (2008 film)"
+    },
+    {
+      "document_id": "doc_400349c5813edd41",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-Wing-Commander-film-400349c5.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8b057255429971feec4611-Wing Commander (film)",
+      "title": "Wing Commander (film)"
+    },
+    {
+      "document_id": "doc_ad757f2d3778aea7",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-Wolf-Creek-film-ad757f2d.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8b057255429971feec4611-Wolf Creek (film)",
+      "title": "Wolf Creek (film)"
+    },
+    {
+      "document_id": "doc_860a31afa85ec70d",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Alfred-Rode-860a31af.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8c6342554299240d9c214a-Alfred Rode",
+      "title": "Alfred Rode"
+    },
+    {
+      "document_id": "doc_c245247478ca3f5e",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Angela-Lonsdale-c2452474.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8c6342554299240d9c214a-Angela Lonsdale",
+      "title": "Angela Lonsdale"
+    },
+    {
+      "document_id": "doc_561afc7dba23625a",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Bringing-Up-Bates-561afc7d.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8c6342554299240d9c214a-Bringing Up Bates",
+      "title": "Bringing Up Bates"
+    },
+    {
+      "document_id": "doc_df3ed2f1a84aa35f",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Christina-Applegate-df3ed2f1.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8c6342554299240d9c214a-Christina Applegate",
+      "title": "Christina Applegate"
+    },
+    {
+      "document_id": "doc_977db3b013091f03",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Claudine-Auger-977db3b0.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8c6342554299240d9c214a-Claudine Auger",
+      "title": "Claudine Auger"
+    },
+    {
+      "document_id": "doc_e9bb7dc259d2b250",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Claudine-Dupuis-e9bb7dc2.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8c6342554299240d9c214a-Claudine Dupuis",
+      "title": "Claudine Dupuis"
+    },
+    {
+      "document_id": "doc_93edfbe1a3ea4964",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Claudine-s-Return-93edfbe1.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8c6342554299240d9c214a-Claudine's Return",
+      "title": "Claudine's Return"
+    },
+    {
+      "document_id": "doc_3d274b05bbe059d4",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Franchesca-Salcedo-3d274b05.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8c6342554299240d9c214a-Franchesca Salcedo",
+      "title": "Franchesca Salcedo"
+    },
+    {
+      "document_id": "doc_704bf4aee2aecaf6",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Mandy-Richardson-704bf4ae.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8c6342554299240d9c214a-Mandy Richardson",
+      "title": "Mandy Richardson"
+    },
+    {
+      "document_id": "doc_29d93fae0e128932",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Pierre-Gaspard-Huit-29d93fae.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8c6342554299240d9c214a-Pierre Gaspard-Huit",
+      "title": "Pierre Gaspard-Huit"
+    },
+    {
+      "document_id": "doc_b6ef9134ea8f2573",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8f0de35542995b44241f40-25-or-6-to-4-b6ef9134.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8f0de35542995b44241f40-25 or 6 to 4",
+      "title": "25 or 6 to 4"
+    },
+    {
+      "document_id": "doc_9804c861edf85986",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8f0de35542995b44241f40-Colour-My-World-Chicago-song-9804c861.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8f0de35542995b44241f40-Colour My World (Chicago song)",
+      "title": "Colour My World (Chicago song)"
+    },
+    {
+      "document_id": "doc_ce10d8a4fccdb68f",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8f0de35542995b44241f40-Hot-Streets-ce10d8a4.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8f0de35542995b44241f40-Hot Streets",
+      "title": "Hot Streets"
+    },
+    {
+      "document_id": "doc_0b912b366321ad8c",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8f0de35542995b44241f40-Let-Me-Know-0b912b36.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8f0de35542995b44241f40-Let Me Know",
+      "title": "Let Me Know"
+    },
+    {
+      "document_id": "doc_981714da04743bb0",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8f0de35542995b44241f40-Overpowered-981714da.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8f0de35542995b44241f40-Overpowered",
+      "title": "Overpowered"
+    },
+    {
+      "document_id": "doc_8ba7116e7793339e",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8f0de35542995b44241f40-R-is-n-Murphy-8ba7116e.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8f0de35542995b44241f40-Róisín Murphy",
+      "title": "Róisín Murphy"
+    },
+    {
+      "document_id": "doc_9c8895bb0c5b411d",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8f0de35542995b44241f40-R-is-n-Murphy-discography-9c8895bb.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8f0de35542995b44241f40-Róisín Murphy discography",
+      "title": "Róisín Murphy discography"
+    },
+    {
+      "document_id": "doc_826be8732944a0f5",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8f0de35542995b44241f40-Ruby-Blue-album-826be873.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8f0de35542995b44241f40-Ruby Blue (album)",
+      "title": "Ruby Blue (album)"
+    },
+    {
+      "document_id": "doc_18fc30b50ef0d519",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8f0de35542995b44241f40-Sing-It-Back-18fc30b5.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8f0de35542995b44241f40-Sing It Back",
+      "title": "Sing It Back"
+    },
+    {
+      "document_id": "doc_0e6b5db2e6cc92bb",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8f0de35542995b44241f40-Terry-Kath-0e6b5db2.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5a8f0de35542995b44241f40-Terry Kath",
+      "title": "Terry Kath"
+    },
+    {
+      "document_id": "doc_bebf19dde1e6a19e",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-Annie-Get-Your-Gun-musical-bebf19dd.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ab298fb554299449642c922-Annie Get Your Gun (musical)",
+      "title": "Annie Get Your Gun (musical)"
+    },
+    {
+      "document_id": "doc_7f889c92963870a0",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-Charles-de-Batz-de-Castelmore-d-Art-7f889c92.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ab298fb554299449642c922-Charles de Batz de Castelmore d'Artagnan",
+      "title": "Charles de Batz de Castelmore d'Artagnan"
+    },
+    {
+      "document_id": "doc_d7bfa0c388c251ca",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-Curb-Your-Enthusiasm-d7bfa0c3.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ab298fb554299449642c922-Curb Your Enthusiasm",
+      "title": "Curb Your Enthusiasm"
+    },
+    {
+      "document_id": "doc_9825f94114aa9a79",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-James-Gregory-actor-9825f941.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ab298fb554299449642c922-James Gregory (actor)",
+      "title": "James Gregory (actor)"
+    },
+    {
+      "document_id": "doc_7897596cc6c026f5",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-Joseph-McCarthy-7897596c.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ab298fb554299449642c922-Joseph McCarthy",
+      "title": "Joseph McCarthy"
+    },
+    {
+      "document_id": "doc_1030049f58a517ce",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-Lana-Del-Rey-videography-1030049f.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ab298fb554299449642c922-Lana Del Rey videography",
+      "title": "Lana Del Rey videography"
+    },
+    {
+      "document_id": "doc_112ac898b229529a",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-Lavender-scare-112ac898.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ab298fb554299449642c922-Lavender scare",
+      "title": "Lavender scare"
+    },
+    {
+      "document_id": "doc_83d57f82629f3398",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-Red-baiting-83d57f82.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ab298fb554299449642c922-Red-baiting",
+      "title": "Red-baiting"
+    },
+    {
+      "document_id": "doc_745fb5d505f2617e",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-The-Year-of-Living-Dangerously-nove-745fb5d5.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ab298fb554299449642c922-The Year of Living Dangerously (novel)",
+      "title": "The Year of Living Dangerously (novel)"
+    },
+    {
+      "document_id": "doc_a808e2ceeadf88a3",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-To-Kill-a-Priest-a808e2ce.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ab298fb554299449642c922-To Kill a Priest",
+      "title": "To Kill a Priest"
+    },
+    {
+      "document_id": "doc_d94ecf3e7a99f1c7",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Alex-Josey-d94ecf3e.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abae1e65542996cc5e49ed2-Alex Josey",
+      "title": "Alex Josey"
+    },
+    {
+      "document_id": "doc_4e17b80450e2ce6a",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Charles-Alvin-Beckwith-4e17b804.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abae1e65542996cc5e49ed2-Charles Alvin Beckwith",
+      "title": "Charles Alvin Beckwith"
+    },
+    {
+      "document_id": "doc_ece506d69854e2eb",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Chin-Peng-ece506d6.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abae1e65542996cc5e49ed2-Chin Peng",
+      "title": "Chin Peng"
+    },
+    {
+      "document_id": "doc_6bb3de1c347c44a9",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Joint-Special-Operations-Command-6bb3de1c.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abae1e65542996cc5e49ed2-Joint Special Operations Command",
+      "title": "Joint Special Operations Command"
+    },
+    {
+      "document_id": "doc_73899086348a1970",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Malayan-Emergency-73899086.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abae1e65542996cc5e49ed2-Malayan Emergency",
+      "title": "Malayan Emergency"
+    },
+    {
+      "document_id": "doc_cb4e05a92b0ca57a",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Malayan-Peoples-Anti-Japanese-Army-cb4e05a9.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abae1e65542996cc5e49ed2-Malayan Peoples' Anti-Japanese Army",
+      "title": "Malayan Peoples' Anti-Japanese Army"
+    },
+    {
+      "document_id": "doc_a948a1d092f802b2",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Pingat-Jasa-Malaysia-a948a1d0.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abae1e65542996cc5e49ed2-Pingat Jasa Malaysia",
+      "title": "Pingat Jasa Malaysia"
+    },
+    {
+      "document_id": "doc_9b757ba50b3da9d4",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Special-Operations-Volunteer-Force-9b757ba5.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abae1e65542996cc5e49ed2-Special Operations Volunteer Force",
+      "title": "Special Operations Volunteer Force"
+    },
+    {
+      "document_id": "doc_c08733fe37a4a395",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-The-Last-Communist-c08733fe.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abae1e65542996cc5e49ed2-The Last Communist",
+      "title": "The Last Communist"
+    },
+    {
+      "document_id": "doc_08125f58969e2dc1",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Weeratunge-Edward-Perera-08125f58.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abae1e65542996cc5e49ed2-Weeratunge Edward Perera",
+      "title": "Weeratunge Edward Perera"
+    },
+    {
+      "document_id": "doc_5502006ffeaaf85e",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abdbf3755429933744ab818-3rd-APAN-Star-Awards-5502006f.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abdbf3755429933744ab818-3rd APAN Star Awards",
+      "title": "3rd APAN Star Awards"
+    },
+    {
+      "document_id": "doc_f63f5b39eefba17c",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abdbf3755429933744ab818-Anuthatantrum-f63f5b39.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abdbf3755429933744ab818-Anuthatantrum",
+      "title": "Anuthatantrum"
+    },
+    {
+      "document_id": "doc_937845b4d5fad3d7",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abdbf3755429933744ab818-Drew-Sidora-937845b4.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abdbf3755429933744ab818-Drew Sidora",
+      "title": "Drew Sidora"
+    },
+    {
+      "document_id": "doc_27bac2dcec53ae48",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abdbf3755429933744ab818-Girl-Talk-TLC-song-27bac2dc.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abdbf3755429933744ab818-Girl Talk (TLC song)",
+      "title": "Girl Talk (TLC song)"
+    },
+    {
+      "document_id": "doc_492b389adcf74a02",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abdbf3755429933744ab818-Lisa-Lopes-492b389a.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abdbf3755429933744ab818-Lisa Lopes",
+      "title": "Lisa Lopes"
+    },
+    {
+      "document_id": "doc_85658ab7cf1faae9",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abdbf3755429933744ab818-Park-So-yeon-singer-85658ab7.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abdbf3755429933744ab818-Park So-yeon (singer)",
+      "title": "Park So-yeon (singer)"
+    },
+    {
+      "document_id": "doc_90679b5d5c5eb554",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abdbf3755429933744ab818-R-U-the-Girl-90679b5d.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abdbf3755429933744ab818-R U the Girl",
+      "title": "R U the Girl"
+    },
+    {
+      "document_id": "doc_cd8bb5200183ac05",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abdbf3755429933744ab818-TLC-group-cd8bb520.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abdbf3755429933744ab818-TLC (group)",
+      "title": "TLC (group)"
+    },
+    {
+      "document_id": "doc_d5143b2f3bfb0e17",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abdbf3755429933744ab818-Tionne-Watkins-d5143b2f.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abdbf3755429933744ab818-Tionne Watkins",
+      "title": "Tionne Watkins"
+    },
+    {
+      "document_id": "doc_96c4e2d96b21afa3",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abdbf3755429933744ab818-Way-Back-TLC-song-96c4e2d9.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abdbf3755429933744ab818-Way Back (TLC song)",
+      "title": "Way Back (TLC song)"
+    },
+    {
+      "document_id": "doc_65975751b96bfd5d",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abf8cc35542990832d3a14e-Byron-LaBeach-65975751.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abf8cc35542990832d3a14e-Byron LaBeach",
+      "title": "Byron LaBeach"
+    },
+    {
+      "document_id": "doc_256e3618cf0a2772",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abf8cc35542990832d3a14e-Devon-Morris-256e3618.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abf8cc35542990832d3a14e-Devon Morris",
+      "title": "Devon Morris"
+    },
+    {
+      "document_id": "doc_f8498d31026ff61b",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abf8cc35542990832d3a14e-Evon-Clarke-f8498d31.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abf8cc35542990832d3a14e-Evon Clarke",
+      "title": "Evon Clarke"
+    },
+    {
+      "document_id": "doc_d0a9ec0dfc1b61f1",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abf8cc35542990832d3a14e-Floyd-Brown-athlete-d0a9ec0d.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abf8cc35542990832d3a14e-Floyd Brown (athlete)",
+      "title": "Floyd Brown (athlete)"
+    },
+    {
+      "document_id": "doc_7554576224910cd0",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abf8cc35542990832d3a14e-Juliet-Campbell-athlete-75545762.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abf8cc35542990832d3a14e-Juliet Campbell (athlete)",
+      "title": "Juliet Campbell (athlete)"
+    },
+    {
+      "document_id": "doc_e07e141aa211d9f6",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abf8cc35542990832d3a14e-Michael-Green-sprinter-e07e141a.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abf8cc35542990832d3a14e-Michael Green (sprinter)",
+      "title": "Michael Green (sprinter)"
+    },
+    {
+      "document_id": "doc_d402c5807ebaa6c5",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abf8cc35542990832d3a14e-Patrick-O-Connor-athlete-d402c580.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abf8cc35542990832d3a14e-Patrick O'Connor (athlete)",
+      "title": "Patrick O'Connor (athlete)"
+    },
+    {
+      "document_id": "doc_3738bdac0e5cc771",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abf8cc35542990832d3a14e-Richard-Thompson-sprinter-3738bdac.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abf8cc35542990832d3a14e-Richard Thompson (sprinter)",
+      "title": "Richard Thompson (sprinter)"
+    },
+    {
+      "document_id": "doc_0dd094782f719e19",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abf8cc35542990832d3a14e-Una-Morris-0dd09478.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abf8cc35542990832d3a14e-Una Morris",
+      "title": "Una Morris"
+    },
+    {
+      "document_id": "doc_46f17edee308afa1",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abf8cc35542990832d3a14e-Usain-Bolt-46f17ede.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abf8cc35542990832d3a14e-Usain Bolt",
+      "title": "Usain Bolt"
+    },
+    {
+      "document_id": "doc_416a40a735b68012",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Arsenal-F.C.-league-record-by-oppon-416a40a7.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abffda6554299012d1db55b-Arsenal F.C. league record by opponent",
+      "title": "Arsenal F.C. league record by opponent"
+    },
+    {
+      "document_id": "doc_27db7a59ed6011e0",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Bill-Perry-footballer-27db7a59.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abffda6554299012d1db55b-Bill Perry (footballer)",
+      "title": "Bill Perry (footballer)"
+    },
+    {
+      "document_id": "doc_07197b70df1d679c",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Blackpool-F.C.-07197b70.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abffda6554299012d1db55b-Blackpool F.C.",
+      "title": "Blackpool F.C."
+    },
+    {
+      "document_id": "doc_7e2ebc5e2c987d38",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Colin-Waldron-7e2ebc5e.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abffda6554299012d1db55b-Colin Waldron",
+      "title": "Colin Waldron"
+    },
+    {
+      "document_id": "doc_c3000c6f8a0d17f5",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Cullen-Bryant-c3000c6f.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abffda6554299012d1db55b-Cullen Bryant",
+      "title": "Cullen Bryant"
+    },
+    {
+      "document_id": "doc_7b88b00e69809a91",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Ewan-Fenton-7b88b00e.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abffda6554299012d1db55b-Ewan Fenton",
+      "title": "Ewan Fenton"
+    },
+    {
+      "document_id": "doc_33bf9cded19e9e5f",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Fabri-Salcedo-33bf9cde.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abffda6554299012d1db55b-Fabri Salcedo",
+      "title": "Fabri Salcedo"
+    },
+    {
+      "document_id": "doc_9a3fcf503b515f7d",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-K.R.C.-Genk-in-European-football-9a3fcf50.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abffda6554299012d1db55b-K.R.C. Genk in European football",
+      "title": "K.R.C. Genk in European football"
+    },
+    {
+      "document_id": "doc_16b2da2b1a49bfed",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-List-of-Sutton-United-F.C.-seasons-16b2da2b.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abffda6554299012d1db55b-List of Sutton United F.C. seasons",
+      "title": "List of Sutton United F.C. seasons"
+    },
+    {
+      "document_id": "doc_1bfe57ed99208298",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Olympiakos-Nicosia-1bfe57ed.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5abffda6554299012d1db55b-Olympiakos Nicosia",
+      "title": "Olympiakos Nicosia"
+    },
+    {
+      "document_id": "doc_f8298db361ed3ec4",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Aag-1948-film-f8298db3.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac00278554299012d1db56b-Aag (1948 film)",
+      "title": "Aag (1948 film)"
+    },
+    {
+      "document_id": "doc_55397b159b0b2dce",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Divya-Rana-55397b15.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac00278554299012d1db56b-Divya Rana",
+      "title": "Divya Rana"
+    },
+    {
+      "document_id": "doc_06c31025ae1e1581",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Kal-Aaj-Aur-Kal-06c31025.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac00278554299012d1db56b-Kal Aaj Aur Kal",
+      "title": "Kal Aaj Aur Kal"
+    },
+    {
+      "document_id": "doc_48e4fb209c51eb87",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Karan-Kapoor-48e4fb20.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac00278554299012d1db56b-Karan Kapoor",
+      "title": "Karan Kapoor"
+    },
+    {
+      "document_id": "doc_c4e6e3c76869ff75",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Mera-Naam-Joker-c4e6e3c7.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac00278554299012d1db56b-Mera Naam Joker",
+      "title": "Mera Naam Joker"
+    },
+    {
+      "document_id": "doc_31da567e5b1288d1",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Mike-Cahill-director-31da567e.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac00278554299012d1db56b-Mike Cahill (director)",
+      "title": "Mike Cahill (director)"
+    },
+    {
+      "document_id": "doc_06f9f246af72cae6",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Prem-Rog-06f9f246.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac00278554299012d1db56b-Prem Rog",
+      "title": "Prem Rog"
+    },
+    {
+      "document_id": "doc_0d76a3062f880888",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Raj-Kapoor-0d76a306.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac00278554299012d1db56b-Raj Kapoor",
+      "title": "Raj Kapoor"
+    },
+    {
+      "document_id": "doc_c5277278c80ab961",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Ram-Teri-Ganga-Maili-c5277278.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac00278554299012d1db56b-Ram Teri Ganga Maili",
+      "title": "Ram Teri Ganga Maili"
+    },
+    {
+      "document_id": "doc_8eacff4b04f03d3d",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Shree-420-8eacff4b.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac00278554299012d1db56b-Shree 420",
+      "title": "Shree 420"
+    },
+    {
+      "document_id": "doc_4fb9ebcbd5a41184",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac46cb85542991943173987-Benjamin-Abram-4fb9ebcb.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac46cb85542991943173987-Benjamin Abram",
+      "title": "Benjamin Abram"
+    },
+    {
+      "document_id": "doc_dfc5e3b172e5e85f",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac46cb85542991943173987-Benjamin-Abram-Bernstein-dfc5e3b1.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac46cb85542991943173987-Benjamin Abram Bernstein",
+      "title": "Benjamin Abram Bernstein"
+    },
+    {
+      "document_id": "doc_56388bd1a261a381",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac46cb85542991943173987-Charles-Kalemba-56388bd1.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac46cb85542991943173987-Charles Kalemba",
+      "title": "Charles Kalemba"
+    },
+    {
+      "document_id": "doc_d60085cc687de414",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac46cb85542991943173987-Economy-of-Rawalpindi-d60085cc.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac46cb85542991943173987-Economy of Rawalpindi",
+      "title": "Economy of Rawalpindi"
+    },
+    {
+      "document_id": "doc_54d0c44b613a6c58",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac46cb85542991943173987-Koko-en-Garden-54d0c44b.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac46cb85542991943173987-Koko-en Garden",
+      "title": "Koko-en Garden"
+    },
+    {
+      "document_id": "doc_d2fc5eb49cecf664",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac46cb85542991943173987-Lauderhill-Florida-d2fc5eb4.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac46cb85542991943173987-Lauderhill, Florida",
+      "title": "Lauderhill, Florida"
+    },
+    {
+      "document_id": "doc_356817f5387b76c7",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac46cb85542991943173987-List-of-sister-cities-of-Denver-356817f5.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac46cb85542991943173987-List of sister cities of Denver",
+      "title": "List of sister cities of Denver"
+    },
+    {
+      "document_id": "doc_3c2d2379605bec07",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac46cb85542991943173987-List-of-twin-towns-and-sister-citie-3c2d2379.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac46cb85542991943173987-List of twin towns and sister cities in Malta",
+      "title": "List of twin towns and sister cities in Malta"
+    },
+    {
+      "document_id": "doc_763da6ba79b11887",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac46cb85542991943173987-Pasvalys-763da6ba.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac46cb85542991943173987-Pasvalys",
+      "title": "Pasvalys"
+    },
+    {
+      "document_id": "doc_59afcab565694b56",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac46cb85542991943173987-Sister-cities-of-Grand-Forks-North--59afcab5.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ac46cb85542991943173987-Sister cities of Grand Forks, North Dakota",
+      "title": "Sister cities of Grand Forks, North Dakota"
+    },
+    {
+      "document_id": "doc_2fd0f6016d85517a",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Chanhassen-High-School-2fd0f601.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5adf99065542992d7e9f93b0-Chanhassen High School",
+      "title": "Chanhassen High School"
+    },
+    {
+      "document_id": "doc_69ba57b080be63b3",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Halifax-County-High-School-69ba57b0.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5adf99065542992d7e9f93b0-Halifax County High School",
+      "title": "Halifax County High School"
+    },
+    {
+      "document_id": "doc_427cbaa9b66d849d",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Henderson-State-Reddies-football-427cbaa9.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5adf99065542992d7e9f93b0-Henderson State Reddies football",
+      "title": "Henderson State Reddies football"
+    },
+    {
+      "document_id": "doc_d80752107844edd3",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Houston-Baptist-Huskies-football-d8075210.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5adf99065542992d7e9f93b0-Houston Baptist Huskies football",
+      "title": "Houston Baptist Huskies football"
+    },
+    {
+      "document_id": "doc_9e14c11e8bb24962",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Kiehl-Frazier-9e14c11e.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5adf99065542992d7e9f93b0-Kiehl Frazier",
+      "title": "Kiehl Frazier"
+    },
+    {
+      "document_id": "doc_a3ee5d247e7d37e8",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Ouachita-Baptist-Tigers-a3ee5d24.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5adf99065542992d7e9f93b0-Ouachita Baptist Tigers",
+      "title": "Ouachita Baptist Tigers"
+    },
+    {
+      "document_id": "doc_32354599ca380e6a",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Ouachita-Baptist-Tigers-football-32354599.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5adf99065542992d7e9f93b0-Ouachita Baptist Tigers football",
+      "title": "Ouachita Baptist Tigers football"
+    },
+    {
+      "document_id": "doc_883e9f41181039a0",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Ouachita-Baptist-University-883e9f41.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5adf99065542992d7e9f93b0-Ouachita Baptist University",
+      "title": "Ouachita Baptist University"
+    },
+    {
+      "document_id": "doc_4f3f75ab61681312",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Tuskegee-Golden-Tigers-football-4f3f75ab.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5adf99065542992d7e9f93b0-Tuskegee Golden Tigers football",
+      "title": "Tuskegee Golden Tigers football"
+    },
+    {
+      "document_id": "doc_0b681ecc31faa16f",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-West-Alabama-Tigers-football-0b681ecc.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5adf99065542992d7e9f93b0-West Alabama Tigers football",
+      "title": "West Alabama Tigers football"
+    },
+    {
+      "document_id": "doc_67c66302409785e8",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2120e5542997283cd23ad-Distortion-Mirrors-67c66302.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2120e5542997283cd23ad-Distortion Mirrors",
+      "title": "Distortion Mirrors"
+    },
+    {
+      "document_id": "doc_54bdf4ab5d31e9a5",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2120e5542997283cd23ad-List-of-Pixies-tribute-albums-54bdf4ab.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2120e5542997283cd23ad-List of Pixies tribute albums",
+      "title": "List of Pixies tribute albums"
+    },
+    {
+      "document_id": "doc_c304dc31b7ab76a2",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2120e5542997283cd23ad-OK-Go-2000-EP-c304dc31.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2120e5542997283cd23ad-OK Go (2000 EP)",
+      "title": "OK Go (2000 EP)"
+    },
+    {
+      "document_id": "doc_1fc84fc2877c6cf6",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2120e5542997283cd23ad-OK-Go-2001-EP-1fc84fc2.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2120e5542997283cd23ad-OK Go (2001 EP)",
+      "title": "OK Go (2001 EP)"
+    },
+    {
+      "document_id": "doc_b6a6e1a2d29c2823",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2120e5542997283cd23ad-OK-Go-album-b6a6e1a2.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2120e5542997283cd23ad-OK Go (album)",
+      "title": "OK Go (album)"
+    },
+    {
+      "document_id": "doc_bb1275e4313762a1",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2120e5542997283cd23ad-OK-Go-bb1275e4.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2120e5542997283cd23ad-OK Go",
+      "title": "OK Go"
+    },
+    {
+      "document_id": "doc_f1c72f060ff011f4",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2120e5542997283cd23ad-OK-Go-videography-f1c72f06.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2120e5542997283cd23ad-OK Go videography",
+      "title": "OK Go videography"
+    },
+    {
+      "document_id": "doc_a3bb4e9a85ec90f1",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2120e5542997283cd23ad-Paracadute-a3bb4e9a.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2120e5542997283cd23ad-Paracadute",
+      "title": "Paracadute"
+    },
+    {
+      "document_id": "doc_5541ba13c93a4e16",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2120e5542997283cd23ad-The-Writing-s-on-the-Wall-OK-Go-son-5541ba13.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2120e5542997283cd23ad-The Writing's on the Wall (OK Go song)",
+      "title": "The Writing's on the Wall (OK Go song)"
+    },
+    {
+      "document_id": "doc_4a2179468a47508f",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2120e5542997283cd23ad-Twelve-Days-of-OK-Go-4a217946.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2120e5542997283cd23ad-Twelve Days of OK Go",
+      "title": "Twelve Days of OK Go"
+    },
+    {
+      "document_id": "doc_1625817ccea29c9a",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae25e835542992decbdccd1-1985-World-Games-1625817c.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae25e835542992decbdccd1-1985 World Games",
+      "title": "1985 World Games"
+    },
+    {
+      "document_id": "doc_544bd88996c0c5df",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae25e835542992decbdccd1-2005-Special-Olympics-World-Winter--544bd889.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae25e835542992decbdccd1-2005 Special Olympics World Winter Games",
+      "title": "2005 Special Olympics World Winter Games"
+    },
+    {
+      "document_id": "doc_e59f7d52e0b69027",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae25e835542992decbdccd1-2017-World-Games-e59f7d52.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae25e835542992decbdccd1-2017 World Games",
+      "title": "2017 World Games"
+    },
+    {
+      "document_id": "doc_8a9cf2a5f4b6a65c",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae25e835542992decbdccd1-Air-sports-at-the-World-Games-8a9cf2a5.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae25e835542992decbdccd1-Air sports at the World Games",
+      "title": "Air sports at the World Games"
+    },
+    {
+      "document_id": "doc_0ceb871c59ef5ec5",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae25e835542992decbdccd1-Bodybuilding-at-the-World-Games-0ceb871c.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae25e835542992decbdccd1-Bodybuilding at the World Games",
+      "title": "Bodybuilding at the World Games"
+    },
+    {
+      "document_id": "doc_6379d966a681e0b3",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae25e835542992decbdccd1-Casting-at-the-1981-World-Games-6379d966.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae25e835542992decbdccd1-Casting at the 1981 World Games",
+      "title": "Casting at the 1981 World Games"
+    },
+    {
+      "document_id": "doc_6b38933bbb94b5e4",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae25e835542992decbdccd1-David-Lloyd-Leisure-6b38933b.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae25e835542992decbdccd1-David Lloyd Leisure",
+      "title": "David Lloyd Leisure"
+    },
+    {
+      "document_id": "doc_ba2206f1f37940f9",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae25e835542992decbdccd1-Nitro-World-Games-ba2206f1.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae25e835542992decbdccd1-Nitro World Games",
+      "title": "Nitro World Games"
+    },
+    {
+      "document_id": "doc_7610f0b98bd9ad52",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae25e835542992decbdccd1-Racquetball-at-the-1985-World-Games-7610f0b9.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae25e835542992decbdccd1-Racquetball at the 1985 World Games",
+      "title": "Racquetball at the 1985 World Games"
+    },
+    {
+      "document_id": "doc_d2f6de13ce2032e6",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae25e835542992decbdccd1-World-Games-d2f6de13.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae25e835542992decbdccd1-World Games",
+      "title": "World Games"
+    },
+    {
+      "document_id": "doc_bbb23252e44196ca",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2c509554299492dc91c68-Delayed-gratification-bbb23252.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2c509554299492dc91c68-Delayed gratification",
+      "title": "Delayed gratification"
+    },
+    {
+      "document_id": "doc_27a62c7eb7c9ff09",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2c509554299492dc91c68-Five-choice-serial-reaction-time-ta-27a62c7e.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2c509554299492dc91c68-Five-choice serial-reaction time task",
+      "title": "Five-choice serial-reaction time task"
+    },
+    {
+      "document_id": "doc_1f5248ebc3c100f1",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2c509554299492dc91c68-George-Crumbley-1f5248eb.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2c509554299492dc91c68-George Crumbley",
+      "title": "George Crumbley"
+    },
+    {
+      "document_id": "doc_b059c21b58887c69",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2c509554299492dc91c68-Lifeshape-b059c21b.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2c509554299492dc91c68-Lifeshape",
+      "title": "Lifeshape"
+    },
+    {
+      "document_id": "doc_0027103d269fcd90",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2c509554299492dc91c68-Liquidity-preference-0027103d.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2c509554299492dc91c68-Liquidity preference",
+      "title": "Liquidity preference"
+    },
+    {
+      "document_id": "doc_5456c92f14e7b1a9",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2c509554299492dc91c68-Milken-Educator-Award-5456c92f.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2c509554299492dc91c68-Milken Educator Award",
+      "title": "Milken Educator Award"
+    },
+    {
+      "document_id": "doc_9055ca4eb2fff7eb",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2c509554299492dc91c68-Mining-pool-9055ca4e.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2c509554299492dc91c68-Mining pool",
+      "title": "Mining pool"
+    },
+    {
+      "document_id": "doc_a3c2381cffddab94",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2c509554299492dc91c68-President-s-Volunteer-Service-Award-a3c2381c.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2c509554299492dc91c68-President's Volunteer Service Award",
+      "title": "President's Volunteer Service Award"
+    },
+    {
+      "document_id": "doc_c48110969c904929",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2c509554299492dc91c68-S.-Truett-Cathy-c4811096.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2c509554299492dc91c68-S. Truett Cathy",
+      "title": "S. Truett Cathy"
+    },
+    {
+      "document_id": "doc_82194e4ffe8ce072",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae2c509554299492dc91c68-WinShape-Foundation-82194e4f.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae2c509554299492dc91c68-WinShape Foundation",
+      "title": "WinShape Foundation"
+    },
+    {
+      "document_id": "doc_30d75d0ecf0bcd37",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae7936d5542997ec27276a7-Derek-Walcott-30d75d0e.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae7936d5542997ec27276a7-Derek Walcott",
+      "title": "Derek Walcott"
+    },
+    {
+      "document_id": "doc_6c0df34342b59366",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae7936d5542997ec27276a7-Hu-Lanqi-6c0df343.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae7936d5542997ec27276a7-Hu Lanqi",
+      "title": "Hu Lanqi"
+    },
+    {
+      "document_id": "doc_b183cc36a15d3dad",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae7936d5542997ec27276a7-Hu-Shih-b183cc36.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae7936d5542997ec27276a7-Hu Shih",
+      "title": "Hu Shih"
+    },
+    {
+      "document_id": "doc_036027a7c588d176",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae7936d5542997ec27276a7-List-of-Danish-Nobel-laureates-036027a7.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae7936d5542997ec27276a7-List of Danish Nobel laureates",
+      "title": "List of Danish Nobel laureates"
+    },
+    {
+      "document_id": "doc_2e31f467cf1b8a12",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae7936d5542997ec27276a7-List-of-Nobel-laureates-in-Literatu-2e31f467.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae7936d5542997ec27276a7-List of Nobel laureates in Literature",
+      "title": "List of Nobel laureates in Literature"
+    },
+    {
+      "document_id": "doc_715ac2ea90d9caf0",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae7936d5542997ec27276a7-List-of-Nobel-laureates-in-Physiolo-715ac2ea.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae7936d5542997ec27276a7-List of Nobel laureates in Physiology or Medicine",
+      "title": "List of Nobel laureates in Physiology or Medicine"
+    },
+    {
+      "document_id": "doc_3035e3bd142fe96a",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae7936d5542997ec27276a7-List-of-female-Nobel-laureates-3035e3bd.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae7936d5542997ec27276a7-List of female Nobel laureates",
+      "title": "List of female Nobel laureates"
+    },
+    {
+      "document_id": "doc_2393afcafa1e9302",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae7936d5542997ec27276a7-Maxim-Gorky-2393afca.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae7936d5542997ec27276a7-Maxim Gorky",
+      "title": "Maxim Gorky"
+    },
+    {
+      "document_id": "doc_cc38b97dc36e9850",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae7936d5542997ec27276a7-Nobel-Prize-in-Literature-cc38b97d.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae7936d5542997ec27276a7-Nobel Prize in Literature",
+      "title": "Nobel Prize in Literature"
+    },
+    {
+      "document_id": "doc_8f0200c1d4ea2805",
+      "path": "evaluation/candidates/public_corpus/hotpotqa/5ae7936d5542997ec27276a7-Nobel-Prize-in-Physics-8f0200c1.md",
+      "source_dataset": "hotpotqa",
+      "source_record_id": "5ae7936d5542997ec27276a7-Nobel Prize in Physics",
+      "title": "Nobel Prize in Physics"
+    },
+    {
+      "document_id": "doc_3c9cc22063ece138",
+      "path": "evaluation/candidates/public_corpus/squad_v2/56e1c2eee3433e1400423138-3c9cc220.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "56e1c2eee3433e1400423138",
+      "title": "Computational_complexity_theory"
+    },
+    {
+      "document_id": "doc_cd06b110d518d585",
+      "path": "evaluation/candidates/public_corpus/squad_v2/571cb010dd7acb1400e4c128-cd06b110.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "571cb010dd7acb1400e4c128",
+      "title": "Oxygen"
+    },
+    {
+      "document_id": "doc_660ea738b8e6260d",
+      "path": "evaluation/candidates/public_corpus/squad_v2/57265d86f1498d1400e8dd51-660ea738.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "57265d86f1498d1400e8dd51",
+      "title": "Ctenophora"
+    },
+    {
+      "document_id": "doc_8b40ccc998751146",
+      "path": "evaluation/candidates/public_corpus/squad_v2/57267640f1498d1400e8e074-8b40ccc9.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "57267640f1498d1400e8e074",
+      "title": "Geology"
+    },
+    {
+      "document_id": "doc_1ad59b2b456fdd4b",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5726887e708984140094c91b-1ad59b2b.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5726887e708984140094c91b",
+      "title": "Ctenophora"
+    },
+    {
+      "document_id": "doc_6a3954cb4f3d59ae",
+      "path": "evaluation/candidates/public_corpus/squad_v2/57287b4a4b864d1900164a2a-6a3954cb.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "57287b4a4b864d1900164a2a",
+      "title": "Yuan_dynasty"
+    },
+    {
+      "document_id": "doc_9c83dbfc5c93d447",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5728ec6a4b864d19001650ae-9c83dbfc.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5728ec6a4b864d19001650ae",
+      "title": "Civil_disobedience"
+    },
+    {
+      "document_id": "doc_e11cd41e320b663a",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5729fc3d1d0469140077969f-e11cd41e.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5729fc3d1d0469140077969f",
+      "title": "Immune_system"
+    },
+    {
+      "document_id": "doc_7168fcdd9985cf92",
+      "path": "evaluation/candidates/public_corpus/squad_v2/572a12381d0469140077972f-7168fcdd.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "572a12381d0469140077972f",
+      "title": "Economic_inequality"
+    },
+    {
+      "document_id": "doc_f5fcddb0e87a8dd9",
+      "path": "evaluation/candidates/public_corpus/squad_v2/572f64ccb2c2fd14005680bb-f5fcddb0.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "572f64ccb2c2fd14005680bb",
+      "title": "Rhine"
+    },
+    {
+      "document_id": "doc_ee8efbe25ec6ce77",
+      "path": "evaluation/candidates/public_corpus/squad_v2/572faf74b2c2fd140056834a-ee8efbe2.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "572faf74b2c2fd140056834a",
+      "title": "Scottish_Parliament"
+    },
+    {
+      "document_id": "doc_af9cf673dedd89a9",
+      "path": "evaluation/candidates/public_corpus/squad_v2/572fe53104bcaa1900d76e6b-af9cf673.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "572fe53104bcaa1900d76e6b",
+      "title": "Rhine"
+    },
+    {
+      "document_id": "doc_f1a04e5c6c7db007",
+      "path": "evaluation/candidates/public_corpus/squad_v2/57308ddc396df919000961a6-f1a04e5c.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "57308ddc396df919000961a6",
+      "title": "Imperialism"
+    },
+    {
+      "document_id": "doc_d992de1b30549787",
+      "path": "evaluation/candidates/public_corpus/squad_v2/573368044776f41900660a2c-d992de1b.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "573368044776f41900660a2c",
+      "title": "Warsaw"
+    },
+    {
+      "document_id": "doc_71eb957e88faa8ef",
+      "path": "evaluation/candidates/public_corpus/squad_v2/573383d0d058e614000b5c39-71eb957e.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "573383d0d058e614000b5c39",
+      "title": "Warsaw"
+    },
+    {
+      "document_id": "doc_6f3f407daed96dcb",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5a5808ef770dc0001aeeff6a-6f3f407d.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5a5808ef770dc0001aeeff6a",
+      "title": "Geology"
+    },
+    {
+      "document_id": "doc_562b89f5cc987fce",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5a5918ff3e1742001a15cf82-562b89f5.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5a5918ff3e1742001a15cf82",
+      "title": "Geology"
+    },
+    {
+      "document_id": "doc_7a775665e8be718d",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5a668fc9f038b7001ab0bfe8-7a775665.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5a668fc9f038b7001ab0bfe8",
+      "title": "Packet_switching"
+    },
+    {
+      "document_id": "doc_08a095cd4e28aa01",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5a835778e60761001a2eb5db-08a095cd.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5a835778e60761001a2eb5db",
+      "title": "Ctenophora"
+    },
+    {
+      "document_id": "doc_c59693a41fee773a",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5a89473c3b2508001a72a59b-c59693a4.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5a89473c3b2508001a72a59b",
+      "title": "Prime_number"
+    },
+    {
+      "document_id": "doc_42c0495745df387d",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5acf9d3477cf76001a685513-42c04957.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5acf9d3477cf76001a685513",
+      "title": "University_of_Chicago"
+    },
+    {
+      "document_id": "doc_4b5d5819f1bd4685",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5ad0301577cf76001a686db5-4b5d5819.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5ad0301577cf76001a686db5",
+      "title": "Imperialism"
+    },
+    {
+      "document_id": "doc_14d78905003a680d",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5ad0391f77cf76001a686e48-14d78905.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5ad0391f77cf76001a686e48",
+      "title": "Imperialism"
+    },
+    {
+      "document_id": "doc_88dac7341f8b5a1f",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5ad0440877cf76001a686f3e-88dac734.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5ad0440877cf76001a686f3e",
+      "title": "Southern_California"
+    },
+    {
+      "document_id": "doc_78c5ac2d4d66d7b9",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5ad25963d7d075001a428e0d-78c5ac2d.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5ad25963d7d075001a428e0d",
+      "title": "Huguenot"
+    },
+    {
+      "document_id": "doc_7140cd8472e40515",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5ad2685dd7d075001a429279-7140cd84.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5ad2685dd7d075001a429279",
+      "title": "Oxygen"
+    },
+    {
+      "document_id": "doc_8320b9f35e957927",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5ad3d7e0604f3c001a3ff360-8320b9f3.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5ad3d7e0604f3c001a3ff360",
+      "title": "Steam_engine"
+    },
+    {
+      "document_id": "doc_d744d2939c659605",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5ad3f03c604f3c001a3ff82b-d744d293.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5ad3f03c604f3c001a3ff82b",
+      "title": "Steam_engine"
+    },
+    {
+      "document_id": "doc_590c26f77240d695",
+      "path": "evaluation/candidates/public_corpus/squad_v2/5ad5036c5b96ef001a10a985-590c26f7.md",
+      "source_dataset": "squad_v2",
+      "source_record_id": "5ad5036c5b96ef001a10a985",
+      "title": "Warsaw"
+    }
+  ],
+  "cases": [
+    {
+      "query_id": "candidate-cmrc2018-DEV_1008_QUERY_1",
+      "query": "卒本扶余是哪个国家的一个延续？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_e8b4aa41385e8117"
+      ],
+      "answer_key_points": [
+        "北扶余国"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1008_QUERY_1-e8b4aa41.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_1008_QUERY_1",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_1040_QUERY_2",
+      "query": "灰凤冠雉可能来自于什么时期的分支？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_1d48975dff97a481"
+      ],
+      "answer_key_points": [
+        "中新世晚期"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1040_QUERY_2-1d48975d.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_1040_QUERY_2",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_1062_QUERY_2",
+      "query": "短兵的一般长度是多少？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_8a8ae7f8741eaa82"
+      ],
+      "answer_key_points": [
+        "80-95cm"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1062_QUERY_2-8a8ae7f8.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_1062_QUERY_2",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_1076_QUERY_0",
+      "query": "《无字碑歌》以谁的一生为改编依据？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_2dfc0f520fe9e753"
+      ],
+      "answer_key_points": [
+        "武则天"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1076_QUERY_0-2dfc0f52.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_1076_QUERY_0",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_1090_QUERY_1",
+      "query": "叔梁纥是哪个国家的人？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_6818453f82b4c7e1"
+      ],
+      "answer_key_points": [
+        "鲁国"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1090_QUERY_1-6818453f.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_1090_QUERY_1",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_1124_QUERY_0",
+      "query": "孙德培是哪个帮派的成立者？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_4c3845077d35688e"
+      ],
+      "answer_key_points": [
+        "中和帮"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1124_QUERY_0-4c384507.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_1124_QUERY_0",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_1136_QUERY_1",
+      "query": "茶荣省和三芹省在哪一年合并为永平省？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_b4189cbecff7a5d4"
+      ],
+      "answer_key_points": [
+        "1956年"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1136_QUERY_1-b4189cbe.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_1136_QUERY_1",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_1161_QUERY_0",
+      "query": "刘燕卿毕业于什么学校？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_fa823321bff2f334"
+      ],
+      "answer_key_points": [
+        "香港中文大学"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1161_QUERY_0-fa823321.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_1161_QUERY_0",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_146_QUERY_3",
+      "query": "黑褐新箭雀鲷的栖息环境是什么样的？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_0a4e07a8225021f0"
+      ],
+      "answer_key_points": [
+        "珊瑚礁密生的礁湖或向海斜坡"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_146_QUERY_3-0a4e07a8.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_146_QUERY_3",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_1525_QUERY_2",
+      "query": "自2006年拓展国内业务起，零食物语在哪些主要城市建立销售点？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_69a965592e066f04"
+      ],
+      "answer_key_points": [
+        "上海、北京、顺德"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1525_QUERY_2-69a96559.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_1525_QUERY_2",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_1543_QUERY_4",
+      "query": "大鳞大眼鲷体长可达多少公分？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_d2fe867d25e1bbdb"
+      ],
+      "answer_key_points": [
+        "20公分"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1543_QUERY_4-d2fe867d.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_1543_QUERY_4",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_1575_QUERY_0",
+      "query": "横道河子站距离哈尔滨站多少公里？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_c3169a202565267d"
+      ],
+      "answer_key_points": [
+        "272公里"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1575_QUERY_0-c3169a20.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_1575_QUERY_0",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_1603_QUERY_3",
+      "query": "第二期土地2010年6月8日公开拍卖时由哪一地产以109亿港元投得？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_f6d8afcfeaa0dc85"
+      ],
+      "answer_key_points": [
+        "新鸿基地产"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1603_QUERY_3-f6d8afcf.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_1603_QUERY_3",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_160_QUERY_0",
+      "query": "白尾雀鲷又可以叫啥？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_7173de283ebd8b13"
+      ],
+      "answer_key_points": [
+        "金尾雀鲷、瑰斑雀鲷"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_160_QUERY_0-7173de28.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_160_QUERY_0",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_1666_QUERY_4",
+      "query": "前往火葬场的道路什么时候会设交通管制？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_bbe21c2a71b22309"
+      ],
+      "answer_key_points": [
+        "歌连臣角火葬场及坟场的访客很多，所以有特别交通安排"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1666_QUERY_4-bbe21c2a.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_1666_QUERY_4",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_1710_QUERY_3",
+      "query": "虹彩吸蜜鹦鹉母鸟需要多久才成熟？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_11b9527fd01c82e6"
+      ],
+      "answer_key_points": [
+        "两年"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1710_QUERY_3-11b9527f.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_1710_QUERY_3",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_183_QUERY_0",
+      "query": "大卫·佩特鲁齐的职业是什么？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_cf08615526a4c8e2"
+      ],
+      "answer_key_points": [
+        "职业足球运动员"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_183_QUERY_0-cf086155.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_183_QUERY_0",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_189_QUERY_0",
+      "query": "和语在日语中被称为什么？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_6a0e039e355589d5"
+      ],
+      "answer_key_points": [
+        "大和言叶"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_189_QUERY_0-6a0e039e.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_189_QUERY_0",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_1931_QUERY_2",
+      "query": "为什么修道院的名称取自意为自由的古代德语词汇“frey”？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_47eb6c9c74adac6c"
+      ],
+      "answer_key_points": [
+        "因为修道院拥有不受公爵管理的特权，还能保护逃亡者。"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1931_QUERY_2-47eb6c9c.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_1931_QUERY_2",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_194_QUERY_3",
+      "query": "漠河机场的机场机坪总数有几个？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_ad52a15c8a332517"
+      ],
+      "answer_key_points": [
+        "四个"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_194_QUERY_3-ad52a15c.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_194_QUERY_3",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_209_QUERY_0",
+      "query": "永明之治指南齐在谁在位时出现的治世？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_f28b567463f191da"
+      ],
+      "answer_key_points": [
+        "齐武帝萧赜"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_209_QUERY_0-f28b5674.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_209_QUERY_0",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_20_QUERY_1",
+      "query": "舜天的神号是什么？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_a7a800e7d152142e"
+      ],
+      "answer_key_points": [
+        "尊敦"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_20_QUERY_1-a7a800e7.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_20_QUERY_1",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_215_QUERY_0",
+      "query": "乌拉嘎龙属化石被发现的地点是哪里？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_a27141bf53a8a6a8"
+      ],
+      "answer_key_points": [
+        "中国黑龙江省"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_215_QUERY_0-a27141bf.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_215_QUERY_0",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_223_QUERY_0",
+      "query": "张元素为什么落第？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_4dd177f9ab62e704"
+      ],
+      "answer_key_points": [
+        "犯了庙讳"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_223_QUERY_0-4dd177f9.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_223_QUERY_0",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_228_QUERY_2",
+      "query": "腹卷所使用材料是什么？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_03268f1f74f1a2ca"
+      ],
+      "answer_key_points": [
+        "甲片板甲丝绳"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_228_QUERY_2-03268f1f.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_228_QUERY_2",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_25_QUERY_2",
+      "query": "前秦对前燕发动的灭国战争是谁主导的？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_12d308bc005a6ce7"
+      ],
+      "answer_key_points": [
+        "慕容垂"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_25_QUERY_2-12d308bc.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_25_QUERY_2",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_304_QUERY_1",
+      "query": "布拉德利在1993-1996期间效力于哪个队？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_8ec87408a2892432"
+      ],
+      "answer_key_points": [
+        "费城76人队"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_304_QUERY_1-8ec87408.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_304_QUERY_1",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_315_QUERY_1",
+      "query": "在香港售卖的「足-{}-三两」实际重量是多少？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_e5daf120d410bd72"
+      ],
+      "answer_key_points": [
+        "100克"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_315_QUERY_1-e5daf120.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_315_QUERY_1",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_326_QUERY_2",
+      "query": "1982年至1984年间，霍顿执教哪个队？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_ea4a04e0b197337c"
+      ],
+      "answer_key_points": [
+        "多伦多闪电队"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_326_QUERY_2-ea4a04e0.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_326_QUERY_2",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_330_QUERY_1",
+      "query": "唐爱陆哪一年筹资创办了在武汉的旅汉公学？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_9147b2efe2ce8935"
+      ],
+      "answer_key_points": [
+        "1912年"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_330_QUERY_1-9147b2ef.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_330_QUERY_1",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_345_QUERY_2",
+      "query": "钩盲蛇在中国被称为什么？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_a294d226c008254b"
+      ],
+      "answer_key_points": [
+        "地鳝及铁丝蛇"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_345_QUERY_2-a294d226.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_345_QUERY_2",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_35_QUERY_1",
+      "query": "毒马案是怎样被揭发的？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_e8915588bbe013de"
+      ],
+      "answer_key_points": [
+        "马会兽医在赛后检查时发现马匹呈腹泻的征状，揭发案件。"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_35_QUERY_1-e8915588.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_35_QUERY_1",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_382_QUERY_1",
+      "query": "贴扎的目的是什么？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_91a742d506146612"
+      ],
+      "answer_key_points": [
+        "固定关节位置及限制软组织的活动以让软组织在稳定的状况下进行修补。"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_382_QUERY_1-91a742d5.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_382_QUERY_1",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_385_QUERY_2",
+      "query": "哪一首歌是华语乐坛第一首神游舞曲歌曲？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_86301b75263bb398"
+      ],
+      "answer_key_points": [
+        "《醉迷情人》"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_385_QUERY_2-86301b75.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_385_QUERY_2",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_437_QUERY_2",
+      "query": "钟惺在万历四十四年和谁一起登泰山？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_68b85eeb819f6f79"
+      ],
+      "answer_key_points": [
+        "林古度"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_437_QUERY_2-68b85eeb.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_437_QUERY_2",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_440_QUERY_0",
+      "query": "斯瓦迪尔法利来自于什么神话？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_2f92de1aaaad2422"
+      ],
+      "answer_key_points": [
+        "北欧神话"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_440_QUERY_0-2f92de1a.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_440_QUERY_0",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_467_QUERY_1",
+      "query": "阿部正丰被通称为什么？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_3f584577f8c9ee91"
+      ],
+      "answer_key_points": [
+        "弥七郎"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_467_QUERY_1-3f584577.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_467_QUERY_1",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_477_QUERY_1",
+      "query": "Antichrist Superstar是作者对于哪些人的回应？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_7de03995ea1660d5"
+      ],
+      "answer_key_points": [
+        "批评他的人"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_477_QUERY_1-7de03995.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_477_QUERY_1",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_533_QUERY_1",
+      "query": "邓兆棠任元朗青年商会创会会长是在哪一年？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_ee6c47793f72dcf1"
+      ],
+      "answer_key_points": [
+        "1977年"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_533_QUERY_1-ee6c4779.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_533_QUERY_1",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_551_QUERY_4",
+      "query": "黄鞍鹦嘴鱼的食物是什么？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_ac61438a02064c89"
+      ],
+      "answer_key_points": [
+        "啃食珊瑚，以珊瑚共生藻为生"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_551_QUERY_4-ac61438a.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_551_QUERY_4",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_557_QUERY_2",
+      "query": "增城挂绿为什么叫挂绿？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_eeb37e5bbdd379d5"
+      ],
+      "answer_key_points": [
+        "每个果实都环绕有一圈绿线"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_557_QUERY_2-eeb37e5b.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_557_QUERY_2",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_567_QUERY_3",
+      "query": "什么决定了正、负离子的距离？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_730a5afb585e8f4f"
+      ],
+      "answer_key_points": [
+        "半径和"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_567_QUERY_3-730a5afb.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_567_QUERY_3",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_582_QUERY_3",
+      "query": "相武台下车站最早叫什么？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_78ef75f42bc24fcb"
+      ],
+      "answer_key_points": [
+        "座间新户"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_582_QUERY_3-78ef75f4.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_582_QUERY_3",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_605_QUERY_0",
+      "query": "什么是生成文法？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_af6ddf011bd70763"
+      ],
+      "answer_key_points": [
+        "是一种尝试接近语法学(Syntax)的方式"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_605_QUERY_0-af6ddf01.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_605_QUERY_0",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-cmrc2018-DEV_82_QUERY_1",
+      "query": "鑫诺卫星通信有限公司总部在哪里？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_2353a7eeedb76c4e"
+      ],
+      "answer_key_points": [
+        "北京"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_82_QUERY_1-2353a7ee.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "easy",
+      "candidate_metadata": {
+        "upstream_dataset": "hfl/cmrc2018",
+        "upstream_record_id": "DEV_82_QUERY_1",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5a77415b55429966f1a36cd2",
+      "query": "What actor from Northern Ireland born in 1983 starred in Whole Lotta Sole?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_0a2c449e713e521a",
+        "doc_580e40a8904a76ea"
+      ],
+      "answer_key_points": [
+        "Martin \"Marty\" McCann"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5a77415b55429966f1a36cd2-Martin-McCann-actor-0a2c449e.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5a77415b55429966f1a36cd2",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5a79ced45542994bb94570cb",
+      "query": "What kind of ideology is Torment's drummer involved with?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_0d092bc3fa560ebb",
+        "doc_14519cc095139384"
+      ],
+      "answer_key_points": [
+        "neo-Nazi"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5a79ced45542994bb94570cb-National-Socialist-black-metal-0d092bc3.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5a79ced45542994bb94570cb",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5a7e05f75542995f4f402394",
+      "query": "Which was released first, Hot Girls Wanted or China Blue?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_49da219d15bb4e84",
+        "doc_56cec7742c3f2bb8"
+      ],
+      "answer_key_points": [
+        "China Blue"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5a7e05f75542995f4f402394-China-Blue-49da219d.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5a7e05f75542995f4f402394",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5a7fd1515542992e7d278db1",
+      "query": "Grimsby Minster is located in which English Province?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_55bfd79b854ee725",
+        "doc_a3ce6440683ea2d9"
+      ],
+      "answer_key_points": [
+        "Province of Canterbury"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Diocese-of-Lincoln-55bfd79b.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5a7fd1515542992e7d278db1",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5a81736255429903bc27b96e",
+      "query": "What is the formal name for the sporting facility located in Coos County, New Hampshire?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_aac68896f925a1c9",
+        "doc_6df3635a6529185c"
+      ],
+      "answer_key_points": [
+        "Nansen Ski Jump"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5a81736255429903bc27b96e-Milan-New-Hampshire-aac68896.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5a81736255429903bc27b96e",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5a835e215542992ef85e2296",
+      "query": "Between Pine and Butea, which genus has the greatest number of species?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_3863ba1c0a3e036a",
+        "doc_f666c1f805add329"
+      ],
+      "answer_key_points": [
+        "\"Pinus\""
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Butea-3863ba1c.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5a835e215542992ef85e2296",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5a83697e5542996488c2e441",
+      "query": " Park Seo-joon is best known for his role in a series that premiered on what month and day?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_b7d29fa513a04a39",
+        "doc_6d3e18fd25881223"
+      ],
+      "answer_key_points": [
+        "May 22"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Fight-for-My-Way-b7d29fa5.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5a83697e5542996488c2e441",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5a873ec75542996432c57244",
+      "query": "The structure in Wyoming in which Bořeň is similar to has a summit that is how many feet above sea level?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_5f2c2d1bb8f6edd7",
+        "doc_fb7657b29aabaa45"
+      ],
+      "answer_key_points": [
+        "5,112 feet"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Bo-e-5f2c2d1b.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5a873ec75542996432c57244",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5a88d7fc5542993b751ca879",
+      "query": "Futbolita has interviewed what Spanish Professional footballer who plays as a striker for New York City FC?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_f1d4b2d653547846",
+        "doc_03cad2165c18dc53"
+      ],
+      "answer_key_points": [
+        "David Villa"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5a88d7fc5542993b751ca879-David-Villa-f1d4b2d6.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5a88d7fc5542993b751ca879",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5a8ad6805542992d82986f93",
+      "query": "Leonard Whiting played the tragic hero of Romeo and Juliet in the film version by which director?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_d2e93f3b1149eaba",
+        "doc_6529cc6495e9d028"
+      ],
+      "answer_key_points": [
+        "Zeffirelli"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5a8ad6805542992d82986f93-Leonard-Whiting-d2e93f3b.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5a8ad6805542992d82986f93",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5a8b057255429971feec4611",
+      "query": "David Lightfoot worked on what film loosely based on the murders of tourists by Ivan Milat in the 1990's?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_b605095f5a685bde",
+        "doc_ad757f2d3778aea7"
+      ],
+      "answer_key_points": [
+        "Wolf Creek"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-David-Lightfoot-b605095f.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5a8b057255429971feec4611",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5a8c6342554299240d9c214a",
+      "query": "Claudine's Return starred the actress who played which role on \"Married...with Children\"?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_df3ed2f1a84aa35f",
+        "doc_93edfbe1a3ea4964"
+      ],
+      "answer_key_points": [
+        "Kelly Bundy"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Christina-Applegate-df3ed2f1.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5a8c6342554299240d9c214a",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5a8f0de35542995b44241f40",
+      "query": "Which musician obtained fame first, Terry Kath or Róisín Murphy?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_8ba7116e7793339e",
+        "doc_0e6b5db2e6cc92bb"
+      ],
+      "answer_key_points": [
+        "Terry Alan Kath"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5a8f0de35542995b44241f40-R-is-n-Murphy-8ba7116e.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5a8f0de35542995b44241f40",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5ab298fb554299449642c922",
+      "query": "Who was known for playing a fictionalized version of the wild politician who was the face of communist scare tact's in the early 1950's?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_9825f94114aa9a79",
+        "doc_7897596cc6c026f5"
+      ],
+      "answer_key_points": [
+        "James Gregory"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-James-Gregory-actor-9825f941.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5ab298fb554299449642c922",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5abae1e65542996cc5e49ed2",
+      "query": "JSOC was created on the recommendation of a colonel who served in the Malayan Emergency and what other war?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_4e17b80450e2ce6a",
+        "doc_6bb3de1c347c44a9"
+      ],
+      "answer_key_points": [
+        "Vietnam War"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Charles-Alvin-Beckwith-4e17b804.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5abae1e65542996cc5e49ed2",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5abdbf3755429933744ab818",
+      "query": "Have Tionne Watkins and Park So-yeon both been members of a girl group?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_85658ab7cf1faae9",
+        "doc_d5143b2f3bfb0e17"
+      ],
+      "answer_key_points": [
+        "yes"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5abdbf3755429933744ab818-Park-So-yeon-singer-85658ab7.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5abdbf3755429933744ab818",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5abf8cc35542990832d3a14e",
+      "query": "when was the retired Jamaican sprinter which Richard Thompson is, 0.99 seconds slower than born ?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_3738bdac0e5cc771",
+        "doc_46f17edee308afa1"
+      ],
+      "answer_key_points": [
+        "born 21 August 1986"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5abf8cc35542990832d3a14e-Richard-Thompson-sprinter-3738bdac.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5abf8cc35542990832d3a14e",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5abffda6554299012d1db55b",
+      "query": "What is the main nickname of the professional association football club where Ewan Fenton spent thirteen seasons?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_07197b70df1d679c",
+        "doc_7b88b00e69809a91"
+      ],
+      "answer_key_points": [
+        "\"the Seasiders\""
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Blackpool-F.C.-07197b70.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5abffda6554299012d1db55b",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5ac00278554299012d1db56b",
+      "query": "What profession do Raj Kapoor and Mike Cahill share?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_31da567e5b1288d1",
+        "doc_0d76a3062f880888"
+      ],
+      "answer_key_points": [
+        "director"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Mike-Cahill-director-31da567e.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5ac00278554299012d1db56b",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5ac46cb85542991943173987",
+      "query": "What is the sister city of the city in which Benjamin Abram Bernstein was born?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_dfc5e3b172e5e85f",
+        "doc_763da6ba79b11887"
+      ],
+      "answer_key_points": [
+        "Götene in Sweden"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5ac46cb85542991943173987-Benjamin-Abram-Bernstein-dfc5e3b1.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5ac46cb85542991943173987",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5adf99065542992d7e9f93b0",
+      "query": "Approximately what percent male is the student body of the University for which the Ouachita Baptist Tigers football program is the intercollegiate American football team?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_32354599ca380e6a",
+        "doc_883e9f41181039a0"
+      ],
+      "answer_key_points": [
+        "45%"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Ouachita-Baptist-Tigers-football-32354599.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5adf99065542992d7e9f93b0",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5ae2120e5542997283cd23ad",
+      "query": "Are Distortion Mirrors and OK Go both considered rock bands?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_67c66302409785e8",
+        "doc_bb1275e4313762a1"
+      ],
+      "answer_key_points": [
+        "yes"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5ae2120e5542997283cd23ad-Distortion-Mirrors-67c66302.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5ae2120e5542997283cd23ad",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5ae25e835542992decbdccd1",
+      "query": "A British sports, health and leisure business hosted the World Games on what dates?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_6b38933bbb94b5e4",
+        "doc_7610f0b98bd9ad52"
+      ],
+      "answer_key_points": [
+        "July 25 to August 4"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5ae25e835542992decbdccd1-David-Lloyd-Leisure-6b38933b.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5ae25e835542992decbdccd1",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5ae2c509554299492dc91c68",
+      "query": "What reward did the founder of Chick-Fil-A receive?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_a3c2381cffddab94",
+        "doc_c48110969c904929"
+      ],
+      "answer_key_points": [
+        "Call to Service Award"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5ae2c509554299492dc91c68-President-s-Volunteer-Service-Award-a3c2381c.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5ae2c509554299492dc91c68",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-hotpotqa-5ae7936d5542997ec27276a7",
+      "query": "How many times was the writer, who invited Hu Lanqi to meet him in Moscow, a nominee for the Nobel Prize in Literature ? ",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_6c0df34342b59366",
+        "doc_2393afcafa1e9302"
+      ],
+      "answer_key_points": [
+        "a five-time nominee"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/hotpotqa/5ae7936d5542997ec27276a7-Hu-Lanqi-6c0df343.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "hotpotqa/hotpot_qa",
+        "upstream_record_id": "5ae7936d5542997ec27276a7",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-56e1c2eee3433e1400423138",
+      "query": "Decision problems capable of being solved by a deterministic Turing machine while maintaining adherence to polynomial time belong to what class?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_3c9cc22063ece138"
+      ],
+      "answer_key_points": [
+        "complexity class P"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/squad_v2/56e1c2eee3433e1400423138-3c9cc220.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "56e1c2eee3433e1400423138",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-571cb010dd7acb1400e4c128",
+      "query": "What is the name for a form of oxygen in which electrons are paired?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_cd06b110d518d585"
+      ],
+      "answer_key_points": [
+        "Singlet"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/squad_v2/571cb010dd7acb1400e4c128-cd06b110.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "571cb010dd7acb1400e4c128",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-57265d86f1498d1400e8dd51",
+      "query": "What group has no feeding appendages?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_660ea738b8e6260d"
+      ],
+      "answer_key_points": [
+        "The Beroida"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/squad_v2/57265d86f1498d1400e8dd51-660ea738.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "57265d86f1498d1400e8dd51",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-57267640f1498d1400e8e074",
+      "query": "The Hawaiian Islands are made up almost entirely of what?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_8b40ccc998751146"
+      ],
+      "answer_key_points": [
+        "layered basaltic lava flows"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/squad_v2/57267640f1498d1400e8e074-8b40ccc9.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "57267640f1498d1400e8e074",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5726887e708984140094c91b",
+      "query": "What is the name of the two-tentacled cydippid that feedsentirely on salps called?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_1ad59b2b456fdd4b"
+      ],
+      "answer_key_points": [
+        "Lampea"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5726887e708984140094c91b-1ad59b2b.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5726887e708984140094c91b",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-57287b4a4b864d1900164a2a",
+      "query": "What was the English title of Polo's book?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_6a3954cb4f3d59ae"
+      ],
+      "answer_key_points": [
+        "Travels of Marco Polo"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/squad_v2/57287b4a4b864d1900164a2a-6a3954cb.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "57287b4a4b864d1900164a2a",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5728ec6a4b864d19001650ae",
+      "query": "What type of sentences were the protesters given?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_9c83dbfc5c93d447"
+      ],
+      "answer_key_points": [
+        "suspended sentences"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5728ec6a4b864d19001650ae-9c83dbfc.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5728ec6a4b864d19001650ae",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5729fc3d1d0469140077969f",
+      "query": "Tumor antigens are complexed with MHC class I molecules in the same way as what antigens?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_e11cd41e320b663a"
+      ],
+      "answer_key_points": [
+        "viral antigens"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5729fc3d1d0469140077969f-e11cd41e.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5729fc3d1d0469140077969f",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-572a12381d0469140077972f",
+      "query": "When was a study conducted of Swedish counties?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_7168fcdd9985cf92"
+      ],
+      "answer_key_points": [
+        "between 1960 and 2000"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/squad_v2/572a12381d0469140077972f-7168fcdd.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "572a12381d0469140077972f",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-572f64ccb2c2fd14005680bb",
+      "query": "What is the Bassin de compensation de Plobsheim in Alsace? ",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_f5fcddb0e87a8dd9"
+      ],
+      "answer_key_points": [
+        "large compensation pools"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/squad_v2/572f64ccb2c2fd14005680bb-f5fcddb0.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "572f64ccb2c2fd14005680bb",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-572faf74b2c2fd140056834a",
+      "query": "Where was Parliament temporarily relocated to in May of 2000?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_ee8efbe25ec6ce77"
+      ],
+      "answer_key_points": [
+        "former Strathclyde Regional Council debating chamber in Glasgow"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/squad_v2/572faf74b2c2fd140056834a-ee8efbe2.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "572faf74b2c2fd140056834a",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-572fe53104bcaa1900d76e6b",
+      "query": "Why was the Rhine regulated? ",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_af9cf673dedd89a9"
+      ],
+      "answer_key_points": [
+        "constant flooding"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/squad_v2/572fe53104bcaa1900d76e6b-af9cf673.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "572fe53104bcaa1900d76e6b",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-57308ddc396df919000961a6",
+      "query": "What were the native inhabitants of Australia called?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_f1a04e5c6c7db007"
+      ],
+      "answer_key_points": [
+        "Aboriginal"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/squad_v2/57308ddc396df919000961a6-f1a04e5c.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "57308ddc396df919000961a6",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-573368044776f41900660a2c",
+      "query": "What park is close to John Lennon street?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_d992de1b30549787"
+      ],
+      "answer_key_points": [
+        "Park Ujazdowski"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/squad_v2/573368044776f41900660a2c-d992de1b.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "573368044776f41900660a2c",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-573383d0d058e614000b5c39",
+      "query": "What did the license to build this type of car expire in 2011?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_71eb957e88faa8ef"
+      ],
+      "answer_key_points": [
+        "Chevrolet Aveo"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/squad_v2/573383d0d058e614000b5c39-71eb957e.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "573383d0d058e614000b5c39",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5a5808ef770dc0001aeeff6a",
+      "query": "What are biogeochemical pathways used to decipher?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5a5808ef770dc0001aeeff6a-6f3f407d.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5a5808ef770dc0001aeeff6a",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5a5918ff3e1742001a15cf82",
+      "query": "What lens is used to identify chemical composition?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5a5918ff3e1742001a15cf82-562b89f5.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5a5918ff3e1742001a15cf82",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5a668fc9f038b7001ab0bfe8",
+      "query": "Why was the Michigan Educational Research Information Trio formed?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5a668fc9f038b7001ab0bfe8-7a775665.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5a668fc9f038b7001ab0bfe8",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5a835778e60761001a2eb5db",
+      "query": "What are more complex animals labeled when they have a jelly-like layer?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5a835778e60761001a2eb5db-08a095cd.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5a835778e60761001a2eb5db",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5a89473c3b2508001a72a59b",
+      "query": "Which theorem can be simplified to the prime ideals theorem?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5a89473c3b2508001a72a59b-c59693a4.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5a89473c3b2508001a72a59b",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5acf9d3477cf76001a685512",
+      "query": "How many students enrolled at the College during the spring of 2014?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5acf9d3477cf76001a685513-42c04957.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5acf9d3477cf76001a685512",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5acf9d3477cf76001a685513",
+      "query": "The University enrolled 3,468 students in the College  and how many in it's graduate divisions?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5acf9d3477cf76001a685513-42c04957.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5acf9d3477cf76001a685513",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5ad0301577cf76001a686db5",
+      "query": " What was not thought to decide a person's behavior?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5ad0301577cf76001a686db5-4b5d5819.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5ad0301577cf76001a686db5",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5ad0391f77cf76001a686e48",
+      "query": " Who along with Russia supported post WW-I communist movements?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5ad0391f77cf76001a686e48-14d78905.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5ad0391f77cf76001a686e48",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5ad0440877cf76001a686f3e",
+      "query": "What are the two largest cities in the United States?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5ad0440877cf76001a686f3e-88dac734.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5ad0440877cf76001a686f3e",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5ad25963d7d075001a428e0d",
+      "query": "In what year was Fort Coligny built?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5ad25963d7d075001a428e0d-78c5ac2d.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5ad25963d7d075001a428e0d",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5ad2685dd7d075001a429279",
+      "query": "What does concentrated O allow combustion to do?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5ad2685dd7d075001a429279-7140cd84.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5ad2685dd7d075001a429279",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5ad3d7e0604f3c001a3ff360",
+      "query": "A water cooling tower is also referred to as what kind of cooling tower?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5ad3d7e0604f3c001a3ff360-8320b9f3.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5ad3d7e0604f3c001a3ff360",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5ad3f03c604f3c001a3ff82b",
+      "query": "How many crank rotations are there in a cylinder cycle?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5ad3f03c604f3c001a3ff82b-d744d293.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5ad3f03c604f3c001a3ff82b",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-squad_v2-5ad5036c5b96ef001a10a985",
+      "query": "What museum preserves the memory of independence?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "evaluation/candidates/public_corpus/squad_v2/5ad5036c5b96ef001a10a985-590c26f7.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "rajpurkar/squad_v2",
+        "upstream_record_id": "5ad5036c5b96ef001a10a985",
+        "human_reviewed": false
+      }
+    }
+  ]
+}

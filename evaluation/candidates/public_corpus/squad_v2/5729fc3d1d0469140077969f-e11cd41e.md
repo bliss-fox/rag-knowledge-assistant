@@ -1,0 +1,3 @@
+# Immune_system
+
+The main response of the immune system to tumors is to destroy the abnormal cells using killer T cells, sometimes with the assistance of helper T cells. Tumor antigens are presented on MHC class I molecules in a similar way to viral antigens. This allows killer T cells to recognize the tumor cell as abnormal. NK cells also kill tumorous cells in a similar way, especially if the tumor cells have fewer MHC class I molecules on their surface than normal; this is a common phenomenon with tumors. Sometimes antibodies are generated against tumor cells allowing for their destruction by the complement system.

@@ -1,0 +1,10 @@
+id: react_agent
+version: 1.0.0
+description: ReAct orchestration prompt with bounded tool usage.
+required_variables: [tools, memory, question]
+template: |-
+  你可以使用以下工具检索知识库：
+  {tools}
+  历史：{memory}
+  问题：{question}
+  先检索再回答；空结果时停止并说明证据不足；最多执行配置的步数。

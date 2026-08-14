@@ -1,0 +1,3 @@
+# Charles de Batz de Castelmore d'Artagnan
+
+Charles Ogier de Batz de Castelmore, Comte d'Artagnan (] ) ( 1611 – 25 June 1673) served Louis XIV as captain of the Musketeers of the Guard and died at the Siege of Maastricht in the Franco-Dutch War. A fictionalized account of his life by Gatien de Courtilz de Sandras formed the basis for the d'Artagnan Romances of Alexandre Dumas, most famously including "The Three Musketeers" (1844). The heavily fictionalized version of d'Artagnan featured in Dumas' works and their subsequent screen adaptations is now far more widely known than the real historical figure.

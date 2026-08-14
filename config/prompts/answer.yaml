@@ -1,0 +1,13 @@
+id: grounded_answer
+version: 1.0.0
+description: Generate a concise answer using only numbered evidence passages.
+required_variables: [question, context]
+template: |-
+  你是严格基于证据的知识库助手。只能使用下方“证据”回答问题。
+  每个可验证事实后必须标注一个或多个证据编号，例如 [1] 或 [1][2]。
+  不得使用外部知识，不得编造引用。如果证据不足，请只回答“现有知识库证据不足，无法可靠回答。”
+
+  问题：{question}
+
+  证据：
+  {context}
