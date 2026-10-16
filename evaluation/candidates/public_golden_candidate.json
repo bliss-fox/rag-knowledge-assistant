@@ -1,7 +1,7 @@
 {
   "artifact_type": "golden_set_candidate",
   "name": "modular-rag-public-golden-candidate",
-  "version": "2026.08.13.1",
+  "version": "2026.09.02.3",
   "visibility": "public",
   "review_status": "requires_human_review",
   "eligible_for_quality_gate": false,
@@ -13,32 +13,148 @@
   ],
   "sources": [
     {
+      "id": "cmrc2018",
       "dataset": "hfl/cmrc2018",
       "revision": "137f2c45a24275fb68f6961c4d357f46288886aa",
       "license": "cc-by-sa-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "Chinese Machine Reading Comprehension 2018",
+      "dataset_card": {
+        "url": "https://huggingface.co/datasets/hfl/cmrc2018/raw/137f2c45a24275fb68f6961c4d357f46288886aa/README.md",
+        "sha256": "977508e5d90c3e590dbffe7b8a6d2e9748eb2f61dc791a4dbc8b2fa7cf0d9688",
+        "size_bytes": 7851
+      },
+      "artifacts": [
+        {
+          "role": "validation",
+          "url": "https://huggingface.co/datasets/hfl/cmrc2018/resolve/137f2c45a24275fb68f6961c4d357f46288886aa/data/validation-00000-of-00001.parquet",
+          "sha256": "c3d3116e5845b8d3c44a863c1e2f973817c9f10a52e503b079ac49d4366f78b2",
+          "size_bytes": 1136115
+        }
+      ],
       "homepage": "https://huggingface.co/datasets/hfl/cmrc2018"
     },
     {
+      "id": "xquad_zh",
+      "dataset": "google/xquad",
+      "config": "xquad.zh",
+      "revision": "51adfef1c1287aab1d2d91b5bead9bcfb9c68583",
+      "license": "cc-by-sa-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "XQuAD: Cross-lingual Question Answering Dataset",
+      "dataset_card": {
+        "url": "https://huggingface.co/datasets/google/xquad/raw/51adfef1c1287aab1d2d91b5bead9bcfb9c68583/README.md",
+        "sha256": "9bb7215530f157e3761585cfbfe11161cda1951546dbfa5b65fd797972c85946",
+        "size_bytes": 15630
+      },
+      "artifacts": [
+        {
+          "role": "validation",
+          "url": "https://huggingface.co/datasets/google/xquad/resolve/51adfef1c1287aab1d2d91b5bead9bcfb9c68583/xquad.zh/validation-00000-of-00001.parquet",
+          "sha256": "6d9033e82b2a1dbf67b66025e84fab9a44e13dc91401e4914a9529db784146f6",
+          "size_bytes": 205768
+        }
+      ],
+      "homepage": "https://huggingface.co/datasets/google/xquad"
+    },
+    {
+      "id": "squad_v2",
       "dataset": "rajpurkar/squad_v2",
       "revision": "3ffb306f725f7d2ce8394bc1873b24868140c412",
       "license": "cc-by-sa-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "SQuAD 2.0",
+      "dataset_card": {
+        "url": "https://huggingface.co/datasets/rajpurkar/squad_v2/raw/3ffb306f725f7d2ce8394bc1873b24868140c412/README.md",
+        "sha256": "7a6726352072e8517318959fe0438d4f45880affc041ced6da3bf2e4dec94c68",
+        "size_bytes": 8916
+      },
+      "artifacts": [
+        {
+          "role": "validation",
+          "url": "https://huggingface.co/datasets/rajpurkar/squad_v2/resolve/3ffb306f725f7d2ce8394bc1873b24868140c412/squad_v2/validation-00000-of-00001.parquet",
+          "sha256": "0560174ab095c5ac0a8c8dc8da05f1625453c45a77e4ce9cabc6947ddfdd24cb",
+          "size_bytes": 1350511
+        }
+      ],
       "homepage": "https://huggingface.co/datasets/rajpurkar/squad_v2"
     },
     {
+      "id": "hotpotqa",
       "dataset": "hotpotqa/hotpot_qa",
       "revision": "1908d6afbbead072334abe2965f91bd2709910ab",
       "license": "cc-by-sa-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "HotpotQA",
+      "dataset_card": {
+        "url": "https://huggingface.co/datasets/hotpotqa/hotpot_qa/raw/1908d6afbbead072334abe2965f91bd2709910ab/README.md",
+        "sha256": "3cfab003a856275d3198b031c6b2ac46c63178fb462a4123705f652b71b22813",
+        "size_bytes": 9522
+      },
+      "artifacts": [
+        {
+          "role": "validation",
+          "url": "https://huggingface.co/datasets/hotpotqa/hotpot_qa/resolve/1908d6afbbead072334abe2965f91bd2709910ab/distractor/validation-00000-of-00001.parquet",
+          "sha256": "c20b638ca82b21d04fe12e14ff417ad05153d4d215a65de54497fca4e972f7c6",
+          "size_bytes": 27452575
+        }
+      ],
       "homepage": "https://huggingface.co/datasets/hotpotqa/hotpot_qa"
+    },
+    {
+      "id": "multihop_rag",
+      "dataset": "yixuantt/MultiHopRAG",
+      "revision": "71ac0d0bd1f951d2d6b70311f7d2ae404e1ffa82",
+      "license": "odc-by-1.0",
+      "license_url": "https://opendatacommons.org/licenses/by/1-0/",
+      "attribution": "MultiHop-RAG: Benchmarking Retrieval-Augmented Generation for Multi-Hop Queries, Yixuan Tang and Yi Yang (2024)",
+      "dataset_card": {
+        "url": "https://huggingface.co/datasets/yixuantt/MultiHopRAG/raw/71ac0d0bd1f951d2d6b70311f7d2ae404e1ffa82/README.md",
+        "sha256": "f671db44cf1802f359451e466d82c68c5059d58451b8976ce8329b74d8b89001",
+        "size_bytes": 1312,
+        "declared_license": "odc-by"
+      },
+      "artifacts": [
+        {
+          "role": "questions",
+          "url": "https://huggingface.co/datasets/yixuantt/MultiHopRAG/resolve/71ac0d0bd1f951d2d6b70311f7d2ae404e1ffa82/MultiHopRAG.json",
+          "sha256": "03cfb4926461f868684903aadc8024447bdda5bb3f6804741424cce338515bff",
+          "size_bytes": 5171312
+        },
+        {
+          "role": "corpus",
+          "url": "https://huggingface.co/datasets/yixuantt/MultiHopRAG/resolve/71ac0d0bd1f951d2d6b70311f7d2ae404e1ffa82/corpus.json",
+          "sha256": "20b61b5ab84de84a927420c5d265b7ec8d859ae49980699958a787ade9e4d28f",
+          "size_bytes": 6785567
+        }
+      ],
+      "homepage": "https://huggingface.co/datasets/yixuantt/MultiHopRAG"
+    },
+    {
+      "id": "ragbench_finqa",
+      "dataset": "galileo-ai/ragbench",
+      "config": "finqa",
+      "revision": "97808f3e5fd16ede40bbff6c2949af8139b2eb7b",
+      "license": "cc-by-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "RAGBench, Galileo Technologies Inc. (2024)",
+      "dataset_card": {
+        "url": "https://huggingface.co/datasets/galileo-ai/ragbench/raw/97808f3e5fd16ede40bbff6c2949af8139b2eb7b/README.md",
+        "sha256": "1afeca59575e9508432990054fd75b18b851a384376e2dd7e83852655f33cbe5",
+        "size_bytes": 24681
+      },
+      "artifacts": [
+        {
+          "role": "test",
+          "url": "https://huggingface.co/datasets/galileo-ai/ragbench/resolve/97808f3e5fd16ede40bbff6c2949af8139b2eb7b/finqa/test-00000-of-00001.parquet",
+          "sha256": "b55bd373741fbe65933191690267421183f898c8253f5db2a4a4703360ecf94d",
+          "size_bytes": 8936570
+        }
+      ],
+      "homepage": "https://huggingface.co/datasets/galileo-ai/ragbench"
     }
   ],
   "corpus": [
-    {
-      "document_id": "doc_e8b4aa41385e8117",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1008_QUERY_1-e8b4aa41.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_1008_QUERY_1",
-      "title": "CMRC 2018 passage"
-    },
     {
       "document_id": "doc_1d48975dff97a481",
       "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1040_QUERY_2-1d48975d.md",
@@ -54,52 +170,10 @@
       "title": "CMRC 2018 passage"
     },
     {
-      "document_id": "doc_2dfc0f520fe9e753",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1076_QUERY_0-2dfc0f52.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_1076_QUERY_0",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_6818453f82b4c7e1",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1090_QUERY_1-6818453f.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_1090_QUERY_1",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_4c3845077d35688e",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1124_QUERY_0-4c384507.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_1124_QUERY_0",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_b4189cbecff7a5d4",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1136_QUERY_1-b4189cbe.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_1136_QUERY_1",
-      "title": "CMRC 2018 passage"
-    },
-    {
       "document_id": "doc_fa823321bff2f334",
       "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1161_QUERY_0-fa823321.md",
       "source_dataset": "cmrc2018",
       "source_record_id": "DEV_1161_QUERY_0",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_0a4e07a8225021f0",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_146_QUERY_3-0a4e07a8.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_146_QUERY_3",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_69a965592e066f04",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1525_QUERY_2-69a96559.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_1525_QUERY_2",
       "title": "CMRC 2018 passage"
     },
     {
@@ -110,31 +184,10 @@
       "title": "CMRC 2018 passage"
     },
     {
-      "document_id": "doc_c3169a202565267d",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1575_QUERY_0-c3169a20.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_1575_QUERY_0",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_f6d8afcfeaa0dc85",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1603_QUERY_3-f6d8afcf.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_1603_QUERY_3",
-      "title": "CMRC 2018 passage"
-    },
-    {
       "document_id": "doc_7173de283ebd8b13",
       "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_160_QUERY_0-7173de28.md",
       "source_dataset": "cmrc2018",
       "source_record_id": "DEV_160_QUERY_0",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_bbe21c2a71b22309",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1666_QUERY_4-bbe21c2a.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_1666_QUERY_4",
       "title": "CMRC 2018 passage"
     },
     {
@@ -145,24 +198,10 @@
       "title": "CMRC 2018 passage"
     },
     {
-      "document_id": "doc_cf08615526a4c8e2",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_183_QUERY_0-cf086155.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_183_QUERY_0",
-      "title": "CMRC 2018 passage"
-    },
-    {
       "document_id": "doc_6a0e039e355589d5",
       "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_189_QUERY_0-6a0e039e.md",
       "source_dataset": "cmrc2018",
       "source_record_id": "DEV_189_QUERY_0",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_47eb6c9c74adac6c",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_1931_QUERY_2-47eb6c9c.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_1931_QUERY_2",
       "title": "CMRC 2018 passage"
     },
     {
@@ -201,13 +240,6 @@
       "title": "CMRC 2018 passage"
     },
     {
-      "document_id": "doc_03268f1f74f1a2ca",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_228_QUERY_2-03268f1f.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_228_QUERY_2",
-      "title": "CMRC 2018 passage"
-    },
-    {
       "document_id": "doc_12d308bc005a6ce7",
       "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_25_QUERY_2-12d308bc.md",
       "source_dataset": "cmrc2018",
@@ -236,38 +268,10 @@
       "title": "CMRC 2018 passage"
     },
     {
-      "document_id": "doc_9147b2efe2ce8935",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_330_QUERY_1-9147b2ef.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_330_QUERY_1",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_a294d226c008254b",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_345_QUERY_2-a294d226.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_345_QUERY_2",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_e8915588bbe013de",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_35_QUERY_1-e8915588.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_35_QUERY_1",
-      "title": "CMRC 2018 passage"
-    },
-    {
       "document_id": "doc_91a742d506146612",
       "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_382_QUERY_1-91a742d5.md",
       "source_dataset": "cmrc2018",
       "source_record_id": "DEV_382_QUERY_1",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_86301b75263bb398",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_385_QUERY_2-86301b75.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_385_QUERY_2",
       "title": "CMRC 2018 passage"
     },
     {
@@ -282,27 +286,6 @@
       "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_440_QUERY_0-2f92de1a.md",
       "source_dataset": "cmrc2018",
       "source_record_id": "DEV_440_QUERY_0",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_3f584577f8c9ee91",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_467_QUERY_1-3f584577.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_467_QUERY_1",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_7de03995ea1660d5",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_477_QUERY_1-7de03995.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_477_QUERY_1",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_ee6c47793f72dcf1",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_533_QUERY_1-ee6c4779.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_533_QUERY_1",
       "title": "CMRC 2018 passage"
     },
     {
@@ -324,27 +307,6 @@
       "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_567_QUERY_3-730a5afb.md",
       "source_dataset": "cmrc2018",
       "source_record_id": "DEV_567_QUERY_3",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_78ef75f42bc24fcb",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_582_QUERY_3-78ef75f4.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_582_QUERY_3",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_af6ddf011bd70763",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_605_QUERY_0-af6ddf01.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_605_QUERY_0",
-      "title": "CMRC 2018 passage"
-    },
-    {
-      "document_id": "doc_2353a7eeedb76c4e",
-      "path": "evaluation/candidates/public_corpus/cmrc2018/DEV_82_QUERY_1-2353a7ee.md",
-      "source_dataset": "cmrc2018",
-      "source_record_id": "DEV_82_QUERY_1",
       "title": "CMRC 2018 passage"
     },
     {
@@ -558,76 +520,6 @@
       "title": "Tyler Strickland"
     },
     {
-      "document_id": "doc_0769fe8cc3c37076",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Cambridge-Blackfriars-0769fe8c.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a7fd1515542992e7d278db1-Cambridge Blackfriars",
-      "title": "Cambridge Blackfriars"
-    },
-    {
-      "document_id": "doc_2dbd364762b9ea98",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Daniel-Coxe-Jr.-2dbd3647.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a7fd1515542992e7d278db1-Daniel Coxe, Jr.",
-      "title": "Daniel Coxe, Jr."
-    },
-    {
-      "document_id": "doc_55bfd79b854ee725",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Diocese-of-Lincoln-55bfd79b.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a7fd1515542992e7d278db1-Diocese of Lincoln",
-      "title": "Diocese of Lincoln"
-    },
-    {
-      "document_id": "doc_a3ce6440683ea2d9",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Grimsby-Minster-a3ce6440.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a7fd1515542992e7d278db1-Grimsby Minster",
-      "title": "Grimsby Minster"
-    },
-    {
-      "document_id": "doc_f0267c5fcdb79ec2",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Raid-on-Chignecto-1696-f0267c5f.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a7fd1515542992e7d278db1-Raid on Chignecto (1696)",
-      "title": "Raid on Chignecto (1696)"
-    },
-    {
-      "document_id": "doc_bc09b64afafe9ad9",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Religious-life-at-Stonyhurst-Colleg-bc09b64a.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a7fd1515542992e7d278db1-Religious life at Stonyhurst College",
-      "title": "Religious life at Stonyhurst College"
-    },
-    {
-      "document_id": "doc_01fa8b057c1ad7dd",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Siege-of-Fort-Nashwaak-1696-01fa8b05.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a7fd1515542992e7d278db1-Siege of Fort Nashwaak (1696)",
-      "title": "Siege of Fort Nashwaak (1696)"
-    },
-    {
-      "document_id": "doc_32c6ba399ab03751",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-St-James-School-Grimsby-32c6ba39.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a7fd1515542992e7d278db1-St James' School, Grimsby",
-      "title": "St James' School, Grimsby"
-    },
-    {
-      "document_id": "doc_386db3ba1136daf8",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Timothy-Radcliffe-386db3ba.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a7fd1515542992e7d278db1-Timothy Radcliffe",
-      "title": "Timothy Radcliffe"
-    },
-    {
-      "document_id": "doc_41abac0b816e8499",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-York-Shire-Province-of-New-York-41abac0b.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a7fd1515542992e7d278db1-York Shire (Province of New York)",
-      "title": "York Shire (Province of New York)"
-    },
-    {
       "document_id": "doc_f49f0475f78a2f15",
       "path": "evaluation/candidates/public_corpus/hotpotqa/5a81736255429903bc27b96e-Clarence-Aquatic-Centre-f49f0475.md",
       "source_dataset": "hotpotqa",
@@ -696,216 +588,6 @@
       "source_dataset": "hotpotqa",
       "source_record_id": "5a81736255429903bc27b96e-State Netball and Hockey Centre",
       "title": "State Netball and Hockey Centre"
-    },
-    {
-      "document_id": "doc_0a57d91c06c96782",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Alismataceae-0a57d91c.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a835e215542992ef85e2296-Alismataceae",
-      "title": "Alismataceae"
-    },
-    {
-      "document_id": "doc_3863ba1c0a3e036a",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Butea-3863ba1c.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a835e215542992ef85e2296-Butea",
-      "title": "Butea"
-    },
-    {
-      "document_id": "doc_29877c39d3f1538c",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-File-sharing-in-Canada-29877c39.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a835e215542992ef85e2296-File sharing in Canada",
-      "title": "File sharing in Canada"
-    },
-    {
-      "document_id": "doc_4e34eb1d26b9977d",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Honeyguide-4e34eb1d.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a835e215542992ef85e2296-Honeyguide",
-      "title": "Honeyguide"
-    },
-    {
-      "document_id": "doc_ced57786e9bcbbc7",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Lophodermium-ced57786.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a835e215542992ef85e2296-Lophodermium",
-      "title": "Lophodermium"
-    },
-    {
-      "document_id": "doc_70351e75cb3a967b",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Ocimum-70351e75.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a835e215542992ef85e2296-Ocimum",
-      "title": "Ocimum"
-    },
-    {
-      "document_id": "doc_f666c1f805add329",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Pine-f666c1f8.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a835e215542992ef85e2296-Pine",
-      "title": "Pine"
-    },
-    {
-      "document_id": "doc_3ca37518dad6f8c3",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Quinault-Rainforest-3ca37518.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a835e215542992ef85e2296-Quinault Rainforest",
-      "title": "Quinault Rainforest"
-    },
-    {
-      "document_id": "doc_b2a74372f0ab2156",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Sea-cucumber-b2a74372.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a835e215542992ef85e2296-Sea cucumber",
-      "title": "Sea cucumber"
-    },
-    {
-      "document_id": "doc_0eeeda1f23d1a508",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Yellow-pine-0eeeda1f.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a835e215542992ef85e2296-Yellow pine",
-      "title": "Yellow pine"
-    },
-    {
-      "document_id": "doc_3d07a3f2a0019a39",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Andrew-Kaplan-3d07a3f2.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a83697e5542996488c2e441-Andrew Kaplan",
-      "title": "Andrew Kaplan"
-    },
-    {
-      "document_id": "doc_b7d29fa513a04a39",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Fight-for-My-Way-b7d29fa5.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a83697e5542996488c2e441-Fight for My Way",
-      "title": "Fight for My Way"
-    },
-    {
-      "document_id": "doc_33ccd2541b685c49",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Hindsight-TV-series-33ccd254.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a83697e5542996488c2e441-Hindsight (TV series)",
-      "title": "Hindsight (TV series)"
-    },
-    {
-      "document_id": "doc_ada56d1273ad66e6",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Khamani-Griffin-ada56d12.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a83697e5542996488c2e441-Khamani Griffin",
-      "title": "Khamani Griffin"
-    },
-    {
-      "document_id": "doc_5e70aa3a2108dfc1",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Michael-Stephenson-filmmaker-5e70aa3a.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a83697e5542996488c2e441-Michael Stephenson (filmmaker)",
-      "title": "Michael Stephenson (filmmaker)"
-    },
-    {
-      "document_id": "doc_6d3e18fd25881223",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Park-Seo-joon-6d3e18fd.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a83697e5542996488c2e441-Park Seo-joon",
-      "title": "Park Seo-joon"
-    },
-    {
-      "document_id": "doc_6dc00026a5bf9fb9",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Peggy-Cartwright-6dc00026.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a83697e5542996488c2e441-Peggy Cartwright",
-      "title": "Peggy Cartwright"
-    },
-    {
-      "document_id": "doc_8cb286c846f89ce2",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Robert-Wightman-8cb286c8.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a83697e5542996488c2e441-Robert Wightman",
-      "title": "Robert Wightman"
-    },
-    {
-      "document_id": "doc_333d9bea16e4ee38",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Salmi-Manja-333d9bea.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a83697e5542996488c2e441-Salmi Manja",
-      "title": "Salmi Manja"
-    },
-    {
-      "document_id": "doc_ace0e622ef987d5c",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-The-Fountain-in-the-Park-ace0e622.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a83697e5542996488c2e441-The Fountain in the Park",
-      "title": "The Fountain in the Park"
-    },
-    {
-      "document_id": "doc_ca0d7acf28779845",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Agua-Dulce-Mountains-ca0d7acf.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a873ec75542996432c57244-Agua Dulce Mountains",
-      "title": "Agua Dulce Mountains"
-    },
-    {
-      "document_id": "doc_f9724fb50960c70b",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Bald-Knob-Cross-f9724fb5.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a873ec75542996432c57244-Bald Knob Cross",
-      "title": "Bald Knob Cross"
-    },
-    {
-      "document_id": "doc_5f2c2d1bb8f6edd7",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Bo-e-5f2c2d1b.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a873ec75542996432c57244-Bořeň",
-      "title": "Bořeň"
-    },
-    {
-      "document_id": "doc_fb7657b29aabaa45",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Devils-Tower-fb7657b2.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a873ec75542996432c57244-Devils Tower",
-      "title": "Devils Tower"
-    },
-    {
-      "document_id": "doc_0d14b123ed1e2285",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Gile-Mountain-0d14b123.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a873ec75542996432c57244-Gile Mountain",
-      "title": "Gile Mountain"
-    },
-    {
-      "document_id": "doc_30f6022a7c0b6ce9",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Hoher-Eichham-30f6022a.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a873ec75542996432c57244-Hoher Eichham",
-      "title": "Hoher Eichham"
-    },
-    {
-      "document_id": "doc_ecd38d68df748929",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Holston-Mountain-ecd38d68.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a873ec75542996432c57244-Holston Mountain",
-      "title": "Holston Mountain"
-    },
-    {
-      "document_id": "doc_6c51631a1e7409ca",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-M-hukona-6c51631a.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a873ec75542996432c57244-Māhukona",
-      "title": "Māhukona"
-    },
-    {
-      "document_id": "doc_d067bbc1a30b6b0f",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Stony-Man-Mountain-d067bbc1.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a873ec75542996432c57244-Stony Man Mountain",
-      "title": "Stony Man Mountain"
-    },
-    {
-      "document_id": "doc_508a6f39ccf26481",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Tidal-flooding-508a6f39.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a873ec75542996432c57244-Tidal flooding",
-      "title": "Tidal flooding"
     },
     {
       "document_id": "doc_88e78c5d3ab86a99",
@@ -1048,146 +730,6 @@
       "title": "William Whiting (footballer)"
     },
     {
-      "document_id": "doc_92aee729f79f044d",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-Backpacker-murders-92aee729.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8b057255429971feec4611-Backpacker murders",
-      "title": "Backpacker murders"
-    },
-    {
-      "document_id": "doc_2c23b7063949a907",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-Catching-Milat-2c23b706.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8b057255429971feec4611-Catching Milat",
-      "title": "Catching Milat"
-    },
-    {
-      "document_id": "doc_3b66ce6433f7e371",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-Coffin-Rock-3b66ce64.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8b057255429971feec4611-Coffin Rock",
-      "title": "Coffin Rock"
-    },
-    {
-      "document_id": "doc_b605095f5a685bde",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-David-Lightfoot-b605095f.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8b057255429971feec4611-David Lightfoot",
-      "title": "David Lightfoot"
-    },
-    {
-      "document_id": "doc_de9a90ec6c90e7c7",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-Mark-Tedeschi-de9a90ec.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8b057255429971feec4611-Mark Tedeschi",
-      "title": "Mark Tedeschi"
-    },
-    {
-      "document_id": "doc_c5c590078e415d24",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-Rock-a-Doodle-c5c59007.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8b057255429971feec4611-Rock-a-Doodle",
-      "title": "Rock-a-Doodle"
-    },
-    {
-      "document_id": "doc_dd9d40df0b1d43c2",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-The-Long-Island-Serial-Killer-film-dd9d40df.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8b057255429971feec4611-The Long Island Serial Killer (film)",
-      "title": "The Long Island Serial Killer (film)"
-    },
-    {
-      "document_id": "doc_e58b160b64e76fb2",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-Wanted-2008-film-e58b160b.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8b057255429971feec4611-Wanted (2008 film)",
-      "title": "Wanted (2008 film)"
-    },
-    {
-      "document_id": "doc_400349c5813edd41",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-Wing-Commander-film-400349c5.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8b057255429971feec4611-Wing Commander (film)",
-      "title": "Wing Commander (film)"
-    },
-    {
-      "document_id": "doc_ad757f2d3778aea7",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-Wolf-Creek-film-ad757f2d.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8b057255429971feec4611-Wolf Creek (film)",
-      "title": "Wolf Creek (film)"
-    },
-    {
-      "document_id": "doc_860a31afa85ec70d",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Alfred-Rode-860a31af.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8c6342554299240d9c214a-Alfred Rode",
-      "title": "Alfred Rode"
-    },
-    {
-      "document_id": "doc_c245247478ca3f5e",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Angela-Lonsdale-c2452474.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8c6342554299240d9c214a-Angela Lonsdale",
-      "title": "Angela Lonsdale"
-    },
-    {
-      "document_id": "doc_561afc7dba23625a",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Bringing-Up-Bates-561afc7d.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8c6342554299240d9c214a-Bringing Up Bates",
-      "title": "Bringing Up Bates"
-    },
-    {
-      "document_id": "doc_df3ed2f1a84aa35f",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Christina-Applegate-df3ed2f1.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8c6342554299240d9c214a-Christina Applegate",
-      "title": "Christina Applegate"
-    },
-    {
-      "document_id": "doc_977db3b013091f03",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Claudine-Auger-977db3b0.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8c6342554299240d9c214a-Claudine Auger",
-      "title": "Claudine Auger"
-    },
-    {
-      "document_id": "doc_e9bb7dc259d2b250",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Claudine-Dupuis-e9bb7dc2.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8c6342554299240d9c214a-Claudine Dupuis",
-      "title": "Claudine Dupuis"
-    },
-    {
-      "document_id": "doc_93edfbe1a3ea4964",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Claudine-s-Return-93edfbe1.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8c6342554299240d9c214a-Claudine's Return",
-      "title": "Claudine's Return"
-    },
-    {
-      "document_id": "doc_3d274b05bbe059d4",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Franchesca-Salcedo-3d274b05.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8c6342554299240d9c214a-Franchesca Salcedo",
-      "title": "Franchesca Salcedo"
-    },
-    {
-      "document_id": "doc_704bf4aee2aecaf6",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Mandy-Richardson-704bf4ae.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8c6342554299240d9c214a-Mandy Richardson",
-      "title": "Mandy Richardson"
-    },
-    {
-      "document_id": "doc_29d93fae0e128932",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Pierre-Gaspard-Huit-29d93fae.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5a8c6342554299240d9c214a-Pierre Gaspard-Huit",
-      "title": "Pierre Gaspard-Huit"
-    },
-    {
       "document_id": "doc_b6ef9134ea8f2573",
       "path": "evaluation/candidates/public_corpus/hotpotqa/5a8f0de35542995b44241f40-25-or-6-to-4-b6ef9134.md",
       "source_dataset": "hotpotqa",
@@ -1256,146 +798,6 @@
       "source_dataset": "hotpotqa",
       "source_record_id": "5a8f0de35542995b44241f40-Terry Kath",
       "title": "Terry Kath"
-    },
-    {
-      "document_id": "doc_bebf19dde1e6a19e",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-Annie-Get-Your-Gun-musical-bebf19dd.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ab298fb554299449642c922-Annie Get Your Gun (musical)",
-      "title": "Annie Get Your Gun (musical)"
-    },
-    {
-      "document_id": "doc_7f889c92963870a0",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-Charles-de-Batz-de-Castelmore-d-Art-7f889c92.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ab298fb554299449642c922-Charles de Batz de Castelmore d'Artagnan",
-      "title": "Charles de Batz de Castelmore d'Artagnan"
-    },
-    {
-      "document_id": "doc_d7bfa0c388c251ca",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-Curb-Your-Enthusiasm-d7bfa0c3.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ab298fb554299449642c922-Curb Your Enthusiasm",
-      "title": "Curb Your Enthusiasm"
-    },
-    {
-      "document_id": "doc_9825f94114aa9a79",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-James-Gregory-actor-9825f941.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ab298fb554299449642c922-James Gregory (actor)",
-      "title": "James Gregory (actor)"
-    },
-    {
-      "document_id": "doc_7897596cc6c026f5",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-Joseph-McCarthy-7897596c.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ab298fb554299449642c922-Joseph McCarthy",
-      "title": "Joseph McCarthy"
-    },
-    {
-      "document_id": "doc_1030049f58a517ce",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-Lana-Del-Rey-videography-1030049f.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ab298fb554299449642c922-Lana Del Rey videography",
-      "title": "Lana Del Rey videography"
-    },
-    {
-      "document_id": "doc_112ac898b229529a",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-Lavender-scare-112ac898.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ab298fb554299449642c922-Lavender scare",
-      "title": "Lavender scare"
-    },
-    {
-      "document_id": "doc_83d57f82629f3398",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-Red-baiting-83d57f82.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ab298fb554299449642c922-Red-baiting",
-      "title": "Red-baiting"
-    },
-    {
-      "document_id": "doc_745fb5d505f2617e",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-The-Year-of-Living-Dangerously-nove-745fb5d5.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ab298fb554299449642c922-The Year of Living Dangerously (novel)",
-      "title": "The Year of Living Dangerously (novel)"
-    },
-    {
-      "document_id": "doc_a808e2ceeadf88a3",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-To-Kill-a-Priest-a808e2ce.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ab298fb554299449642c922-To Kill a Priest",
-      "title": "To Kill a Priest"
-    },
-    {
-      "document_id": "doc_d94ecf3e7a99f1c7",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Alex-Josey-d94ecf3e.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abae1e65542996cc5e49ed2-Alex Josey",
-      "title": "Alex Josey"
-    },
-    {
-      "document_id": "doc_4e17b80450e2ce6a",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Charles-Alvin-Beckwith-4e17b804.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abae1e65542996cc5e49ed2-Charles Alvin Beckwith",
-      "title": "Charles Alvin Beckwith"
-    },
-    {
-      "document_id": "doc_ece506d69854e2eb",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Chin-Peng-ece506d6.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abae1e65542996cc5e49ed2-Chin Peng",
-      "title": "Chin Peng"
-    },
-    {
-      "document_id": "doc_6bb3de1c347c44a9",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Joint-Special-Operations-Command-6bb3de1c.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abae1e65542996cc5e49ed2-Joint Special Operations Command",
-      "title": "Joint Special Operations Command"
-    },
-    {
-      "document_id": "doc_73899086348a1970",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Malayan-Emergency-73899086.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abae1e65542996cc5e49ed2-Malayan Emergency",
-      "title": "Malayan Emergency"
-    },
-    {
-      "document_id": "doc_cb4e05a92b0ca57a",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Malayan-Peoples-Anti-Japanese-Army-cb4e05a9.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abae1e65542996cc5e49ed2-Malayan Peoples' Anti-Japanese Army",
-      "title": "Malayan Peoples' Anti-Japanese Army"
-    },
-    {
-      "document_id": "doc_a948a1d092f802b2",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Pingat-Jasa-Malaysia-a948a1d0.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abae1e65542996cc5e49ed2-Pingat Jasa Malaysia",
-      "title": "Pingat Jasa Malaysia"
-    },
-    {
-      "document_id": "doc_9b757ba50b3da9d4",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Special-Operations-Volunteer-Force-9b757ba5.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abae1e65542996cc5e49ed2-Special Operations Volunteer Force",
-      "title": "Special Operations Volunteer Force"
-    },
-    {
-      "document_id": "doc_c08733fe37a4a395",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-The-Last-Communist-c08733fe.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abae1e65542996cc5e49ed2-The Last Communist",
-      "title": "The Last Communist"
-    },
-    {
-      "document_id": "doc_08125f58969e2dc1",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Weeratunge-Edward-Perera-08125f58.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abae1e65542996cc5e49ed2-Weeratunge Edward Perera",
-      "title": "Weeratunge Edward Perera"
     },
     {
       "document_id": "doc_5502006ffeaaf85e",
@@ -1538,146 +940,6 @@
       "title": "Usain Bolt"
     },
     {
-      "document_id": "doc_416a40a735b68012",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Arsenal-F.C.-league-record-by-oppon-416a40a7.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abffda6554299012d1db55b-Arsenal F.C. league record by opponent",
-      "title": "Arsenal F.C. league record by opponent"
-    },
-    {
-      "document_id": "doc_27db7a59ed6011e0",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Bill-Perry-footballer-27db7a59.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abffda6554299012d1db55b-Bill Perry (footballer)",
-      "title": "Bill Perry (footballer)"
-    },
-    {
-      "document_id": "doc_07197b70df1d679c",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Blackpool-F.C.-07197b70.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abffda6554299012d1db55b-Blackpool F.C.",
-      "title": "Blackpool F.C."
-    },
-    {
-      "document_id": "doc_7e2ebc5e2c987d38",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Colin-Waldron-7e2ebc5e.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abffda6554299012d1db55b-Colin Waldron",
-      "title": "Colin Waldron"
-    },
-    {
-      "document_id": "doc_c3000c6f8a0d17f5",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Cullen-Bryant-c3000c6f.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abffda6554299012d1db55b-Cullen Bryant",
-      "title": "Cullen Bryant"
-    },
-    {
-      "document_id": "doc_7b88b00e69809a91",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Ewan-Fenton-7b88b00e.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abffda6554299012d1db55b-Ewan Fenton",
-      "title": "Ewan Fenton"
-    },
-    {
-      "document_id": "doc_33bf9cded19e9e5f",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Fabri-Salcedo-33bf9cde.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abffda6554299012d1db55b-Fabri Salcedo",
-      "title": "Fabri Salcedo"
-    },
-    {
-      "document_id": "doc_9a3fcf503b515f7d",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-K.R.C.-Genk-in-European-football-9a3fcf50.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abffda6554299012d1db55b-K.R.C. Genk in European football",
-      "title": "K.R.C. Genk in European football"
-    },
-    {
-      "document_id": "doc_16b2da2b1a49bfed",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-List-of-Sutton-United-F.C.-seasons-16b2da2b.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abffda6554299012d1db55b-List of Sutton United F.C. seasons",
-      "title": "List of Sutton United F.C. seasons"
-    },
-    {
-      "document_id": "doc_1bfe57ed99208298",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Olympiakos-Nicosia-1bfe57ed.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5abffda6554299012d1db55b-Olympiakos Nicosia",
-      "title": "Olympiakos Nicosia"
-    },
-    {
-      "document_id": "doc_f8298db361ed3ec4",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Aag-1948-film-f8298db3.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ac00278554299012d1db56b-Aag (1948 film)",
-      "title": "Aag (1948 film)"
-    },
-    {
-      "document_id": "doc_55397b159b0b2dce",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Divya-Rana-55397b15.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ac00278554299012d1db56b-Divya Rana",
-      "title": "Divya Rana"
-    },
-    {
-      "document_id": "doc_06c31025ae1e1581",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Kal-Aaj-Aur-Kal-06c31025.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ac00278554299012d1db56b-Kal Aaj Aur Kal",
-      "title": "Kal Aaj Aur Kal"
-    },
-    {
-      "document_id": "doc_48e4fb209c51eb87",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Karan-Kapoor-48e4fb20.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ac00278554299012d1db56b-Karan Kapoor",
-      "title": "Karan Kapoor"
-    },
-    {
-      "document_id": "doc_c4e6e3c76869ff75",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Mera-Naam-Joker-c4e6e3c7.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ac00278554299012d1db56b-Mera Naam Joker",
-      "title": "Mera Naam Joker"
-    },
-    {
-      "document_id": "doc_31da567e5b1288d1",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Mike-Cahill-director-31da567e.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ac00278554299012d1db56b-Mike Cahill (director)",
-      "title": "Mike Cahill (director)"
-    },
-    {
-      "document_id": "doc_06f9f246af72cae6",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Prem-Rog-06f9f246.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ac00278554299012d1db56b-Prem Rog",
-      "title": "Prem Rog"
-    },
-    {
-      "document_id": "doc_0d76a3062f880888",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Raj-Kapoor-0d76a306.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ac00278554299012d1db56b-Raj Kapoor",
-      "title": "Raj Kapoor"
-    },
-    {
-      "document_id": "doc_c5277278c80ab961",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Ram-Teri-Ganga-Maili-c5277278.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ac00278554299012d1db56b-Ram Teri Ganga Maili",
-      "title": "Ram Teri Ganga Maili"
-    },
-    {
-      "document_id": "doc_8eacff4b04f03d3d",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Shree-420-8eacff4b.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5ac00278554299012d1db56b-Shree 420",
-      "title": "Shree 420"
-    },
-    {
       "document_id": "doc_4fb9ebcbd5a41184",
       "path": "evaluation/candidates/public_corpus/hotpotqa/5ac46cb85542991943173987-Benjamin-Abram-4fb9ebcb.md",
       "source_dataset": "hotpotqa",
@@ -1746,76 +1008,6 @@
       "source_dataset": "hotpotqa",
       "source_record_id": "5ac46cb85542991943173987-Sister cities of Grand Forks, North Dakota",
       "title": "Sister cities of Grand Forks, North Dakota"
-    },
-    {
-      "document_id": "doc_2fd0f6016d85517a",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Chanhassen-High-School-2fd0f601.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5adf99065542992d7e9f93b0-Chanhassen High School",
-      "title": "Chanhassen High School"
-    },
-    {
-      "document_id": "doc_69ba57b080be63b3",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Halifax-County-High-School-69ba57b0.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5adf99065542992d7e9f93b0-Halifax County High School",
-      "title": "Halifax County High School"
-    },
-    {
-      "document_id": "doc_427cbaa9b66d849d",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Henderson-State-Reddies-football-427cbaa9.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5adf99065542992d7e9f93b0-Henderson State Reddies football",
-      "title": "Henderson State Reddies football"
-    },
-    {
-      "document_id": "doc_d80752107844edd3",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Houston-Baptist-Huskies-football-d8075210.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5adf99065542992d7e9f93b0-Houston Baptist Huskies football",
-      "title": "Houston Baptist Huskies football"
-    },
-    {
-      "document_id": "doc_9e14c11e8bb24962",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Kiehl-Frazier-9e14c11e.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5adf99065542992d7e9f93b0-Kiehl Frazier",
-      "title": "Kiehl Frazier"
-    },
-    {
-      "document_id": "doc_a3ee5d247e7d37e8",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Ouachita-Baptist-Tigers-a3ee5d24.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5adf99065542992d7e9f93b0-Ouachita Baptist Tigers",
-      "title": "Ouachita Baptist Tigers"
-    },
-    {
-      "document_id": "doc_32354599ca380e6a",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Ouachita-Baptist-Tigers-football-32354599.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5adf99065542992d7e9f93b0-Ouachita Baptist Tigers football",
-      "title": "Ouachita Baptist Tigers football"
-    },
-    {
-      "document_id": "doc_883e9f41181039a0",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Ouachita-Baptist-University-883e9f41.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5adf99065542992d7e9f93b0-Ouachita Baptist University",
-      "title": "Ouachita Baptist University"
-    },
-    {
-      "document_id": "doc_4f3f75ab61681312",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Tuskegee-Golden-Tigers-football-4f3f75ab.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5adf99065542992d7e9f93b0-Tuskegee Golden Tigers football",
-      "title": "Tuskegee Golden Tigers football"
-    },
-    {
-      "document_id": "doc_0b681ecc31faa16f",
-      "path": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-West-Alabama-Tigers-football-0b681ecc.md",
-      "source_dataset": "hotpotqa",
-      "source_record_id": "5adf99065542992d7e9f93b0-West Alabama Tigers football",
-      "title": "West Alabama Tigers football"
     },
     {
       "document_id": "doc_67c66302409785e8",
@@ -2098,6 +1290,447 @@
       "title": "Nobel Prize in Physics"
     },
     {
+      "document_id": "doc_3dee2111f00ef082",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-fortune.com-2023-11-18-how-did-openai-fire-sam-altman--3dee2111.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://fortune.com/2023/11/18/how-did-openai-fire-sam-altman-greg-brockman-rogue-board/",
+      "title": "OpenAI's ex-chairman accuses board of going rogue in firing Altman: 'Sam and I are shocked and saddened by what the board did'"
+    },
+    {
+      "document_id": "doc_299edfcafe7c46ab",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-fortune.com-2023-12-18-youtube-mom-influencer-parentin-299edfca.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://fortune.com/2023/12/18/youtube-mom-influencer-parenting-advice-ruby-franke-pleads-guilty-child-abuse-case/",
+      "title": "YouTube influencer who gave parenting advice pleads guilty to horrific child abuse"
+    },
+    {
+      "document_id": "doc_a5edfde214f42e0b",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-fortune.com-crypto-2023-10-04-sam-bankman-fried-lawyer-a5edfde2.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://fortune.com/crypto/2023/10/04/sam-bankman-fried-lawyers-opening-statements-witnesses-marc-antoine-julliard-adam-yedidia-ftx-commodities-trader-developer/",
+      "title": "Is Sam Bankman-Fried a bad ‘man’ or a good ‘boy’? Lawyers swap opening statements before first witnesses take the stand"
+    },
+    {
+      "document_id": "doc_325e7cda1cab7b99",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-09-26-generative-ai-disinformation-325e7cda.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://techcrunch.com/2023/09/26/generative-ai-disinformation-risks/",
+      "title": "Deepfake election risks trigger EU call for more generative AI safeguards"
+    },
+    {
+      "document_id": "doc_f8beceda01422d99",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-10-02-sbf-60-minutes-f8beceda.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://techcrunch.com/2023/10/02/sbf-60-minutes/",
+      "title": "SBF, riding high on FTX, reportedly offered $5B to Trump to cancel President re-run"
+    },
+    {
+      "document_id": "doc_6bf7eda430b47c68",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-10-07-sam-altman-backs-a-teens-sta-6bf7eda4.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://techcrunch.com/2023/10/07/sam-altman-backs-a-teens-startup-google-unveils-the-pixel-8-and-tiktok-tests-an-ad-free-tier/",
+      "title": "Sam Altman backs teens’ startup, Google unveils the Pixel 8 and TikTok tests an ad-free tier"
+    },
+    {
+      "document_id": "doc_21f6ee01f17eb034",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-10-19-meta-instagram-palestine-isr-21f6ee01.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://techcrunch.com/2023/10/19/meta-instagram-palestine-israel-shadowban-censorship-moderation-bias/",
+      "title": "Meta has a moderation bias problem, not just a ‘bug,’ that’s suppressing Palestinian voices"
+    },
+    {
+      "document_id": "doc_1dd030f5ef725b9c",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-10-30-5-things-we-learned-so-far-a-1dd030f5.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://techcrunch.com/2023/10/30/5-things-we-learned-so-far-about-the-google-antitrust-case/",
+      "title": "5 things we learned so far about the Google antitrust case"
+    },
+    {
+      "document_id": "doc_4e40f3676dc8d57d",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-10-30-cruise-hits-the-brakes-on-dr-4e40f367.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://techcrunch.com/2023/10/30/cruise-hits-the-brakes-on-driverless-uaw-makes-progress-and-more-ev-backpedaling/",
+      "title": "Cruise hits the brakes on driverless, UAW makes progress and more EV backpedaling"
+    },
+    {
+      "document_id": "doc_5bf23ec2f55ca79f",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-11-06-apple-macbook-pro-review-m3--5bf23ec2.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://techcrunch.com/2023/11/06/apple-macbook-pro-review-m3-max/",
+      "title": "Apple 16-inch M3 Max MacBook Pro review: A desktop among laptops"
+    },
+    {
+      "document_id": "doc_495679549627537d",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-11-06-what-to-know-about-fortnite--49567954.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://techcrunch.com/2023/11/06/what-to-know-about-fortnite-maker-epic-games-antitrust-battle-with-google-starting-today/",
+      "title": "What to know about Fortnite maker Epic Games’ antitrust battle with Google, starting today"
+    },
+    {
+      "document_id": "doc_064e728f5e2a528f",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-11-15-meta-seeks-legislation-that--064e728f.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://techcrunch.com/2023/11/15/meta-seeks-legislation-that-would-require-parents-to-approve-teens-app-downloads/",
+      "title": "Meta seeks legislation that would require parents to approve teens’ app downloads"
+    },
+    {
+      "document_id": "doc_dbb66f0365531c5d",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-11-17-wtf-is-going-on-at-openai-sa-dbb66f03.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://techcrunch.com/2023/11/17/wtf-is-going-on-at-openai-sam-altman-fired/",
+      "title": "WTF is going on at OpenAI? We have theories"
+    },
+    {
+      "document_id": "doc_a4223b310d5e04d3",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-11-27-eu-amazon-irobot-statement-o-a4223b31.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://techcrunch.com/2023/11/27/eu-amazon-irobot-statement-of-objections/",
+      "title": "Amazon’s iRobot purchase sucks up formal competition concerns in EU"
+    },
+    {
+      "document_id": "doc_f22d59a9c9a8fbcf",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-11-29-beuc-cpc-meta-complaint-f22d59a9.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://techcrunch.com/2023/11/29/beuc-cpc-meta-complaint/",
+      "title": "European consumer groups band together to fight Meta’s self-serving ad-free sub — branding it ‘unfair’ and ‘illegal’"
+    },
+    {
+      "document_id": "doc_17209dd6a7926d7f",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-12-07-early-impressions-of-googles-17209dd6.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://techcrunch.com/2023/12/07/early-impressions-of-googles-gemini-arent-great/",
+      "title": "Early impressions of Google’s Gemini aren’t great"
+    },
+    {
+      "document_id": "doc_aaf1a8de341c040d",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-12-09-google-fakes-an-ai-demo-gran-aaf1a8de.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://techcrunch.com/2023/12/09/google-fakes-an-ai-demo-grand-theft-auto-vi-goes-viral-and-spotify-cuts-jobs/",
+      "title": "Google fakes an AI demo, Grand Theft Auto VI goes viral and Spotify cuts jobs"
+    },
+    {
+      "document_id": "doc_3efdef1c88d28633",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-12-15-news-publisher-files-class-a-3efdef1c.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://techcrunch.com/2023/12/15/news-publisher-files-class-action-antitrust-suit-against-google-citing-ais-harms-to-their-bottom-line/",
+      "title": "News publisher files class action antitrust suit against Google, citing AI’s harms to their bottom line"
+    },
+    {
+      "document_id": "doc_7e3a5e1e3f4165c9",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-12-18-x-dsa-probe-7e3a5e1e.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://techcrunch.com/2023/12/18/x-dsa-probe/",
+      "title": "Elon Musk’s X faces first DSA probe in EU over illegal content risks, moderation, transparency and deceptive UX design"
+    },
+    {
+      "document_id": "doc_d5ec90b3bfd8499f",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.cnbc.com-2023-10-02-the-inside-story-of-dave-clark-d5ec90b3.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.cnbc.com/2023/10/02/the-inside-story-of-dave-clarks-tumultuous-last-days-at-flexport.html",
+      "title": "The inside story of Dave Clark's tumultuous last days at Flexport"
+    },
+    {
+      "document_id": "doc_e97d039fc211b960",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.engadget.com-what-we-expect-at-apples-scary-fast-e-e97d039f.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.engadget.com/what-we-expect-at-apples-scary-fast-event-m3-powered-macbook-pros-and-new-imacs-191549274.html?src=rss",
+      "title": "What we expect at Apple's Scary Fast event: M3-powered MacBook Pros and new iMacs"
+    },
+    {
+      "document_id": "doc_767ea969c286d9cd",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.independent.co.uk-life-style-jada-pinkett-will-smi-767ea969.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.independent.co.uk/life-style/jada-pinkett-will-smith-prenup-b2430529.html",
+      "title": "Jada Pinkett Smith reveals why she and Will Smith never signed a prenup"
+    },
+    {
+      "document_id": "doc_8f4fba7b0b63f5f3",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.independent.co.uk-life-style-love-sex-will-smith-j-8f4fba7b.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.independent.co.uk/life-style/love-sex/will-smith-jada-pinkett-relationship-timeline-divorce-b2427925.html",
+      "title": "A timeline of Will Smith and Jada Pinkett Smith’s relationship amid separation"
+    },
+    {
+      "document_id": "doc_50d2f50f784b4a3d",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.independent.co.uk-life-style-will-smith-jada-separ-50d2f50f.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.independent.co.uk/life-style/will-smith-jada-separation-divorce-b2429576.html",
+      "title": "Jada Pinkett Smith and Will Smith have been separated since 2016 - when should couples just get divorced?"
+    },
+    {
+      "document_id": "doc_727b0c655bd9e543",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.sportingnews.com-us-nfl-news-bears-vikings-live-sc-727b0c65.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.sportingnews.com/us/nfl/news/bears-vikings-live-score-highlights-monday-night-football/9e0ddaf702f99e7aec9645db",
+      "title": "Bears vs. Vikings live score, updates, highlights from NFL 'Monday Night Football' game"
+    },
+    {
+      "document_id": "doc_9eb79fc45400d86e",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.sportingnews.com-us-nfl-news-nfl-power-rankings-li-9eb79fc4.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.sportingnews.com/us/nfl/news/nfl-power-rankings-lions-49ers-texans-jets-patriots/7b7ee6be935efc3c735d72ac",
+      "title": "NFL power rankings: Lions, 49ers level up; Texans jump Bengals, Bills; Jets, Patriots sink to bottom for Week 11"
+    },
+    {
+      "document_id": "doc_3eb136b892ffcf06",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.sportingnews.com-us-soccer-news-inter-miami-vs-fc--3eb136b8.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.sportingnews.com/us/soccer/news/inter-miami-vs-fc-cincinnati-live-score-result-highlights-mls/6288f57a14a413f02512e266",
+      "title": "Inter Miami vs FC Cincinnati live score, result, updates, highlights with Lionel Messi's MLS playoffs on line"
+    },
+    {
+      "document_id": "doc_8bfcfe59d5920e97",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.sportingnews.com-us-soccer-news-watch-argentina-vs-8bfcfe59.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.sportingnews.com/us/soccer/news/watch-argentina-vs-paraguay-stream-tv-lineups-odds-qualifying/9852101b5448230da880d549",
+      "title": "Watch Argentina vs Paraguay live stream, TV channel, lineups, betting odds for World Cup qualifying match"
+    },
+    {
+      "document_id": "doc_ca09eabbd58edd26",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.theroar.com.au-2023-10-19-it-happens-all-blacks-de-ca09eabb.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.theroar.com.au/2023/10/19/it-happens-all-blacks-defend-star-centre-after-spray-as-cheika-heaps-pressure-on-favourites-new-zealand/",
+      "title": "‘It happens’: All Blacks defend star centre after spray as Cheika heaps pressure on ‘favourites’ New Zealand"
+    },
+    {
+      "document_id": "doc_30304c30fdbe07c8",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.theroar.com.au-2023-10-27-legacy-vs-ego-the-spring-30304c30.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.theroar.com.au/2023/10/27/legacy-vs-ego-the-springboks-are-playing-for-south-africa-the-all-blacks-are-playing-for-themselves/",
+      "title": "Legacy vs ego: The Springboks are playing for South Africa, the All Blacks are playing for themselves"
+    },
+    {
+      "document_id": "doc_68b7ed24a88fded0",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.theroar.com.au-2023-10-29-the-greatest-boks-beat-a-68b7ed24.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.theroar.com.au/2023/10/29/the-greatest-boks-beat-all-blacks-in-instant-classic-to-claim-record-fourth-rwc-in-controversial-dramatic-final/",
+      "title": "THE GREATEST! Boks beat All Blacks in instant classic to claim record FOURTH RWC in controversial, dramatic final"
+    },
+    {
+      "document_id": "doc_6690a28d66944996",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.theverge.com-2023-10-27-23935683-sam-bankman-fried-6690a28d.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.theverge.com/2023/10/27/23935683/sam-bankman-fried-ftx-fraud-direct-testimony-jury",
+      "title": "The jury finally hears from Sam Bankman-Fried"
+    },
+    {
+      "document_id": "doc_cb7318cba4992128",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.theverge.com-2023-9-26-23891037-apple-eddy-cue-tes-cb7318cb.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.theverge.com/2023/9/26/23891037/apple-eddy-cue-testimony-us-google",
+      "title": "Apple defends Google Search deal in court: ‘There wasn’t a valid alternative’"
+    },
+    {
+      "document_id": "doc_05282eb3c18762b9",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.theverge.com-23905156-best-deals-anti-october-prim-05282eb3.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.theverge.com/23905156/best-deals-anti-october-prime-day-walmart-best-buy-target-tech-2023",
+      "title": "The best anti-Prime Big Deal Day deals"
+    },
+    {
+      "document_id": "doc_42017b695267eeda",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.theverge.com-23906464-amazon-october-prime-day-bes-42017b69.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.theverge.com/23906464/amazon-october-prime-day-best-smart-home-deals-device-google-alexa-2023",
+      "title": "The best Prime Day smart home deals"
+    },
+    {
+      "document_id": "doc_9e3db27b1e1be92e",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.theverge.com-23944251-epic-google-antitrust-trial--9e3db27b.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.theverge.com/23944251/epic-google-antitrust-trial-explainer-monopoly",
+      "title": "Epic v. Google, explained"
+    },
+    {
+      "document_id": "doc_4c6e56d5c98514e0",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.theverge.com-23996474-epic-tim-sweeney-interview-w-4c6e56d5.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.theverge.com/23996474/epic-tim-sweeney-interview-win-google-antitrust-lawsuit-district-court",
+      "title": "Tim Sweeney on Epic’s victory royale over Google"
+    },
+    {
+      "document_id": "doc_f4d9988f0f4d42cd",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.theverge.com-24006607-apple-watch-series-9-ultra-2-f4d9988f.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.theverge.com/24006607/apple-watch-series-9-ultra-2-itc-import-ban",
+      "title": "Why the Apple Watch is being banned — and how Apple can avoid it"
+    },
+    {
+      "document_id": "doc_e5c95a64379d7879",
+      "path": "evaluation/candidates/public_corpus/multihop_rag/https-www.theverge.com-c-features-23903125-lurker-online-har-e5c95a64.md",
+      "source_dataset": "multihop_rag",
+      "source_record_id": "https://www.theverge.com/c/features/23903125/lurker-online-harassment-stalking-asian-academics",
+      "title": "The obsessive tormenter who made professors’ lives miserable"
+    },
+    {
+      "document_id": "doc_2969494565a506a3",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_6267-document-0-29694945.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_6267-document-0",
+      "title": "RAGBench FinQA finqa_6267 document 0"
+    },
+    {
+      "document_id": "doc_d1a92ab61383539e",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_6267-document-1-d1a92ab6.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_6267-document-1",
+      "title": "RAGBench FinQA finqa_6267 document 1"
+    },
+    {
+      "document_id": "doc_006fa3d406e58377",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_6267-document-2-006fa3d4.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_6267-document-2",
+      "title": "RAGBench FinQA finqa_6267 document 2"
+    },
+    {
+      "document_id": "doc_3636f3e44d02e4c0",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_6494-document-0-3636f3e4.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_6494-document-0",
+      "title": "RAGBench FinQA finqa_6494 document 0"
+    },
+    {
+      "document_id": "doc_b9f2c7a2e48d1330",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_6494-document-1-b9f2c7a2.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_6494-document-1",
+      "title": "RAGBench FinQA finqa_6494 document 1"
+    },
+    {
+      "document_id": "doc_ba4bfb004c3844e7",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_6494-document-2-ba4bfb00.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_6494-document-2",
+      "title": "RAGBench FinQA finqa_6494 document 2"
+    },
+    {
+      "document_id": "doc_7f1ee5b0b8358ab4",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_6951-document-0-7f1ee5b0.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_6951-document-0",
+      "title": "RAGBench FinQA finqa_6951 document 0"
+    },
+    {
+      "document_id": "doc_555e00cd798764ac",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_6951-document-1-555e00cd.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_6951-document-1",
+      "title": "RAGBench FinQA finqa_6951 document 1"
+    },
+    {
+      "document_id": "doc_fbc9540e056afb37",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_6951-document-2-fbc9540e.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_6951-document-2",
+      "title": "RAGBench FinQA finqa_6951 document 2"
+    },
+    {
+      "document_id": "doc_e4607f95ee02dfc6",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_6966-document-0-e4607f95.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_6966-document-0",
+      "title": "RAGBench FinQA finqa_6966 document 0"
+    },
+    {
+      "document_id": "doc_7384263bc52963e9",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_6966-document-1-7384263b.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_6966-document-1",
+      "title": "RAGBench FinQA finqa_6966 document 1"
+    },
+    {
+      "document_id": "doc_c811709dcc5a8edb",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_6966-document-2-c811709d.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_6966-document-2",
+      "title": "RAGBench FinQA finqa_6966 document 2"
+    },
+    {
+      "document_id": "doc_0476393d13bfc37a",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_7058-document-0-0476393d.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_7058-document-0",
+      "title": "RAGBench FinQA finqa_7058 document 0"
+    },
+    {
+      "document_id": "doc_ff9fb7c57f907bdd",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_7058-document-1-ff9fb7c5.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_7058-document-1",
+      "title": "RAGBench FinQA finqa_7058 document 1"
+    },
+    {
+      "document_id": "doc_f98bf3ae13f72c71",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_7058-document-2-f98bf3ae.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_7058-document-2",
+      "title": "RAGBench FinQA finqa_7058 document 2"
+    },
+    {
+      "document_id": "doc_fb450b4274d11ddc",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_7161-document-0-fb450b42.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_7161-document-0",
+      "title": "RAGBench FinQA finqa_7161 document 0"
+    },
+    {
+      "document_id": "doc_de68f98584fb5015",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_7161-document-1-de68f985.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_7161-document-1",
+      "title": "RAGBench FinQA finqa_7161 document 1"
+    },
+    {
+      "document_id": "doc_165dd3038fe0e814",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_7161-document-2-165dd303.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_7161-document-2",
+      "title": "RAGBench FinQA finqa_7161 document 2"
+    },
+    {
+      "document_id": "doc_cbbd62e16c0061d0",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_7258-document-0-cbbd62e1.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_7258-document-0",
+      "title": "RAGBench FinQA finqa_7258 document 0"
+    },
+    {
+      "document_id": "doc_8c66700c044cbc56",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_7258-document-1-8c66700c.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_7258-document-1",
+      "title": "RAGBench FinQA finqa_7258 document 1"
+    },
+    {
+      "document_id": "doc_deadb44de5390e52",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_7258-document-2-deadb44d.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_7258-document-2",
+      "title": "RAGBench FinQA finqa_7258 document 2"
+    },
+    {
+      "document_id": "doc_69b2916fda419426",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_7310-document-0-69b2916f.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_7310-document-0",
+      "title": "RAGBench FinQA finqa_7310 document 0"
+    },
+    {
+      "document_id": "doc_708e59765acf7835",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_7310-document-1-708e5976.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_7310-document-1",
+      "title": "RAGBench FinQA finqa_7310 document 1"
+    },
+    {
+      "document_id": "doc_9f7396eff94d9bbf",
+      "path": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_7310-document-2-9f7396ef.md",
+      "source_dataset": "ragbench_finqa",
+      "source_record_id": "finqa_7310-document-2",
+      "title": "RAGBench FinQA finqa_7310 document 2"
+    },
+    {
       "document_id": "doc_3c9cc22063ece138",
       "path": "evaluation/candidates/public_corpus/squad_v2/56e1c2eee3433e1400423138-3c9cc220.md",
       "source_dataset": "squad_v2",
@@ -2105,32 +1738,11 @@
       "title": "Computational_complexity_theory"
     },
     {
-      "document_id": "doc_cd06b110d518d585",
-      "path": "evaluation/candidates/public_corpus/squad_v2/571cb010dd7acb1400e4c128-cd06b110.md",
-      "source_dataset": "squad_v2",
-      "source_record_id": "571cb010dd7acb1400e4c128",
-      "title": "Oxygen"
-    },
-    {
-      "document_id": "doc_660ea738b8e6260d",
-      "path": "evaluation/candidates/public_corpus/squad_v2/57265d86f1498d1400e8dd51-660ea738.md",
-      "source_dataset": "squad_v2",
-      "source_record_id": "57265d86f1498d1400e8dd51",
-      "title": "Ctenophora"
-    },
-    {
       "document_id": "doc_8b40ccc998751146",
       "path": "evaluation/candidates/public_corpus/squad_v2/57267640f1498d1400e8e074-8b40ccc9.md",
       "source_dataset": "squad_v2",
       "source_record_id": "57267640f1498d1400e8e074",
       "title": "Geology"
-    },
-    {
-      "document_id": "doc_1ad59b2b456fdd4b",
-      "path": "evaluation/candidates/public_corpus/squad_v2/5726887e708984140094c91b-1ad59b2b.md",
-      "source_dataset": "squad_v2",
-      "source_record_id": "5726887e708984140094c91b",
-      "title": "Ctenophora"
     },
     {
       "document_id": "doc_6a3954cb4f3d59ae",
@@ -2145,34 +1757,6 @@
       "source_dataset": "squad_v2",
       "source_record_id": "5728ec6a4b864d19001650ae",
       "title": "Civil_disobedience"
-    },
-    {
-      "document_id": "doc_e11cd41e320b663a",
-      "path": "evaluation/candidates/public_corpus/squad_v2/5729fc3d1d0469140077969f-e11cd41e.md",
-      "source_dataset": "squad_v2",
-      "source_record_id": "5729fc3d1d0469140077969f",
-      "title": "Immune_system"
-    },
-    {
-      "document_id": "doc_7168fcdd9985cf92",
-      "path": "evaluation/candidates/public_corpus/squad_v2/572a12381d0469140077972f-7168fcdd.md",
-      "source_dataset": "squad_v2",
-      "source_record_id": "572a12381d0469140077972f",
-      "title": "Economic_inequality"
-    },
-    {
-      "document_id": "doc_f5fcddb0e87a8dd9",
-      "path": "evaluation/candidates/public_corpus/squad_v2/572f64ccb2c2fd14005680bb-f5fcddb0.md",
-      "source_dataset": "squad_v2",
-      "source_record_id": "572f64ccb2c2fd14005680bb",
-      "title": "Rhine"
-    },
-    {
-      "document_id": "doc_ee8efbe25ec6ce77",
-      "path": "evaluation/candidates/public_corpus/squad_v2/572faf74b2c2fd140056834a-ee8efbe2.md",
-      "source_dataset": "squad_v2",
-      "source_record_id": "572faf74b2c2fd140056834a",
-      "title": "Scottish_Parliament"
     },
     {
       "document_id": "doc_af9cf673dedd89a9",
@@ -2210,25 +1794,11 @@
       "title": "Geology"
     },
     {
-      "document_id": "doc_562b89f5cc987fce",
-      "path": "evaluation/candidates/public_corpus/squad_v2/5a5918ff3e1742001a15cf82-562b89f5.md",
-      "source_dataset": "squad_v2",
-      "source_record_id": "5a5918ff3e1742001a15cf82",
-      "title": "Geology"
-    },
-    {
       "document_id": "doc_7a775665e8be718d",
       "path": "evaluation/candidates/public_corpus/squad_v2/5a668fc9f038b7001ab0bfe8-7a775665.md",
       "source_dataset": "squad_v2",
       "source_record_id": "5a668fc9f038b7001ab0bfe8",
       "title": "Packet_switching"
-    },
-    {
-      "document_id": "doc_08a095cd4e28aa01",
-      "path": "evaluation/candidates/public_corpus/squad_v2/5a835778e60761001a2eb5db-08a095cd.md",
-      "source_dataset": "squad_v2",
-      "source_record_id": "5a835778e60761001a2eb5db",
-      "title": "Ctenophora"
     },
     {
       "document_id": "doc_c59693a41fee773a",
@@ -2266,63 +1836,112 @@
       "title": "Southern_California"
     },
     {
-      "document_id": "doc_78c5ac2d4d66d7b9",
-      "path": "evaluation/candidates/public_corpus/squad_v2/5ad25963d7d075001a428e0d-78c5ac2d.md",
-      "source_dataset": "squad_v2",
-      "source_record_id": "5ad25963d7d075001a428e0d",
-      "title": "Huguenot"
+      "document_id": "doc_e8b49aae7f6520f3",
+      "path": "evaluation/candidates/public_corpus/xquad_zh/56dfa0d84a1a83140091ebb9-e8b49aae.md",
+      "source_dataset": "xquad_zh",
+      "source_record_id": "56dfa0d84a1a83140091ebb9",
+      "title": "XQuAD Chinese passage"
     },
     {
-      "document_id": "doc_7140cd8472e40515",
-      "path": "evaluation/candidates/public_corpus/squad_v2/5ad2685dd7d075001a429279-7140cd84.md",
-      "source_dataset": "squad_v2",
-      "source_record_id": "5ad2685dd7d075001a429279",
-      "title": "Oxygen"
+      "document_id": "doc_24a56834227b7645",
+      "path": "evaluation/candidates/public_corpus/xquad_zh/5705f7c875f01819005e77de-24a56834.md",
+      "source_dataset": "xquad_zh",
+      "source_record_id": "5705f7c875f01819005e77de",
+      "title": "XQuAD Chinese passage"
     },
     {
-      "document_id": "doc_8320b9f35e957927",
-      "path": "evaluation/candidates/public_corpus/squad_v2/5ad3d7e0604f3c001a3ff360-8320b9f3.md",
-      "source_dataset": "squad_v2",
-      "source_record_id": "5ad3d7e0604f3c001a3ff360",
-      "title": "Steam_engine"
+      "document_id": "doc_3156fe79a0fabdf1",
+      "path": "evaluation/candidates/public_corpus/xquad_zh/5706149552bb891400689881-3156fe79.md",
+      "source_dataset": "xquad_zh",
+      "source_record_id": "5706149552bb891400689881",
+      "title": "XQuAD Chinese passage"
     },
     {
-      "document_id": "doc_d744d2939c659605",
-      "path": "evaluation/candidates/public_corpus/squad_v2/5ad3f03c604f3c001a3ff82b-d744d293.md",
-      "source_dataset": "squad_v2",
-      "source_record_id": "5ad3f03c604f3c001a3ff82b",
-      "title": "Steam_engine"
+      "document_id": "doc_115533dde7885438",
+      "path": "evaluation/candidates/public_corpus/xquad_zh/570d47b8b3d812140066d630-115533dd.md",
+      "source_dataset": "xquad_zh",
+      "source_record_id": "570d47b8b3d812140066d630",
+      "title": "XQuAD Chinese passage"
     },
     {
-      "document_id": "doc_590c26f77240d695",
-      "path": "evaluation/candidates/public_corpus/squad_v2/5ad5036c5b96ef001a10a985-590c26f7.md",
-      "source_dataset": "squad_v2",
-      "source_record_id": "5ad5036c5b96ef001a10a985",
-      "title": "Warsaw"
+      "document_id": "doc_819eb8828fb97fa4",
+      "path": "evaluation/candidates/public_corpus/xquad_zh/57115bf350c2381900b54a95-819eb882.md",
+      "source_dataset": "xquad_zh",
+      "source_record_id": "57115bf350c2381900b54a95",
+      "title": "XQuAD Chinese passage"
+    },
+    {
+      "document_id": "doc_c00a9aeae0e6bd90",
+      "path": "evaluation/candidates/public_corpus/xquad_zh/5726241189a1e219009ac2de-c00a9aea.md",
+      "source_dataset": "xquad_zh",
+      "source_record_id": "5726241189a1e219009ac2de",
+      "title": "XQuAD Chinese passage"
+    },
+    {
+      "document_id": "doc_1a486c7eb7d8b671",
+      "path": "evaluation/candidates/public_corpus/xquad_zh/57274b35f1498d1400e8f5d5-1a486c7e.md",
+      "source_dataset": "xquad_zh",
+      "source_record_id": "57274b35f1498d1400e8f5d5",
+      "title": "XQuAD Chinese passage"
+    },
+    {
+      "document_id": "doc_2d68b6d857c4049d",
+      "path": "evaluation/candidates/public_corpus/xquad_zh/5727515f708984140094dc13-2d68b6d8.md",
+      "source_dataset": "xquad_zh",
+      "source_record_id": "5727515f708984140094dc13",
+      "title": "XQuAD Chinese passage"
+    },
+    {
+      "document_id": "doc_abb1e1f7e4070a64",
+      "path": "evaluation/candidates/public_corpus/xquad_zh/57281a952ca10214002d9dea-abb1e1f7.md",
+      "source_dataset": "xquad_zh",
+      "source_record_id": "57281a952ca10214002d9dea",
+      "title": "XQuAD Chinese passage"
+    },
+    {
+      "document_id": "doc_170ad8a27dae400c",
+      "path": "evaluation/candidates/public_corpus/xquad_zh/5728349dff5b5019007d9eff-170ad8a2.md",
+      "source_dataset": "xquad_zh",
+      "source_record_id": "5728349dff5b5019007d9eff",
+      "title": "XQuAD Chinese passage"
+    },
+    {
+      "document_id": "doc_0afac1dc1a5cad97",
+      "path": "evaluation/candidates/public_corpus/xquad_zh/572ff12e04bcaa1900d76f00-0afac1dc.md",
+      "source_dataset": "xquad_zh",
+      "source_record_id": "572ff12e04bcaa1900d76f00",
+      "title": "XQuAD Chinese passage"
+    },
+    {
+      "document_id": "doc_12cdc4b930c084fb",
+      "path": "evaluation/candidates/public_corpus/xquad_zh/57302bd0b2c2fd14005689de-12cdc4b9.md",
+      "source_dataset": "xquad_zh",
+      "source_record_id": "57302bd0b2c2fd14005689de",
+      "title": "XQuAD Chinese passage"
+    },
+    {
+      "document_id": "doc_f3756a3e26c167ed",
+      "path": "evaluation/candidates/public_corpus/xquad_zh/57309921396df919000961f6-f3756a3e.md",
+      "source_dataset": "xquad_zh",
+      "source_record_id": "57309921396df919000961f6",
+      "title": "XQuAD Chinese passage"
+    },
+    {
+      "document_id": "doc_1b1f74aec177e91a",
+      "path": "evaluation/candidates/public_corpus/xquad_zh/5730a4d02461fd1900a9cf29-1b1f74ae.md",
+      "source_dataset": "xquad_zh",
+      "source_record_id": "5730a4d02461fd1900a9cf29",
+      "title": "XQuAD Chinese passage"
+    },
+    {
+      "document_id": "doc_1cb7ec088e955ef8",
+      "path": "evaluation/candidates/public_corpus/xquad_zh/5737a25ac3c5551400e51f54-1cb7ec08.md",
+      "source_dataset": "xquad_zh",
+      "source_record_id": "5737a25ac3c5551400e51f54",
+      "title": "XQuAD Chinese passage"
     }
   ],
   "cases": [
-    {
-      "query_id": "candidate-cmrc2018-DEV_1008_QUERY_1",
-      "query": "卒本扶余是哪个国家的一个延续？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_e8b4aa41385e8117"
-      ],
-      "answer_key_points": [
-        "北扶余国"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1008_QUERY_1-e8b4aa41.md",
-      "split": "dev",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_1008_QUERY_1",
-        "human_reviewed": false
-      }
-    },
     {
       "query_id": "candidate-cmrc2018-DEV_1040_QUERY_2",
       "query": "灰凤冠雉可能来自于什么时期的分支？",
@@ -2366,90 +1985,6 @@
       }
     },
     {
-      "query_id": "candidate-cmrc2018-DEV_1076_QUERY_0",
-      "query": "《无字碑歌》以谁的一生为改编依据？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_2dfc0f520fe9e753"
-      ],
-      "answer_key_points": [
-        "武则天"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1076_QUERY_0-2dfc0f52.md",
-      "split": "final",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_1076_QUERY_0",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_1090_QUERY_1",
-      "query": "叔梁纥是哪个国家的人？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_6818453f82b4c7e1"
-      ],
-      "answer_key_points": [
-        "鲁国"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1090_QUERY_1-6818453f.md",
-      "split": "final",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_1090_QUERY_1",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_1124_QUERY_0",
-      "query": "孙德培是哪个帮派的成立者？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_4c3845077d35688e"
-      ],
-      "answer_key_points": [
-        "中和帮"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1124_QUERY_0-4c384507.md",
-      "split": "dev",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_1124_QUERY_0",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_1136_QUERY_1",
-      "query": "茶荣省和三芹省在哪一年合并为永平省？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_b4189cbecff7a5d4"
-      ],
-      "answer_key_points": [
-        "1956年"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1136_QUERY_1-b4189cbe.md",
-      "split": "final",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_1136_QUERY_1",
-        "human_reviewed": false
-      }
-    },
-    {
       "query_id": "candidate-cmrc2018-DEV_1161_QUERY_0",
       "query": "刘燕卿毕业于什么学校？",
       "category": "精确事实",
@@ -2467,48 +2002,6 @@
       "candidate_metadata": {
         "upstream_dataset": "hfl/cmrc2018",
         "upstream_record_id": "DEV_1161_QUERY_0",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_146_QUERY_3",
-      "query": "黑褐新箭雀鲷的栖息环境是什么样的？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_0a4e07a8225021f0"
-      ],
-      "answer_key_points": [
-        "珊瑚礁密生的礁湖或向海斜坡"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_146_QUERY_3-0a4e07a8.md",
-      "split": "final",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_146_QUERY_3",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_1525_QUERY_2",
-      "query": "自2006年拓展国内业务起，零食物语在哪些主要城市建立销售点？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_69a965592e066f04"
-      ],
-      "answer_key_points": [
-        "上海、北京、顺德"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1525_QUERY_2-69a96559.md",
-      "split": "final",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_1525_QUERY_2",
         "human_reviewed": false
       }
     },
@@ -2534,48 +2027,6 @@
       }
     },
     {
-      "query_id": "candidate-cmrc2018-DEV_1575_QUERY_0",
-      "query": "横道河子站距离哈尔滨站多少公里？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_c3169a202565267d"
-      ],
-      "answer_key_points": [
-        "272公里"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1575_QUERY_0-c3169a20.md",
-      "split": "dev",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_1575_QUERY_0",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_1603_QUERY_3",
-      "query": "第二期土地2010年6月8日公开拍卖时由哪一地产以109亿港元投得？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_f6d8afcfeaa0dc85"
-      ],
-      "answer_key_points": [
-        "新鸿基地产"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1603_QUERY_3-f6d8afcf.md",
-      "split": "dev",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_1603_QUERY_3",
-        "human_reviewed": false
-      }
-    },
-    {
       "query_id": "candidate-cmrc2018-DEV_160_QUERY_0",
       "query": "白尾雀鲷又可以叫啥？",
       "category": "精确事实",
@@ -2593,27 +2044,6 @@
       "candidate_metadata": {
         "upstream_dataset": "hfl/cmrc2018",
         "upstream_record_id": "DEV_160_QUERY_0",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_1666_QUERY_4",
-      "query": "前往火葬场的道路什么时候会设交通管制？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_bbe21c2a71b22309"
-      ],
-      "answer_key_points": [
-        "歌连臣角火葬场及坟场的访客很多，所以有特别交通安排"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1666_QUERY_4-bbe21c2a.md",
-      "split": "dev",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_1666_QUERY_4",
         "human_reviewed": false
       }
     },
@@ -2639,27 +2069,6 @@
       }
     },
     {
-      "query_id": "candidate-cmrc2018-DEV_183_QUERY_0",
-      "query": "大卫·佩特鲁齐的职业是什么？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_cf08615526a4c8e2"
-      ],
-      "answer_key_points": [
-        "职业足球运动员"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_183_QUERY_0-cf086155.md",
-      "split": "dev",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_183_QUERY_0",
-        "human_reviewed": false
-      }
-    },
-    {
       "query_id": "candidate-cmrc2018-DEV_189_QUERY_0",
       "query": "和语在日语中被称为什么？",
       "category": "精确事实",
@@ -2677,27 +2086,6 @@
       "candidate_metadata": {
         "upstream_dataset": "hfl/cmrc2018",
         "upstream_record_id": "DEV_189_QUERY_0",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_1931_QUERY_2",
-      "query": "为什么修道院的名称取自意为自由的古代德语词汇“frey”？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_47eb6c9c74adac6c"
-      ],
-      "answer_key_points": [
-        "因为修道院拥有不受公爵管理的特权，还能保护逃亡者。"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_1931_QUERY_2-47eb6c9c.md",
-      "split": "dev",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_1931_QUERY_2",
         "human_reviewed": false
       }
     },
@@ -2807,27 +2195,6 @@
       }
     },
     {
-      "query_id": "candidate-cmrc2018-DEV_228_QUERY_2",
-      "query": "腹卷所使用材料是什么？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_03268f1f74f1a2ca"
-      ],
-      "answer_key_points": [
-        "甲片板甲丝绳"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_228_QUERY_2-03268f1f.md",
-      "split": "dev",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_228_QUERY_2",
-        "human_reviewed": false
-      }
-    },
-    {
       "query_id": "candidate-cmrc2018-DEV_25_QUERY_2",
       "query": "前秦对前燕发动的灭国战争是谁主导的？",
       "category": "精确事实",
@@ -2912,69 +2279,6 @@
       }
     },
     {
-      "query_id": "candidate-cmrc2018-DEV_330_QUERY_1",
-      "query": "唐爱陆哪一年筹资创办了在武汉的旅汉公学？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_9147b2efe2ce8935"
-      ],
-      "answer_key_points": [
-        "1912年"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_330_QUERY_1-9147b2ef.md",
-      "split": "dev",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_330_QUERY_1",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_345_QUERY_2",
-      "query": "钩盲蛇在中国被称为什么？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_a294d226c008254b"
-      ],
-      "answer_key_points": [
-        "地鳝及铁丝蛇"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_345_QUERY_2-a294d226.md",
-      "split": "final",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_345_QUERY_2",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_35_QUERY_1",
-      "query": "毒马案是怎样被揭发的？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_e8915588bbe013de"
-      ],
-      "answer_key_points": [
-        "马会兽医在赛后检查时发现马匹呈腹泻的征状，揭发案件。"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_35_QUERY_1-e8915588.md",
-      "split": "final",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_35_QUERY_1",
-        "human_reviewed": false
-      }
-    },
-    {
       "query_id": "candidate-cmrc2018-DEV_382_QUERY_1",
       "query": "贴扎的目的是什么？",
       "category": "精确事实",
@@ -2992,27 +2296,6 @@
       "candidate_metadata": {
         "upstream_dataset": "hfl/cmrc2018",
         "upstream_record_id": "DEV_382_QUERY_1",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_385_QUERY_2",
-      "query": "哪一首歌是华语乐坛第一首神游舞曲歌曲？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_86301b75263bb398"
-      ],
-      "answer_key_points": [
-        "《醉迷情人》"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_385_QUERY_2-86301b75.md",
-      "split": "final",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_385_QUERY_2",
         "human_reviewed": false
       }
     },
@@ -3055,69 +2338,6 @@
       "candidate_metadata": {
         "upstream_dataset": "hfl/cmrc2018",
         "upstream_record_id": "DEV_440_QUERY_0",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_467_QUERY_1",
-      "query": "阿部正丰被通称为什么？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_3f584577f8c9ee91"
-      ],
-      "answer_key_points": [
-        "弥七郎"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_467_QUERY_1-3f584577.md",
-      "split": "dev",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_467_QUERY_1",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_477_QUERY_1",
-      "query": "Antichrist Superstar是作者对于哪些人的回应？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_7de03995ea1660d5"
-      ],
-      "answer_key_points": [
-        "批评他的人"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_477_QUERY_1-7de03995.md",
-      "split": "dev",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_477_QUERY_1",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_533_QUERY_1",
-      "query": "邓兆棠任元朗青年商会创会会长是在哪一年？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_ee6c47793f72dcf1"
-      ],
-      "answer_key_points": [
-        "1977年"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_533_QUERY_1-ee6c4779.md",
-      "split": "final",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_533_QUERY_1",
         "human_reviewed": false
       }
     },
@@ -3181,69 +2401,6 @@
       "candidate_metadata": {
         "upstream_dataset": "hfl/cmrc2018",
         "upstream_record_id": "DEV_567_QUERY_3",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_582_QUERY_3",
-      "query": "相武台下车站最早叫什么？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_78ef75f42bc24fcb"
-      ],
-      "answer_key_points": [
-        "座间新户"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_582_QUERY_3-78ef75f4.md",
-      "split": "final",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_582_QUERY_3",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_605_QUERY_0",
-      "query": "什么是生成文法？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_af6ddf011bd70763"
-      ],
-      "answer_key_points": [
-        "是一种尝试接近语法学(Syntax)的方式"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_605_QUERY_0-af6ddf01.md",
-      "split": "dev",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_605_QUERY_0",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-cmrc2018-DEV_82_QUERY_1",
-      "query": "鑫诺卫星通信有限公司总部在哪里？",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_2353a7eeedb76c4e"
-      ],
-      "answer_key_points": [
-        "北京"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/cmrc2018/DEV_82_QUERY_1-2353a7ee.md",
-      "split": "final",
-      "language": "zh",
-      "difficulty": "easy",
-      "candidate_metadata": {
-        "upstream_dataset": "hfl/cmrc2018",
-        "upstream_record_id": "DEV_82_QUERY_1",
         "human_reviewed": false
       }
     },
@@ -3314,28 +2471,6 @@
       }
     },
     {
-      "query_id": "candidate-hotpotqa-5a7fd1515542992e7d278db1",
-      "query": "Grimsby Minster is located in which English Province?",
-      "category": "多文档组合",
-      "expected_document_ids": [
-        "doc_55bfd79b854ee725",
-        "doc_a3ce6440683ea2d9"
-      ],
-      "answer_key_points": [
-        "Province of Canterbury"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/hotpotqa/5a7fd1515542992e7d278db1-Diocese-of-Lincoln-55bfd79b.md",
-      "split": "final",
-      "language": "en",
-      "difficulty": "hard",
-      "candidate_metadata": {
-        "upstream_dataset": "hotpotqa/hotpot_qa",
-        "upstream_record_id": "5a7fd1515542992e7d278db1",
-        "human_reviewed": false
-      }
-    },
-    {
       "query_id": "candidate-hotpotqa-5a81736255429903bc27b96e",
       "query": "What is the formal name for the sporting facility located in Coos County, New Hampshire?",
       "category": "多文档组合",
@@ -3354,72 +2489,6 @@
       "candidate_metadata": {
         "upstream_dataset": "hotpotqa/hotpot_qa",
         "upstream_record_id": "5a81736255429903bc27b96e",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-hotpotqa-5a835e215542992ef85e2296",
-      "query": "Between Pine and Butea, which genus has the greatest number of species?",
-      "category": "多文档组合",
-      "expected_document_ids": [
-        "doc_3863ba1c0a3e036a",
-        "doc_f666c1f805add329"
-      ],
-      "answer_key_points": [
-        "\"Pinus\""
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/hotpotqa/5a835e215542992ef85e2296-Butea-3863ba1c.md",
-      "split": "dev",
-      "language": "en",
-      "difficulty": "hard",
-      "candidate_metadata": {
-        "upstream_dataset": "hotpotqa/hotpot_qa",
-        "upstream_record_id": "5a835e215542992ef85e2296",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-hotpotqa-5a83697e5542996488c2e441",
-      "query": " Park Seo-joon is best known for his role in a series that premiered on what month and day?",
-      "category": "多文档组合",
-      "expected_document_ids": [
-        "doc_b7d29fa513a04a39",
-        "doc_6d3e18fd25881223"
-      ],
-      "answer_key_points": [
-        "May 22"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/hotpotqa/5a83697e5542996488c2e441-Fight-for-My-Way-b7d29fa5.md",
-      "split": "dev",
-      "language": "en",
-      "difficulty": "hard",
-      "candidate_metadata": {
-        "upstream_dataset": "hotpotqa/hotpot_qa",
-        "upstream_record_id": "5a83697e5542996488c2e441",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-hotpotqa-5a873ec75542996432c57244",
-      "query": "The structure in Wyoming in which Bořeň is similar to has a summit that is how many feet above sea level?",
-      "category": "多文档组合",
-      "expected_document_ids": [
-        "doc_5f2c2d1bb8f6edd7",
-        "doc_fb7657b29aabaa45"
-      ],
-      "answer_key_points": [
-        "5,112 feet"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/hotpotqa/5a873ec75542996432c57244-Bo-e-5f2c2d1b.md",
-      "split": "dev",
-      "language": "en",
-      "difficulty": "hard",
-      "candidate_metadata": {
-        "upstream_dataset": "hotpotqa/hotpot_qa",
-        "upstream_record_id": "5a873ec75542996432c57244",
         "human_reviewed": false
       }
     },
@@ -3468,50 +2537,6 @@
       }
     },
     {
-      "query_id": "candidate-hotpotqa-5a8b057255429971feec4611",
-      "query": "David Lightfoot worked on what film loosely based on the murders of tourists by Ivan Milat in the 1990's?",
-      "category": "多文档组合",
-      "expected_document_ids": [
-        "doc_b605095f5a685bde",
-        "doc_ad757f2d3778aea7"
-      ],
-      "answer_key_points": [
-        "Wolf Creek"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/hotpotqa/5a8b057255429971feec4611-David-Lightfoot-b605095f.md",
-      "split": "final",
-      "language": "en",
-      "difficulty": "hard",
-      "candidate_metadata": {
-        "upstream_dataset": "hotpotqa/hotpot_qa",
-        "upstream_record_id": "5a8b057255429971feec4611",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-hotpotqa-5a8c6342554299240d9c214a",
-      "query": "Claudine's Return starred the actress who played which role on \"Married...with Children\"?",
-      "category": "多文档组合",
-      "expected_document_ids": [
-        "doc_df3ed2f1a84aa35f",
-        "doc_93edfbe1a3ea4964"
-      ],
-      "answer_key_points": [
-        "Kelly Bundy"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/hotpotqa/5a8c6342554299240d9c214a-Christina-Applegate-df3ed2f1.md",
-      "split": "dev",
-      "language": "en",
-      "difficulty": "hard",
-      "candidate_metadata": {
-        "upstream_dataset": "hotpotqa/hotpot_qa",
-        "upstream_record_id": "5a8c6342554299240d9c214a",
-        "human_reviewed": false
-      }
-    },
-    {
       "query_id": "candidate-hotpotqa-5a8f0de35542995b44241f40",
       "query": "Which musician obtained fame first, Terry Kath or Róisín Murphy?",
       "category": "多文档组合",
@@ -3530,50 +2555,6 @@
       "candidate_metadata": {
         "upstream_dataset": "hotpotqa/hotpot_qa",
         "upstream_record_id": "5a8f0de35542995b44241f40",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-hotpotqa-5ab298fb554299449642c922",
-      "query": "Who was known for playing a fictionalized version of the wild politician who was the face of communist scare tact's in the early 1950's?",
-      "category": "多文档组合",
-      "expected_document_ids": [
-        "doc_9825f94114aa9a79",
-        "doc_7897596cc6c026f5"
-      ],
-      "answer_key_points": [
-        "James Gregory"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/hotpotqa/5ab298fb554299449642c922-James-Gregory-actor-9825f941.md",
-      "split": "final",
-      "language": "en",
-      "difficulty": "hard",
-      "candidate_metadata": {
-        "upstream_dataset": "hotpotqa/hotpot_qa",
-        "upstream_record_id": "5ab298fb554299449642c922",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-hotpotqa-5abae1e65542996cc5e49ed2",
-      "query": "JSOC was created on the recommendation of a colonel who served in the Malayan Emergency and what other war?",
-      "category": "多文档组合",
-      "expected_document_ids": [
-        "doc_4e17b80450e2ce6a",
-        "doc_6bb3de1c347c44a9"
-      ],
-      "answer_key_points": [
-        "Vietnam War"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/hotpotqa/5abae1e65542996cc5e49ed2-Charles-Alvin-Beckwith-4e17b804.md",
-      "split": "dev",
-      "language": "en",
-      "difficulty": "hard",
-      "candidate_metadata": {
-        "upstream_dataset": "hotpotqa/hotpot_qa",
-        "upstream_record_id": "5abae1e65542996cc5e49ed2",
         "human_reviewed": false
       }
     },
@@ -3622,50 +2603,6 @@
       }
     },
     {
-      "query_id": "candidate-hotpotqa-5abffda6554299012d1db55b",
-      "query": "What is the main nickname of the professional association football club where Ewan Fenton spent thirteen seasons?",
-      "category": "多文档组合",
-      "expected_document_ids": [
-        "doc_07197b70df1d679c",
-        "doc_7b88b00e69809a91"
-      ],
-      "answer_key_points": [
-        "\"the Seasiders\""
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/hotpotqa/5abffda6554299012d1db55b-Blackpool-F.C.-07197b70.md",
-      "split": "final",
-      "language": "en",
-      "difficulty": "hard",
-      "candidate_metadata": {
-        "upstream_dataset": "hotpotqa/hotpot_qa",
-        "upstream_record_id": "5abffda6554299012d1db55b",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-hotpotqa-5ac00278554299012d1db56b",
-      "query": "What profession do Raj Kapoor and Mike Cahill share?",
-      "category": "多文档组合",
-      "expected_document_ids": [
-        "doc_31da567e5b1288d1",
-        "doc_0d76a3062f880888"
-      ],
-      "answer_key_points": [
-        "director"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/hotpotqa/5ac00278554299012d1db56b-Mike-Cahill-director-31da567e.md",
-      "split": "dev",
-      "language": "en",
-      "difficulty": "hard",
-      "candidate_metadata": {
-        "upstream_dataset": "hotpotqa/hotpot_qa",
-        "upstream_record_id": "5ac00278554299012d1db56b",
-        "human_reviewed": false
-      }
-    },
-    {
       "query_id": "candidate-hotpotqa-5ac46cb85542991943173987",
       "query": "What is the sister city of the city in which Benjamin Abram Bernstein was born?",
       "category": "多文档组合",
@@ -3684,28 +2621,6 @@
       "candidate_metadata": {
         "upstream_dataset": "hotpotqa/hotpot_qa",
         "upstream_record_id": "5ac46cb85542991943173987",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-hotpotqa-5adf99065542992d7e9f93b0",
-      "query": "Approximately what percent male is the student body of the University for which the Ouachita Baptist Tigers football program is the intercollegiate American football team?",
-      "category": "多文档组合",
-      "expected_document_ids": [
-        "doc_32354599ca380e6a",
-        "doc_883e9f41181039a0"
-      ],
-      "answer_key_points": [
-        "45%"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/hotpotqa/5adf99065542992d7e9f93b0-Ouachita-Baptist-Tigers-football-32354599.md",
-      "split": "final",
-      "language": "en",
-      "difficulty": "hard",
-      "candidate_metadata": {
-        "upstream_dataset": "hotpotqa/hotpot_qa",
-        "upstream_record_id": "5adf99065542992d7e9f93b0",
         "human_reviewed": false
       }
     },
@@ -3798,6 +2713,764 @@
       }
     },
     {
+      "query_id": "candidate-multihop_rag-0e908ca4b27b8287",
+      "query": "Does the TechCrunch article suggest that Sam Bankman-Fried's motivation for alleged fraudulent activities was purely altruistic, while the Fortune article focuses on the jury's role in determining the truthfulness of Sam Bankman-Fried's actions, without attributing a specific motive?",
+      "category": "跨文档比较",
+      "expected_document_ids": [
+        "doc_6bf7eda430b47c68",
+        "doc_a5edfde214f42e0b"
+      ],
+      "answer_key_points": [
+        "no"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-10-07-sam-altman-backs-a-teens-sta-6bf7eda4.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "0e908ca4b27b8287",
+        "human_reviewed": false,
+        "upstream_question_type": "comparison_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-1aebcf0d91ae2af6",
+      "query": "Does 'The Roar | Sports Writers Blog' suggest that 'The All Blacks' motivation for playing is more self-centered compared to the Springboks, while also indicating that 'The All Blacks' had a specific in-game failure to release on their goal line, and acknowledging 'The All Blacks' previous losses to Argentina, or are the motivations, in-game actions, and historical outcomes described differently for 'The All Blacks' in each article?",
+      "category": "跨文档比较",
+      "expected_document_ids": [
+        "doc_30304c30fdbe07c8",
+        "doc_68b7ed24a88fded0",
+        "doc_ca09eabbd58edd26"
+      ],
+      "answer_key_points": [
+        "Yes"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-www.theroar.com.au-2023-10-27-legacy-vs-ego-the-spring-30304c30.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "1aebcf0d91ae2af6",
+        "human_reviewed": false,
+        "upstream_question_type": "comparison_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-211c812f4700640a",
+      "query": "Which company, recently involved in an antitrust battle as reported by TechCrunch, is also known for making default search engine deals with major tech companies according to The Verge, yet has no immediate plans for new measures on its video platform as per TechCrunch, and is accused of harming news publishers' revenues through anticompetitive practices as stated in another TechCrunch article?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_495679549627537d",
+        "doc_325e7cda1cab7b99",
+        "doc_cb7318cba4992128",
+        "doc_3efdef1c88d28633"
+      ],
+      "answer_key_points": [
+        "Google"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-11-06-what-to-know-about-fortnite--49567954.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "211c812f4700640a",
+        "human_reviewed": false,
+        "upstream_question_type": "inference_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-2a6a62108b3aacfe",
+      "query": "Which company, recently reported on by both Cnbc | World Business News Leader and TechCrunch for experiencing a tumultuous period involving a reduction of its workforce by about 600 employees and having its co-CEO focus more on customer relations, is also preparing for an IPO within a two- to three-year timeframe as aimed by Dave Clark?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_d5ec90b3bfd8499f",
+        "doc_4e40f3676dc8d57d",
+        "doc_6bf7eda430b47c68"
+      ],
+      "answer_key_points": [
+        "Flexport"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-www.cnbc.com-2023-10-02-the-inside-story-of-dave-clark-d5ec90b3.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "2a6a62108b3aacfe",
+        "human_reviewed": false,
+        "upstream_question_type": "inference_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-5595f2488d60c0c4",
+      "query": "Which company, known for being more responsive to consumer feedback in recent years and is planning to appeal an ITC decision on a patent dispute, is expected to focus on Macs and new chipsets at an upcoming event and has been criticized for enforcing uniform terms on developers, OEMs, and carriers through its store and payment system according to TechCrunch, Engadget, and two articles from The Verge?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_5bf23ec2f55ca79f",
+        "doc_e97d039fc211b960",
+        "doc_f4d9988f0f4d42cd",
+        "doc_4c6e56d5c98514e0"
+      ],
+      "answer_key_points": [
+        "Apple"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-11-06-apple-macbook-pro-review-m3--5bf23ec2.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "5595f2488d60c0c4",
+        "human_reviewed": false,
+        "upstream_question_type": "inference_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-648378ca871821cb",
+      "query": "Considering the information from an article in The New York Times about Jay Brown's recent promotion and another from The Wall Street Journal discussing his strategic partnership initiatives, which company's board, now chaired by Jay Brown, has both expanded its market share in Asia and launched a new sustainability program?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "manual-negative",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "648378ca871821cb",
+        "human_reviewed": false,
+        "upstream_question_type": "null_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-67501d29d1212b0b",
+      "query": "Does the article from Fortune discussing Ruby Franke's daughter describe the justification for abuse as a form of necessary discipline, in contrast to the article from The Verge which exonerates Catherine Tan of any accusations of sexual harassment and coercion?",
+      "category": "跨文档比较",
+      "expected_document_ids": [
+        "doc_299edfcafe7c46ab",
+        "doc_e5c95a64379d7879"
+      ],
+      "answer_key_points": [
+        "no"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-fortune.com-2023-12-18-youtube-mom-influencer-parentin-299edfca.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "67501d29d1212b0b",
+        "human_reviewed": false,
+        "upstream_question_type": "comparison_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-7c4fcd9aef237164",
+      "query": "Has the compatibility of the Google Nest Thermostat with major smart home platforms as reported by The Verge on October 10, 2023, remained consistent with previous reports from The Verge regarding its integration with the Matter standard, or has there been a change in its compatibility status?",
+      "category": "时间条件",
+      "expected_document_ids": [
+        "doc_42017b695267eeda",
+        "doc_05282eb3c18762b9"
+      ],
+      "answer_key_points": [
+        "Consistent"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-www.theverge.com-23906464-amazon-october-prime-day-bes-42017b69.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "7c4fcd9aef237164",
+        "human_reviewed": false,
+        "upstream_question_type": "temporal_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-8f38b0ee9bb64fbc",
+      "query": "Who is the individual who has been a notable figure in generative AI technology, was considered a prodigy in Silicon Valley from a young age, and is at the center of controversy over allegations of not being fully truthful with the board, according to articles from both Fortune and TechCrunch?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_3dee2111f00ef082",
+        "doc_dbb66f0365531c5d"
+      ],
+      "answer_key_points": [
+        "Sam Altman"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-fortune.com-2023-11-18-how-did-openai-fire-sam-altman--3dee2111.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "8f38b0ee9bb64fbc",
+        "human_reviewed": false,
+        "upstream_question_type": "inference_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-99cafe9ccdc23819",
+      "query": "Considering the information from a BBC article detailing Amitabh Bachchan's philanthropic efforts and a Times of India report on his recent filmography, which character, portrayed by Amitabh Bachchan, links his role in a movie addressing social issues to his real-life advocacy work as described in these articles?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "manual-negative",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "99cafe9ccdc23819",
+        "human_reviewed": false,
+        "upstream_question_type": "null_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-9b258101f19a3ebe",
+      "query": "Did the 'Fortune' article suggest that the success of FTX was built on complete transparency, while the 'TechCrunch' article alleges that Sam Bankman-Fried engaged in fraud for personal benefits, or do both articles imply misconduct on the part of Sam Bankman-Fried?",
+      "category": "跨文档比较",
+      "expected_document_ids": [
+        "doc_a5edfde214f42e0b",
+        "doc_6bf7eda430b47c68"
+      ],
+      "answer_key_points": [
+        "no"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-fortune.com-crypto-2023-10-04-sam-bankman-fried-lawyer-a5edfde2.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "9b258101f19a3ebe",
+        "human_reviewed": false,
+        "upstream_question_type": "comparison_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-9b596c7291da6ad5",
+      "query": "Was there a discrepancy in the reporting of Google's anticompetitive practices between the TechCrunch report on the Google antitrust case published on October 31, 2023, and the TechCrunch report on the class action antitrust suit against Google published on December 15, 2023?",
+      "category": "时间条件",
+      "expected_document_ids": [
+        "doc_495679549627537d",
+        "doc_1dd030f5ef725b9c",
+        "doc_3efdef1c88d28633"
+      ],
+      "answer_key_points": [
+        "no"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-11-06-what-to-know-about-fortnite--49567954.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "9b596c7291da6ad5",
+        "human_reviewed": false,
+        "upstream_question_type": "temporal_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-9d73a8863ce4ed1b",
+      "query": "What entity is central to the dialogue and assessment of unfair practices reported by TechCrunch, is also involved in addressing formal competition concerns regarding Amazon's iRobot purchase, and has previously taken actions related to illegal content and disinformation as highlighted by TechCrunch?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_f22d59a9c9a8fbcf",
+        "doc_a4223b310d5e04d3",
+        "doc_7e3a5e1e3f4165c9"
+      ],
+      "answer_key_points": [
+        "The European Commission"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-11-29-beuc-cpc-meta-complaint-f22d59a9.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "9d73a8863ce4ed1b",
+        "human_reviewed": false,
+        "upstream_question_type": "inference_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-abf332341086050a",
+      "query": "Considering the information from a New York Times article detailing the launch date of Gemini Ultra and a Forbes report on the projected market share increase for Gemini Ultra's manufacturer after its release, which month is both the expected launch time for Gemini Ultra and the period predicted for the manufacturer's market share growth?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "manual-negative",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "abf332341086050a",
+        "human_reviewed": false,
+        "upstream_question_type": "null_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-b1ebe6e6df492668",
+      "query": "Considering the economic forecasts from a BBC News article and the immigration policy changes reported by The Guardian, which single letter represents the UK's credit rating as recently adjusted by a major credit rating agency?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "manual-negative",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "b1ebe6e6df492668",
+        "human_reviewed": false,
+        "upstream_question_type": "null_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-b4beae8d9c954eac",
+      "query": "Considering the information from an article in The New York Times about Zhemu Soda's recent environmental initiatives and a report by The Guardian on his political career, which political party, known for its green policies, did Zhemu Soda join according to The New York Times, and which committee did he chair that was mentioned in The Guardian, where the first letter of the party and the last letter of the committee are the same?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "manual-negative",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "b4beae8d9c954eac",
+        "human_reviewed": false,
+        "upstream_question_type": "null_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-b55fb39290b3e7d0",
+      "query": "After TechCrunch reported on October 31, 2023, about Google's financial strategies to maintain its search engine dominance, and again on December 15, 2023, about a class action antitrust suit filed against Google, was there inconsistency in the portrayal of Google's competitive practices according to TechCrunch?",
+      "category": "时间条件",
+      "expected_document_ids": [
+        "doc_1dd030f5ef725b9c",
+        "doc_aaf1a8de341c040d",
+        "doc_3efdef1c88d28633"
+      ],
+      "answer_key_points": [
+        "no"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-10-30-5-things-we-learned-so-far-a-1dd030f5.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "b55fb39290b3e7d0",
+        "human_reviewed": false,
+        "upstream_question_type": "temporal_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-b5da6633dda45c88",
+      "query": "Which company, discussed in articles from TechCrunch and The Verge, is associated with creating an AI model that claims to meet or exceed the performance of generative models like OpenAI's GPT-3.5 and GPT-4, and is also involved in a legal case where its victory depends on the market definition potentially impacting news publishers' revenues through its business practices?",
+      "category": "多文档组合",
+      "expected_document_ids": [
+        "doc_17209dd6a7926d7f",
+        "doc_9e3db27b1e1be92e",
+        "doc_3efdef1c88d28633"
+      ],
+      "answer_key_points": [
+        "Google"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-12-07-early-impressions-of-googles-17209dd6.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "b5da6633dda45c88",
+        "human_reviewed": false,
+        "upstream_question_type": "inference_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-b65aaa556d2450f3",
+      "query": "Considering the performance details from an ESPN article and the strategic insights from a Cricbuzz report on Ekta Bisht, which jersey number does the player who took five wickets in a single match against a specific team and is known for her exceptional left-arm spin bowling wear?",
+      "category": "无答案",
+      "expected_document_ids": [],
+      "answer_key_points": [],
+      "answerable": false,
+      "source": "manual-negative",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "b65aaa556d2450f3",
+        "human_reviewed": false,
+        "upstream_question_type": "null_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-d6c5e5c7206be4be",
+      "query": "Between the TechCrunch report on Meta's moderation issues published on October 19, 2023, and the TechCrunch report on Meta's legislative proposal regarding teen app downloads published on November 15, 2023, was there a change in the type of challenges Meta is addressing in the public sphere, moderation bias or parental control over app downloads?",
+      "category": "时间条件",
+      "expected_document_ids": [
+        "doc_21f6ee01f17eb034",
+        "doc_064e728f5e2a528f"
+      ],
+      "answer_key_points": [
+        "Yes"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-10-19-meta-instagram-palestine-isr-21f6ee01.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "d6c5e5c7206be4be",
+        "human_reviewed": false,
+        "upstream_question_type": "temporal_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-e12bb09185f1fc6b",
+      "query": "Between the TechCrunch report on Sam Bankman-Fried's legal situation published after October 2, 2023, and The Verge's coverage of Sam Bankman-Fried's testimony, was there a change in the narrative regarding his ability to manage FTX and Alameda Research?",
+      "category": "时间条件",
+      "expected_document_ids": [
+        "doc_f8beceda01422d99",
+        "doc_6690a28d66944996",
+        "doc_6bf7eda430b47c68"
+      ],
+      "answer_key_points": [
+        "No"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-techcrunch.com-2023-10-02-sbf-60-minutes-f8beceda.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "e12bb09185f1fc6b",
+        "human_reviewed": false,
+        "upstream_question_type": "temporal_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-f17e6d2989099377",
+      "query": "Does the Sporting News article discussing Argentina's forward line suggest Lionel Messi is influencing a youth movement with players like Julian Alvarez and Alejandro Garnacho, while the same source's article on Inter Miami indicates Messi's recent return from injury to play a part of the game?",
+      "category": "跨文档比较",
+      "expected_document_ids": [
+        "doc_8bfcfe59d5920e97",
+        "doc_3eb136b892ffcf06"
+      ],
+      "answer_key_points": [
+        "Yes"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-www.sportingnews.com-us-soccer-news-watch-argentina-vs-8bfcfe59.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "f17e6d2989099377",
+        "human_reviewed": false,
+        "upstream_question_type": "comparison_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-f3ebf9d6adf1b025",
+      "query": "Between the Sporting News report on the Minnesota Vikings' offensive performance published on November 13, 2023, and the Sporting News report on the Minnesota Vikings' strategic options during the 'Monday Night Football' game published on November 27, 2023, was there no change in the reporting on the team's ability to influence the game's outcome?",
+      "category": "时间条件",
+      "expected_document_ids": [
+        "doc_9eb79fc45400d86e",
+        "doc_727b0c655bd9e543"
+      ],
+      "answer_key_points": [
+        "no"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-www.sportingnews.com-us-nfl-news-nfl-power-rankings-li-9eb79fc4.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "f3ebf9d6adf1b025",
+        "human_reviewed": false,
+        "upstream_question_type": "temporal_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-multihop_rag-fe2f241c82614b56",
+      "query": "Does \"The Independent - Life and Style\" article discussing Will Smith and Jada Pinkett Smith's marriage indicate the same stance on the option of divorce as expressed in another \"The Independent - Life and Style\" article on their relationship, or do the articles present differing views on this aspect of their marriage?",
+      "category": "跨文档比较",
+      "expected_document_ids": [
+        "doc_767ea969c286d9cd",
+        "doc_8f4fba7b0b63f5f3",
+        "doc_50d2f50f784b4a3d"
+      ],
+      "answer_key_points": [
+        "Same"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/multihop_rag/https-www.independent.co.uk-life-style-jada-pinkett-will-smi-767ea969.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "yixuantt/MultiHopRAG",
+        "upstream_record_id": "fe2f241c82614b56",
+        "human_reviewed": false,
+        "upstream_question_type": "comparison_query",
+        "category_assignment": "upstream_question_type"
+      }
+    },
+    {
+      "query_id": "candidate-ragbench_finqa-finqa_6267",
+      "query": "assuming each continent has the same number of destinations , approximately how many destinations does each continent have?",
+      "category": "表格",
+      "expected_document_ids": [
+        "doc_2969494565a506a3"
+      ],
+      "answer_key_points": [
+        "If there are approximately 455 destinations in total and they are spread across all seven continents, each continent would have approximately 65 destinations. (455 total destinations / 7 continents = approximately 65 destinations per continent)"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_6267-document-0-29694945.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "galileo-ai/ragbench",
+        "upstream_record_id": "finqa_6267",
+        "human_reviewed": false,
+        "upstream_config": "finqa",
+        "category_assignment": "upstream_dataset_config",
+        "answer_key_origin": "model_response_requires_human_review",
+        "generation_model_name": "gpt-3.5-turbo-0125"
+      }
+    },
+    {
+      "query_id": "candidate-ragbench_finqa-finqa_6494",
+      "query": "what was the average segment net sales from 2005 to 2007 in millions",
+      "category": "表格",
+      "expected_document_ids": [
+        "doc_b9f2c7a2e48d1330"
+      ],
+      "answer_key_points": [
+        "The average segment net sales from 2005 to 2007 was approximately $5,722.33 million. \n\nCalculation:\n(Net sales in 2005 + Net sales in 2006 + Net sales in 2007) / 3\n= ($5038 + $5400 + $7729) / 3\n= $18167 / 3\n= $5722.33"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_6494-document-1-b9f2c7a2.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "galileo-ai/ragbench",
+        "upstream_record_id": "finqa_6494",
+        "human_reviewed": false,
+        "upstream_config": "finqa",
+        "category_assignment": "upstream_dataset_config",
+        "answer_key_origin": "model_response_requires_human_review",
+        "generation_model_name": "gpt-3.5-turbo-0125"
+      }
+    },
+    {
+      "query_id": "candidate-ragbench_finqa-finqa_6951",
+      "query": "in 2014 what was the ratio of the estimated future benefit payments due in 2015 compared to the amount after 2020",
+      "category": "表格",
+      "expected_document_ids": [
+        "doc_555e00cd798764ac"
+      ],
+      "answer_key_points": [
+        "The estimated future benefit payment for the qualified defined benefit pension plans in 2015 was $2070 million and for the years 2020-2024 it was $13430 million. \n\nTherefore, the ratio of the estimated future benefit payments due in 2015 compared to the amount after 2020 would be $2070 million / $13430 million, which simplifies to 0.154, or approximately 15.4%."
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_6951-document-1-555e00cd.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "galileo-ai/ragbench",
+        "upstream_record_id": "finqa_6951",
+        "human_reviewed": false,
+        "upstream_config": "finqa",
+        "category_assignment": "upstream_dataset_config",
+        "answer_key_origin": "model_response_requires_human_review",
+        "generation_model_name": "gpt-3.5-turbo-0125"
+      }
+    },
+    {
+      "query_id": "candidate-ragbench_finqa-finqa_6966",
+      "query": "what is the average number of shares per registered holder as of february 17 , 2017?",
+      "category": "表格",
+      "expected_document_ids": [
+        "doc_c811709dcc5a8edb"
+      ],
+      "answer_key_points": [
+        "To find the average number of shares per registered holder as of February 17, 2017, you would divide the total number of outstanding shares by the total number of registered holders:\n\nTotal number of outstanding shares: 427,195,037\nTotal number of registered holders: 153\n\nAverage number of shares per registered holder = 427,195,037 / 153 = 2,793,660.25 shares per registered holder\n\nTherefore, the average number of shares per registered holder as of February 17, 2017, is approximately 2,793,660.25 shares."
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_6966-document-2-c811709d.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "galileo-ai/ragbench",
+        "upstream_record_id": "finqa_6966",
+        "human_reviewed": false,
+        "upstream_config": "finqa",
+        "category_assignment": "upstream_dataset_config",
+        "answer_key_origin": "model_response_requires_human_review",
+        "generation_model_name": "gpt-3.5-turbo-0125"
+      }
+    },
+    {
+      "query_id": "candidate-ragbench_finqa-finqa_7058",
+      "query": "what was the increase in the settlements with tax authorities as a percent of the tax liabilities observed during 2013 and 2014?",
+      "category": "表格",
+      "expected_document_ids": [
+        "doc_ff9fb7c57f907bdd"
+      ],
+      "answer_key_points": [
+        "The increase in settlements with tax authorities as a percent of the tax liabilities observed during 2013 and 2014 was 45.16% ($29 / $63) and 46.42% ($8 / $35) respectively."
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_7058-document-1-ff9fb7c5.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "galileo-ai/ragbench",
+        "upstream_record_id": "finqa_7058",
+        "human_reviewed": false,
+        "upstream_config": "finqa",
+        "category_assignment": "upstream_dataset_config",
+        "answer_key_origin": "model_response_requires_human_review",
+        "generation_model_name": "gpt-3.5-turbo-0125"
+      }
+    },
+    {
+      "query_id": "candidate-ragbench_finqa-finqa_7161",
+      "query": "what is the growth rate in the net income of bermuda subsidiaries from 2007 to 2008?",
+      "category": "表格",
+      "expected_document_ids": [
+        "doc_de68f98584fb5015"
+      ],
+      "answer_key_points": [
+        "The net income of Bermuda subsidiaries was $1535 million in 2007 and $684 million in 2008. To calculate the growth rate, we use the formula:\n\nGrowth Rate = ((Net Income 2008 - Net Income 2007) / Net Income 2007) * 100\n\nPlugging in the values, we get:\n\nGrowth Rate = (($684 million - $1535 million) / $1535 million) * 100 = (-$851 million / $1535 million) * 100 ≈ -55.51%\n\nTherefore, the growth rate in the net income of Bermuda subsidiaries from 2007 to 2008 is approximately -55.51%."
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_7161-document-1-de68f985.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "galileo-ai/ragbench",
+        "upstream_record_id": "finqa_7161",
+        "human_reviewed": false,
+        "upstream_config": "finqa",
+        "category_assignment": "upstream_dataset_config",
+        "answer_key_origin": "model_response_requires_human_review",
+        "generation_model_name": "gpt-3.5-turbo-0125"
+      }
+    },
+    {
+      "query_id": "candidate-ragbench_finqa-finqa_7258",
+      "query": "what was the growth rate of the loews common stock from december 31 , 2004 to 2009",
+      "category": "表格",
+      "expected_document_ids": [
+        "doc_8c66700c044cbc56"
+      ],
+      "answer_key_points": [
+        "The growth rate of the loews common stock from December 31, 2004, to 2009 can be calculated by dividing the final value by the initial value and then subtracting 1. \n\nFinal value in 2009: $160.62\nInitial value in 2004: $100.00\n\nTherefore, the growth rate of the loews common stock from December 31, 2004, to 2009 was:\n(160.62/100) - 1 = 0.6062 or 60.62%"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_7258-document-1-8c66700c.md",
+      "split": "dev",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "galileo-ai/ragbench",
+        "upstream_record_id": "finqa_7258",
+        "human_reviewed": false,
+        "upstream_config": "finqa",
+        "category_assignment": "upstream_dataset_config",
+        "answer_key_origin": "model_response_requires_human_review",
+        "generation_model_name": "gpt-3.5-turbo-0125"
+      }
+    },
+    {
+      "query_id": "candidate-ragbench_finqa-finqa_7310",
+      "query": "based on the table , what would be the annual percent return for the companies investments?",
+      "category": "表格",
+      "expected_document_ids": [
+        "doc_708e59765acf7835"
+      ],
+      "answer_key_points": [
+        "To calculate the annual percent return for the company's investments, we need to compare the total deferred compensation plan investments from 2009 to 2010.\n\nIn 2009, the total deferred compensation plan investments were $7,943.\nIn 2010, the total deferred compensation plan investments were $8,690.\n\nTo calculate the annual percent return:\nAnnual Percent Return = ((Ending Value - Beginning Value) / Beginning Value) * 100\nAnnual Percent Return = (($8,690 - $7,943) / $7,943) * 100\nAnnual Percent Return = ($747 / $7,943) * 100\nAnnual Percent Return = 0.094 x 100\nAnnual Percent Return = 9.4%\n\nTherefore, the annual percent return for the company's investments would be 9.4%."
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/ragbench_finqa/finqa_7310-document-1-708e5976.md",
+      "split": "final",
+      "language": "en",
+      "difficulty": "hard",
+      "candidate_metadata": {
+        "upstream_dataset": "galileo-ai/ragbench",
+        "upstream_record_id": "finqa_7310",
+        "human_reviewed": false,
+        "upstream_config": "finqa",
+        "category_assignment": "upstream_dataset_config",
+        "answer_key_origin": "model_response_requires_human_review",
+        "generation_model_name": "gpt-3.5-turbo-0125"
+      }
+    },
+    {
       "query_id": "candidate-squad_v2-56e1c2eee3433e1400423138",
       "query": "Decision problems capable of being solved by a deterministic Turing machine while maintaining adherence to polynomial time belong to what class?",
       "category": "精确事实",
@@ -3819,48 +3492,6 @@
       }
     },
     {
-      "query_id": "candidate-squad_v2-571cb010dd7acb1400e4c128",
-      "query": "What is the name for a form of oxygen in which electrons are paired?",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_cd06b110d518d585"
-      ],
-      "answer_key_points": [
-        "Singlet"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/squad_v2/571cb010dd7acb1400e4c128-cd06b110.md",
-      "split": "dev",
-      "language": "en",
-      "difficulty": "medium",
-      "candidate_metadata": {
-        "upstream_dataset": "rajpurkar/squad_v2",
-        "upstream_record_id": "571cb010dd7acb1400e4c128",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-squad_v2-57265d86f1498d1400e8dd51",
-      "query": "What group has no feeding appendages?",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_660ea738b8e6260d"
-      ],
-      "answer_key_points": [
-        "The Beroida"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/squad_v2/57265d86f1498d1400e8dd51-660ea738.md",
-      "split": "dev",
-      "language": "en",
-      "difficulty": "medium",
-      "candidate_metadata": {
-        "upstream_dataset": "rajpurkar/squad_v2",
-        "upstream_record_id": "57265d86f1498d1400e8dd51",
-        "human_reviewed": false
-      }
-    },
-    {
       "query_id": "candidate-squad_v2-57267640f1498d1400e8e074",
       "query": "The Hawaiian Islands are made up almost entirely of what?",
       "category": "精确事实",
@@ -3878,27 +3509,6 @@
       "candidate_metadata": {
         "upstream_dataset": "rajpurkar/squad_v2",
         "upstream_record_id": "57267640f1498d1400e8e074",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-squad_v2-5726887e708984140094c91b",
-      "query": "What is the name of the two-tentacled cydippid that feedsentirely on salps called?",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_1ad59b2b456fdd4b"
-      ],
-      "answer_key_points": [
-        "Lampea"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/squad_v2/5726887e708984140094c91b-1ad59b2b.md",
-      "split": "dev",
-      "language": "en",
-      "difficulty": "medium",
-      "candidate_metadata": {
-        "upstream_dataset": "rajpurkar/squad_v2",
-        "upstream_record_id": "5726887e708984140094c91b",
         "human_reviewed": false
       }
     },
@@ -3941,90 +3551,6 @@
       "candidate_metadata": {
         "upstream_dataset": "rajpurkar/squad_v2",
         "upstream_record_id": "5728ec6a4b864d19001650ae",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-squad_v2-5729fc3d1d0469140077969f",
-      "query": "Tumor antigens are complexed with MHC class I molecules in the same way as what antigens?",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_e11cd41e320b663a"
-      ],
-      "answer_key_points": [
-        "viral antigens"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/squad_v2/5729fc3d1d0469140077969f-e11cd41e.md",
-      "split": "final",
-      "language": "en",
-      "difficulty": "medium",
-      "candidate_metadata": {
-        "upstream_dataset": "rajpurkar/squad_v2",
-        "upstream_record_id": "5729fc3d1d0469140077969f",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-squad_v2-572a12381d0469140077972f",
-      "query": "When was a study conducted of Swedish counties?",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_7168fcdd9985cf92"
-      ],
-      "answer_key_points": [
-        "between 1960 and 2000"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/squad_v2/572a12381d0469140077972f-7168fcdd.md",
-      "split": "final",
-      "language": "en",
-      "difficulty": "medium",
-      "candidate_metadata": {
-        "upstream_dataset": "rajpurkar/squad_v2",
-        "upstream_record_id": "572a12381d0469140077972f",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-squad_v2-572f64ccb2c2fd14005680bb",
-      "query": "What is the Bassin de compensation de Plobsheim in Alsace? ",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_f5fcddb0e87a8dd9"
-      ],
-      "answer_key_points": [
-        "large compensation pools"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/squad_v2/572f64ccb2c2fd14005680bb-f5fcddb0.md",
-      "split": "final",
-      "language": "en",
-      "difficulty": "medium",
-      "candidate_metadata": {
-        "upstream_dataset": "rajpurkar/squad_v2",
-        "upstream_record_id": "572f64ccb2c2fd14005680bb",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-squad_v2-572faf74b2c2fd140056834a",
-      "query": "Where was Parliament temporarily relocated to in May of 2000?",
-      "category": "精确事实",
-      "expected_document_ids": [
-        "doc_ee8efbe25ec6ce77"
-      ],
-      "answer_key_points": [
-        "former Strathclyde Regional Council debating chamber in Glasgow"
-      ],
-      "answerable": true,
-      "source": "evaluation/candidates/public_corpus/squad_v2/572faf74b2c2fd140056834a-ee8efbe2.md",
-      "split": "dev",
-      "language": "en",
-      "difficulty": "medium",
-      "candidate_metadata": {
-        "upstream_dataset": "rajpurkar/squad_v2",
-        "upstream_record_id": "572faf74b2c2fd140056834a",
         "human_reviewed": false
       }
     },
@@ -4120,29 +3646,12 @@
       "answer_key_points": [],
       "answerable": false,
       "source": "evaluation/candidates/public_corpus/squad_v2/5a5808ef770dc0001aeeff6a-6f3f407d.md",
-      "split": "dev",
-      "language": "en",
-      "difficulty": "hard",
-      "candidate_metadata": {
-        "upstream_dataset": "rajpurkar/squad_v2",
-        "upstream_record_id": "5a5808ef770dc0001aeeff6a",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-squad_v2-5a5918ff3e1742001a15cf82",
-      "query": "What lens is used to identify chemical composition?",
-      "category": "无答案",
-      "expected_document_ids": [],
-      "answer_key_points": [],
-      "answerable": false,
-      "source": "evaluation/candidates/public_corpus/squad_v2/5a5918ff3e1742001a15cf82-562b89f5.md",
       "split": "final",
       "language": "en",
       "difficulty": "hard",
       "candidate_metadata": {
         "upstream_dataset": "rajpurkar/squad_v2",
-        "upstream_record_id": "5a5918ff3e1742001a15cf82",
+        "upstream_record_id": "5a5808ef770dc0001aeeff6a",
         "human_reviewed": false
       }
     },
@@ -4154,29 +3663,12 @@
       "answer_key_points": [],
       "answerable": false,
       "source": "evaluation/candidates/public_corpus/squad_v2/5a668fc9f038b7001ab0bfe8-7a775665.md",
-      "split": "dev",
-      "language": "en",
-      "difficulty": "hard",
-      "candidate_metadata": {
-        "upstream_dataset": "rajpurkar/squad_v2",
-        "upstream_record_id": "5a668fc9f038b7001ab0bfe8",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-squad_v2-5a835778e60761001a2eb5db",
-      "query": "What are more complex animals labeled when they have a jelly-like layer?",
-      "category": "无答案",
-      "expected_document_ids": [],
-      "answer_key_points": [],
-      "answerable": false,
-      "source": "evaluation/candidates/public_corpus/squad_v2/5a835778e60761001a2eb5db-08a095cd.md",
       "split": "final",
       "language": "en",
       "difficulty": "hard",
       "candidate_metadata": {
         "upstream_dataset": "rajpurkar/squad_v2",
-        "upstream_record_id": "5a835778e60761001a2eb5db",
+        "upstream_record_id": "5a668fc9f038b7001ab0bfe8",
         "human_reviewed": false
       }
     },
@@ -4188,7 +3680,7 @@
       "answer_key_points": [],
       "answerable": false,
       "source": "evaluation/candidates/public_corpus/squad_v2/5a89473c3b2508001a72a59b-c59693a4.md",
-      "split": "final",
+      "split": "dev",
       "language": "en",
       "difficulty": "hard",
       "candidate_metadata": {
@@ -4205,7 +3697,7 @@
       "answer_key_points": [],
       "answerable": false,
       "source": "evaluation/candidates/public_corpus/squad_v2/5acf9d3477cf76001a685513-42c04957.md",
-      "split": "dev",
+      "split": "final",
       "language": "en",
       "difficulty": "hard",
       "candidate_metadata": {
@@ -4222,7 +3714,7 @@
       "answer_key_points": [],
       "answerable": false,
       "source": "evaluation/candidates/public_corpus/squad_v2/5acf9d3477cf76001a685513-42c04957.md",
-      "split": "final",
+      "split": "dev",
       "language": "en",
       "difficulty": "hard",
       "candidate_metadata": {
@@ -4239,7 +3731,7 @@
       "answer_key_points": [],
       "answerable": false,
       "source": "evaluation/candidates/public_corpus/squad_v2/5ad0301577cf76001a686db5-4b5d5819.md",
-      "split": "final",
+      "split": "dev",
       "language": "en",
       "difficulty": "hard",
       "candidate_metadata": {
@@ -4256,7 +3748,7 @@
       "answer_key_points": [],
       "answerable": false,
       "source": "evaluation/candidates/public_corpus/squad_v2/5ad0391f77cf76001a686e48-14d78905.md",
-      "split": "dev",
+      "split": "final",
       "language": "en",
       "difficulty": "hard",
       "candidate_metadata": {
@@ -4273,7 +3765,7 @@
       "answer_key_points": [],
       "answerable": false,
       "source": "evaluation/candidates/public_corpus/squad_v2/5ad0440877cf76001a686f3e-88dac734.md",
-      "split": "final",
+      "split": "dev",
       "language": "en",
       "difficulty": "hard",
       "candidate_metadata": {
@@ -4283,87 +3775,338 @@
       }
     },
     {
-      "query_id": "candidate-squad_v2-5ad25963d7d075001a428e0d",
-      "query": "In what year was Fort Coligny built?",
-      "category": "无答案",
-      "expected_document_ids": [],
-      "answer_key_points": [],
-      "answerable": false,
-      "source": "evaluation/candidates/public_corpus/squad_v2/5ad25963d7d075001a428e0d-78c5ac2d.md",
-      "split": "dev",
-      "language": "en",
-      "difficulty": "hard",
-      "candidate_metadata": {
-        "upstream_dataset": "rajpurkar/squad_v2",
-        "upstream_record_id": "5ad25963d7d075001a428e0d",
-        "human_reviewed": false
-      }
-    },
-    {
-      "query_id": "candidate-squad_v2-5ad2685dd7d075001a429279",
-      "query": "What does concentrated O allow combustion to do?",
-      "category": "无答案",
-      "expected_document_ids": [],
-      "answer_key_points": [],
-      "answerable": false,
-      "source": "evaluation/candidates/public_corpus/squad_v2/5ad2685dd7d075001a429279-7140cd84.md",
+      "query_id": "candidate-xquad_zh-56dfa0d84a1a83140091ebb9",
+      "query": "特斯拉大部分时间都住在哪里？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_e8b49aae7f6520f3"
+      ],
+      "answer_key_points": [
+        "纽约酒店"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/xquad_zh/56dfa0d84a1a83140091ebb9-e8b49aae.md",
       "split": "final",
-      "language": "en",
-      "difficulty": "hard",
+      "language": "zh",
+      "difficulty": "medium",
       "candidate_metadata": {
-        "upstream_dataset": "rajpurkar/squad_v2",
-        "upstream_record_id": "5ad2685dd7d075001a429279",
+        "upstream_dataset": "google/xquad",
+        "upstream_record_id": "56dfa0d84a1a83140091ebb9",
         "human_reviewed": false
       }
     },
     {
-      "query_id": "candidate-squad_v2-5ad3d7e0604f3c001a3ff360",
-      "query": "A water cooling tower is also referred to as what kind of cooling tower?",
-      "category": "无答案",
-      "expected_document_ids": [],
-      "answer_key_points": [],
-      "answerable": false,
-      "source": "evaluation/candidates/public_corpus/squad_v2/5ad3d7e0604f3c001a3ff360-8320b9f3.md",
+      "query_id": "candidate-xquad_zh-5705f7c875f01819005e77de",
+      "query": "众所周知，南加州的社区很大，分布很广，还有什么其他特点？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_24a56834227b7645"
+      ],
+      "answer_key_points": [
+        "郊区"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/xquad_zh/5705f7c875f01819005e77de-24a56834.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "google/xquad",
+        "upstream_record_id": "5705f7c875f01819005e77de",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-xquad_zh-5706149552bb891400689881",
+      "query": "洛杉矶曾经有多少支球队？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_3156fe79a0fabdf1"
+      ],
+      "answer_key_points": [
+        "两支"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/xquad_zh/5706149552bb891400689881-3156fe79.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "google/xquad",
+        "upstream_record_id": "5706149552bb891400689881",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-xquad_zh-570d47b8b3d812140066d630",
+      "query": "维多利亚州的窄轨铁路线建在哪里？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_115533dde7885438"
+      ],
+      "answer_key_points": [
+        "山区"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/xquad_zh/570d47b8b3d812140066d630-115533dd.md",
       "split": "final",
-      "language": "en",
-      "difficulty": "hard",
+      "language": "zh",
+      "difficulty": "medium",
       "candidate_metadata": {
-        "upstream_dataset": "rajpurkar/squad_v2",
-        "upstream_record_id": "5ad3d7e0604f3c001a3ff360",
+        "upstream_dataset": "google/xquad",
+        "upstream_record_id": "570d47b8b3d812140066d630",
         "human_reviewed": false
       }
     },
     {
-      "query_id": "candidate-squad_v2-5ad3f03c604f3c001a3ff82b",
-      "query": "How many crank rotations are there in a cylinder cycle?",
-      "category": "无答案",
-      "expected_document_ids": [],
-      "answer_key_points": [],
-      "answerable": false,
-      "source": "evaluation/candidates/public_corpus/squad_v2/5ad3f03c604f3c001a3ff82b-d744d293.md",
-      "split": "dev",
-      "language": "en",
-      "difficulty": "hard",
+      "query_id": "candidate-xquad_zh-57115bf350c2381900b54a95",
+      "query": "Energiprojekt AB发动机有多少个气缸?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_819eb8828fb97fa4"
+      ],
+      "answer_key_points": [
+        "5"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/xquad_zh/57115bf350c2381900b54a95-819eb882.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "medium",
       "candidate_metadata": {
-        "upstream_dataset": "rajpurkar/squad_v2",
-        "upstream_record_id": "5ad3f03c604f3c001a3ff82b",
+        "upstream_dataset": "google/xquad",
+        "upstream_record_id": "57115bf350c2381900b54a95",
         "human_reviewed": false
       }
     },
     {
-      "query_id": "candidate-squad_v2-5ad5036c5b96ef001a10a985",
-      "query": "What museum preserves the memory of independence?",
-      "category": "无答案",
-      "expected_document_ids": [],
-      "answer_key_points": [],
-      "answerable": false,
-      "source": "evaluation/candidates/public_corpus/squad_v2/5ad5036c5b96ef001a10a985-590c26f7.md",
+      "query_id": "candidate-xquad_zh-5726241189a1e219009ac2de",
+      "query": "什么对美国经济产生负面影响?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_c00a9aeae0e6bd90"
+      ],
+      "answer_key_points": [
+        "禁运"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/xquad_zh/5726241189a1e219009ac2de-c00a9aea.md",
       "split": "dev",
-      "language": "en",
-      "difficulty": "hard",
+      "language": "zh",
+      "difficulty": "medium",
       "candidate_metadata": {
-        "upstream_dataset": "rajpurkar/squad_v2",
-        "upstream_record_id": "5ad5036c5b96ef001a10a985",
+        "upstream_dataset": "google/xquad",
+        "upstream_record_id": "5726241189a1e219009ac2de",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-xquad_zh-57274b35f1498d1400e8f5d5",
+      "query": "Erganzungsschulen大多是哪些类型的学校?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_1a486c7eb7d8b671"
+      ],
+      "answer_key_points": [
+        "职业"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/xquad_zh/57274b35f1498d1400e8f5d5-1a486c7e.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "google/xquad",
+        "upstream_record_id": "57274b35f1498d1400e8f5d5",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-xquad_zh-5727515f708984140094dc13",
+      "query": "除了公立学校，南非学校法案还承认哪种类型的学校?",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_2d68b6d857c4049d"
+      ],
+      "answer_key_points": [
+        "独立"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/xquad_zh/5727515f708984140094dc13-2d68b6d8.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "google/xquad",
+        "upstream_record_id": "5727515f708984140094dc13",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-xquad_zh-57281a952ca10214002d9dea",
+      "query": "在《神秘博士》的前15年间，谁是最频繁的音乐贡献者？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_abb1e1f7e4070a64"
+      ],
+      "answer_key_points": [
+        "达德利·辛普森"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/xquad_zh/57281a952ca10214002d9dea-abb1e1f7.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "google/xquad",
+        "upstream_record_id": "57281a952ca10214002d9dea",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-xquad_zh-5728349dff5b5019007d9eff",
+      "query": "哪一雨林覆盖了南美洲亚马逊盆地的大部分？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_170ad8a27dae400c"
+      ],
+      "answer_key_points": [
+        "亚马逊雨林"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/xquad_zh/5728349dff5b5019007d9eff-170ad8a2.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "google/xquad",
+        "upstream_record_id": "5728349dff5b5019007d9eff",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-xquad_zh-572f6a0ba23a5019007fc5ec",
+      "query": "宾根和波恩之间有什么河谷？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_0afac1dc1a5cad97"
+      ],
+      "answer_key_points": [
+        "莱茵河谷"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/xquad_zh/572ff12e04bcaa1900d76f00-0afac1dc.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "google/xquad",
+        "upstream_record_id": "572f6a0ba23a5019007fc5ec",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-xquad_zh-572ff12e04bcaa1900d76f00",
+      "query": "流经宾根和波恩之间的莱茵河中游流向哪里？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_0afac1dc1a5cad97"
+      ],
+      "answer_key_points": [
+        "莱茵河谷"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/xquad_zh/572ff12e04bcaa1900d76f00-0afac1dc.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "google/xquad",
+        "upstream_record_id": "572ff12e04bcaa1900d76f00",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-xquad_zh-57302bd0b2c2fd14005689de",
+      "query": "截至2015年3月，伊斯兰国控制的领地有多少人口？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_12cdc4b930c084fb"
+      ],
+      "answer_key_points": [
+        "一千万"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/xquad_zh/57302bd0b2c2fd14005689de-12cdc4b9.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "google/xquad",
+        "upstream_record_id": "57302bd0b2c2fd14005689de",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-xquad_zh-57309921396df919000961f6",
+      "query": "发展成为联合卫理公会的活动是从什么时候开始的？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_f3756a3e26c167ed"
+      ],
+      "answer_key_points": [
+        "18世纪中叶"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/xquad_zh/57309921396df919000961f6-f3756a3e.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "google/xquad",
+        "upstream_record_id": "57309921396df919000961f6",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-xquad_zh-5730a4d02461fd1900a9cf29",
+      "query": "法国什么时候控制了阿尔及利亚？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_1b1f74aec177e91a"
+      ],
+      "answer_key_points": [
+        "1830年"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/xquad_zh/5730a4d02461fd1900a9cf29-1b1f74ae.md",
+      "split": "final",
+      "language": "zh",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "google/xquad",
+        "upstream_record_id": "5730a4d02461fd1900a9cf29",
+        "human_reviewed": false
+      }
+    },
+    {
+      "query_id": "candidate-xquad_zh-5737a25ac3c5551400e51f54",
+      "query": "在计算物体面积时，压力项包括在什么里面？",
+      "category": "精确事实",
+      "expected_document_ids": [
+        "doc_1cb7ec088e955ef8"
+      ],
+      "answer_key_points": [
+        "公式"
+      ],
+      "answerable": true,
+      "source": "evaluation/candidates/public_corpus/xquad_zh/5737a25ac3c5551400e51f54-1cb7ec08.md",
+      "split": "dev",
+      "language": "zh",
+      "difficulty": "medium",
+      "candidate_metadata": {
+        "upstream_dataset": "google/xquad",
+        "upstream_record_id": "5737a25ac3c5551400e51f54",
         "human_reviewed": false
       }
     }

@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import sqlite3
+from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Iterator
 
+from src.production.review_attestation import REVIEW_ATTESTATION_FIELDS
 
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 5
 
 
 class ProductionDatabase:
@@ -122,16 +123,80 @@ class ProductionDatabase:
                 status TEXT NOT NULL CHECK(status IN ('pending','approved','rejected')),
                 notes TEXT NOT NULL DEFAULT '', reviewer_id TEXT REFERENCES users(id),
                 reviewed_at TEXT NOT NULL,
+                query_verified INTEGER NOT NULL DEFAULT 0 CHECK(query_verified IN (0,1)),
+                answer_verified INTEGER NOT NULL DEFAULT 0 CHECK(answer_verified IN (0,1)),
+                evidence_verified INTEGER NOT NULL DEFAULT 0 CHECK(evidence_verified IN (0,1)),
+                category_difficulty_verified INTEGER NOT NULL DEFAULT 0
+                    CHECK(category_difficulty_verified IN (0,1)),
+                split_verified INTEGER NOT NULL DEFAULT 0 CHECK(split_verified IN (0,1)),
                 PRIMARY KEY(dataset_sha256, query_id)
             )""",
             "CREATE INDEX IF NOT EXISTS idx_golden_reviews_status ON golden_reviews(dataset_sha256, status)",
+            """CREATE TABLE IF NOT EXISTS private_golden_sets (
+                id TEXT PRIMARY KEY, name TEXT NOT NULL, version TEXT NOT NULL,
+                status TEXT NOT NULL CHECK(status IN ('draft','reviewed')) DEFAULT 'draft',
+                created_by TEXT NOT NULL REFERENCES users(id), created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            )""",
+            """CREATE TABLE IF NOT EXISTS private_golden_cases (
+                set_id TEXT NOT NULL REFERENCES private_golden_sets(id) ON DELETE CASCADE,
+                query_id TEXT NOT NULL, query_text TEXT NOT NULL, category TEXT NOT NULL,
+                expected_document_ids_json TEXT NOT NULL, answer_key_points_json TEXT NOT NULL,
+                answerable INTEGER NOT NULL CHECK(answerable IN (0,1)), source TEXT NOT NULL,
+                split TEXT NOT NULL CHECK(split IN ('dev','final')), language TEXT NOT NULL,
+                difficulty TEXT NOT NULL CHECK(difficulty IN ('easy','medium','hard')),
+                review_status TEXT NOT NULL CHECK(review_status IN ('pending','approved','rejected')),
+                review_notes TEXT NOT NULL DEFAULT '', reviewer_id TEXT REFERENCES users(id),
+                reviewed_at TEXT,
+                query_verified INTEGER NOT NULL DEFAULT 0 CHECK(query_verified IN (0,1)),
+                answer_verified INTEGER NOT NULL DEFAULT 0 CHECK(answer_verified IN (0,1)),
+                evidence_verified INTEGER NOT NULL DEFAULT 0 CHECK(evidence_verified IN (0,1)),
+                category_difficulty_verified INTEGER NOT NULL DEFAULT 0
+                    CHECK(category_difficulty_verified IN (0,1)),
+                split_verified INTEGER NOT NULL DEFAULT 0 CHECK(split_verified IN (0,1)),
+                created_by TEXT NOT NULL REFERENCES users(id),
+                created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
+                PRIMARY KEY(set_id, query_id)
+            )""",
+            "CREATE INDEX IF NOT EXISTS idx_private_golden_cases_review ON private_golden_cases(set_id, review_status)",
         ]
         with self.transaction(immediate=True) as connection:
             for statement in statements:
                 connection.execute(statement)
+            previous_version = connection.execute(
+                "SELECT MAX(version) FROM schema_migrations"
+            ).fetchone()[0]
+            self._ensure_attestation_columns(connection, "golden_reviews")
+            self._ensure_attestation_columns(connection, "private_golden_cases")
+            if previous_version is not None and int(previous_version) < SCHEMA_VERSION:
+                incomplete = " OR ".join(f"{field}=0" for field in REVIEW_ATTESTATION_FIELDS)
+                connection.execute(
+                    f"""UPDATE golden_reviews SET status='pending'
+                        WHERE status='approved' AND ({incomplete})"""
+                )
+                connection.execute(
+                    f"""UPDATE private_golden_cases SET review_status='pending'
+                        WHERE review_status='approved' AND ({incomplete})"""
+                )
+                connection.execute(
+                    "UPDATE private_golden_sets SET status='draft' WHERE status='reviewed'"
+                )
             connection.execute(
                 "INSERT OR IGNORE INTO schema_migrations(version) VALUES (?)", (SCHEMA_VERSION,)
             )
+
+    @staticmethod
+    def _ensure_attestation_columns(connection: sqlite3.Connection, table: str) -> None:
+        existing = {
+            str(row["name"])
+            for row in connection.execute(f"PRAGMA table_info({table})").fetchall()
+        }
+        for field in REVIEW_ATTESTATION_FIELDS:
+            if field not in existing:
+                connection.execute(
+                    f"""ALTER TABLE {table} ADD COLUMN {field} INTEGER NOT NULL DEFAULT 0
+                        CHECK({field} IN (0,1))"""
+                )
 
     def health(self) -> dict[str, object]:
         with self.connect() as connection:

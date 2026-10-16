@@ -28,5 +28,8 @@ def test_client_still_rejects_unaccepted_error_status(monkeypatch):
         lambda *args, **kwargs: response,
     )
 
-    with pytest.raises(DashboardAPIError, match="503: not ready"):
+    with pytest.raises(DashboardAPIError, match="503: not ready") as captured:
         DashboardAPIClient().get("/health/ready")
+
+    assert captured.value.status_code == 503
+    assert captured.value.detail == "not ready"

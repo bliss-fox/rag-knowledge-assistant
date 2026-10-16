@@ -1,257 +1,255 @@
 #!/usr/bin/env python
-"""ReAct Agent CLI for the Modular RAG MCP Server.
+"""Authenticated production RAG CLI.
 
-Launches an interactive multi-turn agent session or runs a single query.
+The historical CLI constructed retrievers and an LLM in-process.  That made it
+possible to generate an answer without authentication, EvidenceGate, or the
+SQLite trace store.  This entry point is intentionally a thin FastAPI client:
+all answers now pass through the same ``RAGApplicationService.answer`` path as
+the production Dashboard.
 
 Usage:
-    # Interactive multi-turn session
-    python scripts/agent.py
-
-    # Single query
     python scripts/agent.py --query "What is BM25?"
+    python scripts/agent.py --collection default --top-k 5 --verbose
 
-    # Specify collection and top-k
-    python scripts/agent.py --query "Explain RRF" --collection docs --top-k 5
-
-    # Verbose (show ReAct turns)
-    python scripts/agent.py --query "Explain RRF" --verbose
-
-Exit codes:
-    0 - Success
-    1 - Query failure
-    2 - Configuration error
+Credentials are requested interactively.  Automation may set
+``RAG_CLI_USERNAME`` and ``RAG_CLI_PASSWORD``; passwords are deliberately not
+accepted as command-line arguments because process arguments are observable.
 """
 
 from __future__ import annotations
 
 import argparse
+import getpass
+import json
+import os
 import sys
+from collections.abc import Callable
 from pathlib import Path
-from typing import Optional
+from typing import Any
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _REPO_ROOT = _SCRIPT_DIR.parent
 sys.path.insert(0, str(_REPO_ROOT))
 
-if sys.platform == "win32":
+from src.observability.dashboard.api_client import (  # noqa: E402
+    DashboardAPIClient,
+    DashboardAPIError,
+)
+
+
+def _configure_windows_console() -> None:
+    """Use UTF-8 only for a real script process, never while imported by pytest."""
+    if sys.platform != "win32":
+        return
     import io
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
-from src.core.settings import load_settings
-from src.core.query_engine.query_processor import QueryProcessor
-from src.core.query_engine.hybrid_search import create_hybrid_search
-from src.core.query_engine.dense_retriever import create_dense_retriever
-from src.core.query_engine.sparse_retriever import create_sparse_retriever
-from src.ingestion.storage.bm25_indexer import BM25Indexer
-from src.libs.embedding.embedding_factory import EmbeddingFactory
-from src.libs.llm.llm_factory import LLMFactory
-from src.libs.vector_store.vector_store_factory import VectorStoreFactory
-from src.agent.react_agent import ReActAgent, AgentResponse
-from src.agent.tool_registry import ToolRegistry
-from src.agent.tools.hybrid_search_tool import HybridSearchTool
-from src.agent.tools.semantic_search_tool import SemanticSearchTool
-from src.agent.tools.keyword_search_tool import KeywordSearchTool
-from src.agent.tools.document_summary_tool import DocumentSummaryTool
-from src.agent.tools.list_documents_tool import ListDocumentsTool
-from src.agent.memory.conversation_memory import ConversationMemory
-from src.observability.logger import get_logger
-
-logger = get_logger(__name__)
+    if hasattr(sys.stdout, "buffer"):
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    if hasattr(sys.stderr, "buffer"):
+        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
 
-def parse_args() -> argparse.Namespace:
+class AuthenticatedRAGClient:
+    """Short-lived authenticated client with refresh and explicit logout."""
+
+    def __init__(
+        self,
+        base_url: str | None = None,
+        client_factory: Callable[..., DashboardAPIClient] = DashboardAPIClient,
+    ) -> None:
+        self.base_url = base_url
+        self._client_factory = client_factory
+        self._anonymous = client_factory(base_url=base_url)
+        self._authenticated: DashboardAPIClient | None = None
+        self._refresh_token: str | None = None
+
+    def login(self, username: str, password: str) -> dict[str, Any]:
+        tokens = self._anonymous.post(
+            "/auth/login", json={"username": username, "password": password},
+        )
+        self._set_tokens(tokens)
+        return dict(tokens.get("user") or {})
+
+    def answer(self, query: str, collection: str, top_k: int) -> dict[str, Any]:
+        if self._authenticated is None:
+            raise RuntimeError("Client is not authenticated")
+        payload = {"query": query, "collection": collection, "top_k": top_k}
+        try:
+            return self._authenticated.post("/answer", json=payload)
+        except DashboardAPIError as exc:
+            if exc.status_code != 401 or not self._refresh_token:
+                raise
+        tokens = self._anonymous.post(
+            "/auth/refresh", json={"refresh_token": self._refresh_token},
+        )
+        self._set_tokens(tokens)
+        assert self._authenticated is not None
+        return self._authenticated.post("/answer", json=payload)
+
+    def logout(self) -> None:
+        if self._authenticated is None or not self._refresh_token:
+            return
+        try:
+            self._authenticated.post(
+                "/auth/logout", json={"refresh_token": self._refresh_token},
+            )
+        except DashboardAPIError:
+            # Logout is best effort during CLI shutdown.  The server-side
+            # refresh session also expires and can be revoked by an admin.
+            pass
+        finally:
+            self._authenticated = None
+            self._refresh_token = None
+
+    def _set_tokens(self, tokens: dict[str, Any]) -> None:
+        access_token = str(tokens.get("access_token") or "")
+        refresh_token = str(tokens.get("refresh_token") or "")
+        if not access_token or not refresh_token:
+            raise DashboardAPIError("Authentication response did not contain both tokens")
+        self._refresh_token = refresh_token
+        self._authenticated = self._client_factory(
+            base_url=self.base_url, access_token=access_token,
+        )
+
+
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="ReAct Agent CLI for the Modular RAG knowledge base.",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog=__doc__,
+        description="Authenticated CLI for evidence-constrained production RAG.",
     )
-    parser.add_argument("--query", "-q", help="Single query (omit for interactive mode)")
-    parser.add_argument("--collection", "-c", default=None, help="Collection name")
-    parser.add_argument("--top-k", type=int, default=5, help="Top-k for retrieval (default: 5)")
+    parser.add_argument("--query", "-q", help="Single query; omit for interactive mode")
+    parser.add_argument("--collection", "-c", default="default", help="Collection name")
+    parser.add_argument("--top-k", type=int, default=5, help="Final retrieval count")
+    parser.add_argument("--api-url", default=None, help="FastAPI base URL")
     parser.add_argument(
-        "--config",
-        default=str(_REPO_ROOT / "config" / "settings.yaml"),
-        help="Path to settings.yaml",
+        "--username", default=None,
+        help="Local account name; defaults to RAG_CLI_USERNAME or an interactive prompt",
     )
-    parser.add_argument("--verbose", action="store_true", help="Show ReAct turns")
-    parser.add_argument("--no-memory", action="store_true", help="Disable conversation memory")
-    return parser.parse_args()
+    parser.add_argument(
+        "--verbose", action="store_true",
+        help="Show status, evidence decision, versions and trace ID",
+    )
+    parser.add_argument(
+        "--no-memory", action="store_true", help=argparse.SUPPRESS,
+    )
+    args = parser.parse_args(argv)
+    if args.top_k < 1 or args.top_k > 100:
+        parser.error("--top-k must be between 1 and 100")
+    return args
 
 
-def _build_agent(settings, collection: Optional[str], top_k: int) -> tuple[ReActAgent, ConversationMemory]:
-    coll = collection or getattr(
-        getattr(settings, "agent", None), "default_collection", "default"
-    )
-
-    vector_store = VectorStoreFactory.create(settings, collection_name=coll)
-    embedding_client = EmbeddingFactory.create(settings)
-    llm = LLMFactory.create(settings)
-
-    dense_retriever = create_dense_retriever(
-        settings=settings,
-        embedding_client=embedding_client,
-        vector_store=vector_store,
-    )
-    bm25_indexer = BM25Indexer(index_dir=f"data/db/bm25/{coll}")
-    sparse_retriever = create_sparse_retriever(
-        settings=settings,
-        bm25_indexer=bm25_indexer,
-        vector_store=vector_store,
-    )
-    sparse_retriever.default_collection = coll
-    hybrid_search = create_hybrid_search(
-        settings=settings,
-        query_processor=QueryProcessor(),
-        dense_retriever=dense_retriever,
-        sparse_retriever=sparse_retriever,
-    )
-
-    # Shared context sink so citations flow back to the agent
-    context_sink = []
-
-    registry = ToolRegistry()
-    registry.register(
-        name=HybridSearchTool.name,
-        fn=HybridSearchTool(hybrid_search, default_top_k=top_k, default_collection=coll, context_sink=context_sink).run,
-        description=HybridSearchTool.description,
-        params_schema=HybridSearchTool.parameters_schema,
-    )
-    registry.register(
-        name=SemanticSearchTool.name,
-        fn=SemanticSearchTool(dense_retriever, default_top_k=top_k, default_collection=coll).run,
-        description=SemanticSearchTool.description,
-        params_schema=SemanticSearchTool.parameters_schema,
-    )
-    registry.register(
-        name=KeywordSearchTool.name,
-        fn=KeywordSearchTool(sparse_retriever, default_top_k=top_k, default_collection=coll).run,
-        description=KeywordSearchTool.description,
-        params_schema=KeywordSearchTool.parameters_schema,
-    )
-    registry.register(
-        name=DocumentSummaryTool.name,
-        fn=DocumentSummaryTool(vector_store, default_collection=coll).run,
-        description=DocumentSummaryTool.description,
-        params_schema=DocumentSummaryTool.parameters_schema,
-    )
-    registry.register(
-        name=ListDocumentsTool.name,
-        fn=ListDocumentsTool(vector_store, default_collection=coll).run,
-        description=ListDocumentsTool.description,
-        params_schema=ListDocumentsTool.parameters_schema,
-    )
-
-    agent = ReActAgent(settings=settings, llm=llm, tool_registry=registry)
-    memory = ConversationMemory()
-    return agent, memory, context_sink
+def _credentials(
+    args: argparse.Namespace,
+    input_fn: Callable[[str], str],
+    password_fn: Callable[[str], str],
+) -> tuple[str, str]:
+    username = (args.username or os.environ.get("RAG_CLI_USERNAME") or "").strip()
+    if not username:
+        username = input_fn("Username: ").strip()
+    password = os.environ.get("RAG_CLI_PASSWORD") or password_fn("Password: ")
+    if not username or not password:
+        raise ValueError("Username and password are required")
+    return username, password
 
 
-def _print_response(response: AgentResponse, verbose: bool) -> None:
-    if verbose and response.turns:
-        print("\n" + "─" * 60)
-        print("ReAct Trace:")
-        for i, turn in enumerate(response.turns, 1):
-            print(f"\n  Turn {i}:")
-            print(f"    Thought: {turn.thought}")
-            if turn.action:
-                print(f"    Action: {turn.action.tool_name}")
-                print(f"    Input:  {turn.action.tool_input}")
-            if turn.observation:
-                obs_preview = (turn.observation or "")[:200].replace("\n", " ")
-                print(f"    Obs:    {obs_preview}...")
-        print("─" * 60)
-
-    print(f"\nAnswer:\n{response.answer}")
-    if response.citations:
+def _print_answer(result: dict[str, Any], verbose: bool) -> None:
+    status = str(result.get("status") or "error")
+    prefix = {
+        "refused": "[REFUSED] ",
+        "degraded": "[DEGRADED] ",
+        "error": "[ERROR] ",
+    }.get(status, "")
+    print(f"\n{prefix}{result.get('answer') or 'No answer returned.'}")
+    citations = result.get("citations") or []
+    if citations:
         print("\nSources:")
-        for c in response.citations:
-            print(f"  - {c}")
-    print(
-        f"\n[confidence={response.confidence:.2f}  "
-        f"turns={len(response.turns)}  "
-        f"tools={response.used_tools}  "
-        f"elapsed={response.elapsed_ms:.0f}ms]"
-    )
+        for item in citations:
+            if isinstance(item, dict):
+                source = item.get("source") or "unknown"
+                page = item.get("page")
+                chunk_id = item.get("chunk_id") or "unknown"
+                location = f"{source} page={page}" if page is not None else str(source)
+                print(f"  [{item.get('index', '?')}] {location} chunk={chunk_id}")
+            else:
+                print(f"  - {item}")
+    if verbose:
+        print("\nMetadata:")
+        metadata = {
+            "status": status,
+            "trace_id": result.get("trace_id"),
+            "prompt_version": result.get("prompt_version"),
+            "model_version": result.get("model_version"),
+            "evidence": result.get("evidence") or {},
+        }
+        print(json.dumps(metadata, ensure_ascii=False, indent=2))
 
 
-def _run_single(agent: ReActAgent, query: str, verbose: bool) -> int:
-    print(f"\nQuestion: {query}")
-    try:
-        response = agent.run(query)
-        _print_response(response, verbose)
-        return 0
-    except Exception as exc:
-        print(f"[FAIL] Agent error: {exc}")
-        logger.exception("Agent run failed")
-        return 1
+def _run_single(
+    client: AuthenticatedRAGClient,
+    query: str,
+    collection: str,
+    top_k: int,
+    verbose: bool,
+) -> int:
+    result = client.answer(query, collection, top_k)
+    _print_answer(result, verbose)
+    return 1 if result.get("status") == "error" else 0
 
 
 def _run_interactive(
-    agent: ReActAgent,
-    memory: ConversationMemory,
+    client: AuthenticatedRAGClient,
+    collection: str,
+    top_k: int,
     verbose: bool,
-    use_memory: bool,
+    input_fn: Callable[[str], str],
 ) -> int:
-    print("\nReAct Agent — interactive session. Type 'exit' or 'quit' to stop.\n")
+    print("\nProduction RAG CLI. Type 'exit' or 'quit' to stop.\n")
     while True:
         try:
-            query = input("You: ").strip()
+            query = input_fn("You: ").strip()
         except (EOFError, KeyboardInterrupt):
             print("\nGoodbye.")
             return 0
-
         if not query:
             continue
-        if query.lower() in ("exit", "quit", "bye"):
+        if query.lower() in {"exit", "quit", "bye"}:
             print("Goodbye.")
             return 0
-
         try:
-            response = agent.run(query)
-            _print_response(response, verbose)
-            if use_memory:
-                memory.add_turn("user", query)
-                memory.add_turn("assistant", response.answer)
-        except Exception as exc:
+            _run_single(client, query, collection, top_k, verbose)
+        except DashboardAPIError as exc:
             print(f"[FAIL] {exc}")
-            logger.exception("Agent interactive run failed")
 
 
-def main() -> int:
-    args = parse_args()
-
-    config_path = Path(args.config)
-    if not config_path.exists():
-        print(f"[FAIL] Config not found: {config_path}")
+def main(
+    argv: list[str] | None = None,
+    *,
+    input_fn: Callable[[str], str] = input,
+    password_fn: Callable[[str], str] = getpass.getpass,
+    client_factory: Callable[..., DashboardAPIClient] = DashboardAPIClient,
+) -> int:
+    args = parse_args(argv)
+    try:
+        username, password = _credentials(args, input_fn, password_fn)
+    except ValueError as exc:
+        print(f"[FAIL] {exc}")
         return 2
 
+    client = AuthenticatedRAGClient(args.api_url, client_factory=client_factory)
     try:
-        settings = load_settings(str(config_path))
-        print(f"[OK] Config loaded: {config_path}")
-    except Exception as exc:
-        print(f"[FAIL] Config error: {exc}")
-        return 2
-
-    try:
-        agent, memory, _ctx = _build_agent(
-            settings,
-            collection=args.collection,
-            top_k=args.top_k,
+        user = client.login(username, password)
+        print(f"[OK] Logged in as {user.get('username', username)} ({user.get('role', 'user')})")
+        if args.query:
+            return _run_single(client, args.query, args.collection, args.top_k, args.verbose)
+        return _run_interactive(
+            client, args.collection, args.top_k, args.verbose, input_fn,
         )
-        print("[OK] Agent initialized")
-    except Exception as exc:
-        print(f"[FAIL] Agent init failed: {exc}")
-        logger.exception("Agent init failed")
-        return 2
-
-    print("\n[*] Modular RAG — ReAct Agent")
-    print("=" * 60)
-
-    if args.query:
-        return _run_single(agent, args.query, args.verbose)
-    return _run_interactive(agent, memory, args.verbose, not args.no_memory)
+    except DashboardAPIError as exc:
+        print(f"[FAIL] {exc}")
+        return 1
+    finally:
+        client.logout()
 
 
 if __name__ == "__main__":
+    _configure_windows_console()
     sys.exit(main())

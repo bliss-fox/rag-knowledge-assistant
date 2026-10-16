@@ -20,7 +20,7 @@
 
 | 证据 | 当前结果 | 如何复核 |
 |---|---|---|
-| 自动化回归 | 1,501 passed、4 skipped，覆盖 Unit / Integration / E2E（2026-08-14） | `pytest -m "not llm"` |
+| 自动化回归 | 1,553 passed、4 skipped，覆盖 Unit / Integration / E2E（2026-08-14） | `pytest -m "not llm"` |
 | 真实检索链路 | 隔离 Qdrant collection 完成 Ollama embedding、Dense/BM25/RRF 单文档 roundtrip | [验收记录](docs/PRODUCTION_ACCEPTANCE_2026-08-13.md#qdrant--ollama-roundtrip) |
 | 本地知识库同步 | 2 个允许文件成功同步；二次运行 `processed=0`、`unchanged=2` | [验收记录](docs/PRODUCTION_ACCEPTANCE_2026-08-13.md#本地知识库只读同步) |
 | Windows 交付 | PyInstaller 启动 API、Worker、Dashboard；父进程退出后回收整棵子进程树 | [验收记录](docs/PRODUCTION_ACCEPTANCE_2026-08-13.md#windows-启动器) |
@@ -31,7 +31,7 @@
 
 ## 已实现能力
 
-- FastAPI 统一后端；Streamlit 只通过 API 操作，MCP 与 CLI 共用 `RAGApplicationService`。
+- FastAPI 统一后端；Streamlit 和生产 CLI 只通过认证 API 操作，MCP 检索工具直接复用 `RAGApplicationService.search()`，不另建最终答案链路。
 - Argon2id 本地账号、`admin`/`user` RBAC、短期访问令牌、可撤销刷新会话和审计事件。
 - PDF / Markdown / TXT Loader Registry；受限同域网页抓取含 SSRF、重定向、深度、页数和响应大小防护。
 - `D:\AI-KnowledgeBase\documents` 只读增量同步；SHA-256、mtime、稳定文件 ID 和精确 document→chunk 删除清单。
@@ -46,13 +46,13 @@
 
 ```text
 LAN browser ──> Streamlit ──> FastAPI ──> RAGApplicationService
-MCP stdio ───────────────────────┘            │
-CLI ──────────────────────────────────────────┘
-                                               ├─ BM25
-                                               ├─ Ollama embedding ──> Qdrant
-                                               ├─ Cross-Encoder rerank
-                                               ├─ EvidenceGate ──> Ollama qwen3:8b
-                                               └─ SQLite WAL Trace / jobs / auth
+CLI（认证 HTTP）──────────────────────┘            │
+MCP stdio ────────────────────────────────────────┤
+                                                  ├─ BM25
+                                                  ├─ Ollama embedding ──> Qdrant
+                                                  ├─ Cross-Encoder rerank
+                                                  ├─ EvidenceGate ──> Ollama qwen3:8b
+                                                  └─ SQLite WAL Trace / jobs / auth
 
 Admin API ──> persistent job queue ──> Worker ──> loaders / sync / evaluation
 Windows EXE ──> API + Worker + Streamlit + browser
@@ -67,7 +67,7 @@ Windows EXE ──> API + Worker + Streamlit + browser
 | 规则化 EvidenceGate 独立于 LLM | “是否有足够证据”不能只让生成模型自我裁决 | 阈值必须基于公开和私有 dev split 校准 |
 | SQLite WAL + 单 Worker | Windows 单机部署简单、任务与 Trace 事务一致 | 不支持多主机高可用或横向扩容 |
 | Qdrant collection 版本 + alias 切换 | 重建索引时不原地污染旧版本，便于验证和回滚 | 需要快照、容量与旧版本清理策略 |
-| Streamlit 只调用 FastAPI | UI、MCP、CLI 共享应用服务层和权限/拒答逻辑 | 多一个服务边界，需要合约与健康检查 |
+| Streamlit/CLI 只调用 FastAPI | 浏览器与命令行统一经过认证、EvidenceGate 和 SQLite Trace；MCP 保持薄层并复用检索服务 | 多一个服务边界，需要合约与健康检查 |
 
 ## 三分钟启动
 
@@ -76,6 +76,37 @@ Windows EXE ──> API + Worker + Streamlit + browser
 ```powershell
 ollama pull qwen3:8b
 ollama pull qwen3-embedding:0.6b
+```
+
+启动服务前执行依赖预检。它会真实调用两个 Ollama 模型、验证 1024 维向量、预热并
+检查 Cross-Encoder 排序、读取 Qdrant collections API；任一必需依赖失败都会返回非零：
+
+```powershell
+.\.venv\Scripts\python.exe scripts\preflight_local_dependencies.py --pretty
+```
+
+JSON 报告只包含模型标识、状态、维度、设备、Token 数、耗时和稳定错误类别，不包含探针
+文本、模型回答、collection 名称或知识库内容。它不会修改索引、数据库或知识源；首次
+加载 Cross-Encoder 时可能补全配置的模型缓存。
+
+Windows 主机不要求 Docker 或虚拟化。原生管理器只下载官方固定版本
+`qdrant-x86_64-pc-windows-msvc.zip`，先验证仓库固定的 SHA-256，再原子安装到
+`%LOCALAPPDATA%\ModularRAG\qdrant\v1.15.4`；数据独立保存在 `storage`，停止或替换
+可执行文件都不会删除数据：
+
+```powershell
+.\.venv\Scripts\python.exe scripts\manage_qdrant_native.py install
+.\.venv\Scripts\python.exe scripts\manage_qdrant_native.py start
+.\.venv\Scripts\python.exe scripts\manage_qdrant_native.py status
+```
+
+若服务器已有可用 Docker Desktop，也可使用固定版本 Compose 方案；停止命令会保留容器
+和具名数据卷：
+
+```powershell
+.\scripts\manage_qdrant.ps1 pull
+.\scripts\manage_qdrant.ps1 start
+.\scripts\manage_qdrant.ps1 status
 ```
 
 安装并启动：
@@ -100,6 +131,33 @@ Invoke-RestMethod http://127.0.0.1:8766/health/ready
 .\.venv\Scripts\python.exe -m streamlit run src/observability/dashboard/app.py
 ```
 
+生产命令行客户端同样调用 FastAPI `/answer`，不会在本地进程中直接构建 LLM、VectorStore 或绕过 EvidenceGate。密码不会进入命令行参数；交互使用时可直接输入凭据，自动化时可设置环境变量：
+
+```powershell
+$env:RAG_CLI_USERNAME = "alice"
+$env:RAG_CLI_PASSWORD = "..."
+.\.venv\Scripts\python.exe scripts\agent.py `
+  --query "什么是 BM25？" `
+  --verbose
+```
+
+历史 ReAct/SelfChecker 实现仍作为研究与多步规划组件保留，不是生产最终回答入口；生产回答必须通过认证 `/answer` 和统一的 `RAGApplicationService.answer()`。
+
+### 旧版 JSONL Trace 迁移
+
+SQLite 是生产 Trace 主存储。升级自旧版本时先停止写入旧 `logs/traces.jsonl` 的进程，
+再运行一次迁移；默认不会覆盖数据库中同 ID 的现有生产 Trace：
+
+```powershell
+.\.venv\Scripts\python.exe scripts\import_legacy_traces.py
+```
+
+脚本从 `config/settings.yaml` 读取 `observability.trace_file` 和 `sqlite_path`，输出总行数、
+成功导入、重复跳过、空行、JSON 损坏、schema 无效和存储失败数。坏行会被隔离，但默认
+以退出码 2 提醒人工处理；只有明确接受部分迁移时才使用 `--allow-partial`。旧 stage 顶层
+字段和新版 `stage.data` 都会归一化并走与在线 Trace 相同的脱敏路径。除非已经备份并确认
+需要恢复旧快照，不要使用会覆盖现有记录的 `--replace-existing`。
+
 ## API 与权限
 
 主要接口包括 `/auth/*`、`/users`、`/data-sources`、`/documents/upload`、`/jobs/*`、`/search`、`/answer`、`/traces`、`/metrics/*` 和 `/evaluations`。管理员可在 Streamlit 的“离线评测”页面启动 dev/final 任务，查看 BM25/Dense/Hybrid/Rerank 消融、Faithfulness、Answer Relevancy、引用覆盖率、正确/错误拒答率、P50/P95 和逐查询失败分析；普通用户只可查询并查看自己的任务和 Trace。
@@ -120,19 +178,25 @@ Invoke-RestMethod http://127.0.0.1:8766/health/ready
 .\.venv\Scripts\python.exe -m ruff check src scripts --select F
 ```
 
-公开集位于 `evaluation/public_golden.json`；私有集复制 `evaluation/private_golden.example.json` 为 `evaluation/private_golden.json`，后者已被 Git 忽略。每条样例包含 query ID、类别、预期文档、答案要点、是否可回答、来源、dev/final、语言和难度。
+公开集位于 `evaluation/public_golden.json`。私有集由管理员在 Dashboard 的“私有黄金集”页创建：草稿、逐条审批和审核备注只保存在本机 SQLite，只有满足导出条件后才原子生成 `evaluation/private_golden.json`；该文件已被 Git 忽略。`evaluation/private_golden.example.json` 只展示 schema，不含真实私有问题。每条样例包含 query ID、类别、预期文档、答案要点、是否可回答、来源、dev/final、语言和难度。
+
+私有集导出要求 50–200 条、每条均为 `approved`、dev/final 均非空，并且 dev 同时包含可回答和不可回答样例。修改已批准样例会自动撤销审批；名称、样例或其他发布内容变化后，覆盖既有导出必须提升语义版本。`final` split 只用于冻结后的最终验收，不得用于日常调参或 EvidenceGate 校准。Dashboard 显示“可导出”只代表 schema 与审批条件满足，不代表当前机器已经整理出正式私有黄金集；仓库当前仍不存在可宣称完成的私有集。
 
 后台 Worker 的答案 Judge 使用当前配置的模型并记录模型、Prompt 版本与 SHA-256。私有集只允许本地 `ollama` provider；配置为云端 provider 时任务会在发送内容前失败。评测报告只保留 query ID、分类、状态、耗时、分数和错误类型，不保存私有问题、答案或引用全文。Judge 失败时相关指标明确标记为不可用，不会用启发式分数冒充 Faithfulness。
 
 当前公开集仅有 6 条种子样例，明确未达到计划中的约 100 条人工复核规模，并设置 `eligible_for_quality_gate=false`。生产资产校验和云端 Judge 现在都采用默认拒绝策略：只有同时满足 `eligible_for_quality_gate=true` 与 `review_status=human_reviewed` 的正式数据集才会运行。`evaluation/baseline.pending.json` 继续让质量门禁主动失败；只有扩充、人工复核并在固定 corpus/chunk/k/硬件/重复次数下复现后，才能冻结正式 baseline。不得把种子集结果作为生产质量指标。
 
-`evaluation/candidates/public_golden_candidate.json` 是固定版本 CMRC 2018、SQuAD 2.0 和 HotpotQA 生成的 100 条候选原料（45 中文事实、15 英文事实、15 无答案、25 多跳），同时包含 324 个公开 corpus 文档。它明确设置 `eligible_for_quality_gate=false`，CI Judge 会拒绝将其当作正式 final 集；逐条人工复核并正式提升前不能称为黄金集。可用以下命令确定性重建：
+`evaluation/candidates/public_golden_candidate.json` 是固定上游 revision 确定性生成的 100 条候选原料：22 条 CMRC 2018 中文事实、16 条 XQuAD 中文事实、16 条 SQuAD 2.0（8 条可回答、8 条不可回答）、14 条 HotpotQA 多跳、24 条 MultiHop-RAG（推断、比较、时间、无答案各 6 条），以及 8 条 RAGBench FinQA 表格/数值题。当前中文/英文为 38/62，dev/final 为 50/50，并包含 255 个与 manifest 完全一致的公开 corpus 文档。它明确设置 `eligible_for_quality_gate=false`，CI Judge 会拒绝将其当作正式 final 集；逐条人工复核并正式提升前不能称为黄金集。可用以下命令确定性重建：
+
+默认生产资产校验同时检查正式 seed 和这套候选原料。候选 manifest 中声明的 255 份文档必须全部位于仓库内、路径唯一，并且稳定 `document_id` 必须与文件内容 SHA-256 一致；未来质量 Job 会摄取完整 manifest（包括干扰文档），不能只摄取正确答案文档得到偏乐观指标。
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\build_public_golden_candidates.py
 ```
 
-管理员可在 Dashboard 的“黄金集复核”页逐条查看问题、答案要点和证据全文，并标记为批准、退回或待定。复核状态保存在 SQLite schema v3 的 `golden_reviews` 表，并绑定候选文件 SHA-256；候选文件改变后旧审批不会沿用。只有全部候选均获批准时，Dashboard 才允许导出 `evaluation/reviewed/public_golden_reviewed-<sha>.json`。该导出物仍保持 `eligible_for_quality_gate=false`，不会自动覆盖 `evaluation/public_golden.json`；正式提升和 baseline 冻结必须作为独立、可审查的仓库变更完成。
+候选来源和许可证会随 manifest 一起冻结：CMRC 2018、XQuAD 中文、SQuAD 2.0、HotpotQA 使用 CC BY-SA 4.0；MultiHop-RAG 使用 ODC-By 1.0；RAGBench 使用 CC BY 4.0；各来源均保留归属、主页、固定 commit SHA、数据卡和下载文件 SHA-256。生成器联网重建时会逐个验证许可证声明、字节数和哈希，任何漂移都会失败。MultiHop-RAG 的类别直接来自上游 `question_type`，不使用关键词猜测；其证据 URL 必须全部映射到同一固定版本的 `corpus.json`，否则生成失败。FinQA 类别来自官方子集配置，句级相关键映射到预期文档；参考回答来自已标为 adherent/completeness=1 的固定模型输出，但仍写入 `answer_key_origin=model_response_requires_human_review`，不能当成人工答案。完整来源调研、许可审计及 RGB 因非商业许可未纳入的说明见 [`evaluation/candidates/SOURCE_RESEARCH.md`](evaluation/candidates/SOURCE_RESEARCH.md)。生成器永远不会写入 `human_reviewed=true`，也不会修改正式公开集。
+
+管理员可在 Dashboard 的“黄金集复核”页逐条查看问题、答案要点和证据全文，并标记为批准、退回或待定。复核状态保存在当前 SQLite schema v5 的 `golden_reviews` 表，并绑定候选文件 SHA-256；批准前必须分别确认问题、答案、证据、类别/难度和 dev/final 划分五项证明。候选文件改变后旧审批不会沿用；从旧 schema 升级时，没有完整结构化证明的历史批准会自动退回 pending。只有全部候选均获批准且五项证明完整时，Dashboard 才允许导出 `evaluation/reviewed/public_golden_reviewed-<sha>.json`。该导出物仍保持 `eligible_for_quality_gate=false`，不会自动覆盖 `evaluation/public_golden.json`；正式提升和 baseline 冻结必须作为独立、可审查的仓库变更完成。
 
 复核者确认导出物后，用独立命令生成正式文件；该命令会核对逐条审核记录、样例 ID 和 schema，并原子替换目标文件：
 
@@ -155,9 +219,9 @@ Invoke-RestMethod http://127.0.0.1:8766/health/ready
   --private-collection default
 ```
 
-脚本要求公开和私有 dev 集各自同时含有答案与无答案样例，拒绝使用降级检索，输出 `evaluation/evidence_calibration.json`，但不会自动修改生产配置。人工检查产物后，把其中阈值写入 `config/settings.yaml`，设置 `calibration_status: calibrated` 和 `calibration_artifact: evaluation/evidence_calibration.json`。启动时会重新验证数据集哈希、公开/私有 dev 覆盖、阈值可复现性，以及 embedding、reranker、检索、chunk 和索引配置指纹；任一不一致都会拒绝启动，要求重新校准。
+脚本要求公开和私有 dev 集各至少 20 条观测，其中检索支持/不支持样例各至少 5 条，并拒绝使用降级检索。每条观测与 `visibility + query_id + dataset SHA-256` 绑定，且必须完整覆盖对应的人工复核 dev split。脚本输出 `evaluation/evidence_calibration.json`，但不会自动修改生产配置。人工检查产物后，把其中阈值写入 `config/settings.yaml`，设置 `calibration_status: calibrated` 和 `calibration_artifact: evaluation/evidence_calibration.json`。启动时会从观测重新计算覆盖数、阈值和选择指标，并验证数据集身份/哈希、完整 query ID 集合、embedding、reranker、检索、chunk 和索引配置指纹；自报覆盖率被篡改、样本不足或任一配置不一致都会拒绝启动，要求重新校准。
 
-质量门槛代码已固定为 Faithfulness ≥ 0.85、引用覆盖率 ≥ 0.95、Recall@5 ≥ 0.80、相对主分支回退 ≤ 0.02。DeepSeek Job 缺 Secret、Judge 失败或 baseline 未冻结都会失败，不会静默跳过。
+质量门槛代码已固定为 Faithfulness ≥ 0.85、引用覆盖率 ≥ 0.95、Recall@5 ≥ 0.80、相对主分支回退 ≤ 0.02。DeepSeek Job 缺 Secret、Judge 失败或 baseline 未冻结都会失败，不会静默跳过。Hosted Runner 先执行不接触模型的 `public-quality-preflight`；只有公开 final 集已人工复核、baseline 已冻结且 Secret 存在时，才把真实答案生成调度到带 `rag-quality` 标签的 Windows self-hosted Runner。该 Runner 必须预先运行本机 Ollama、Qdrant 并具备固定模型，避免在不具备生产依赖的临时 Ubuntu Runner 上伪装运行本地质量门禁。
 
 ### 真实候选检索评测（非正式 baseline）
 
@@ -179,7 +243,22 @@ Invoke-RestMethod http://127.0.0.1:8766/health/ready
 .\scripts\build_windows.ps1
 ```
 
-EXE 是服务器启动器，不把 Ollama、Qdrant 或模型权重打包进单文件。它检查端口、启动 API/Worker/Dashboard、等待 API 存活检查、打开浏览器并在退出时安全终止子进程。Windows Job Object 会在启动器正常关闭或异常退出时回收整个子进程树，避免 API、Worker 或 Dashboard 残留占用端口。生产就绪状态仍由 `/health/ready` 单独报告；EvidenceGate 未校准或 Reranker 不可用时返回 503，但不会阻断管理员进入首次配置界面。未校准时 `/answer` 和共享应用服务会在检索/LLM 调用前 fail-closed；`/search` 保持可用，以支持索引诊断和阈值校准。
+EXE 是服务器启动器，不把 Ollama、Qdrant 二进制或模型权重打包进单文件。它检查端口、启动 API/Worker/Dashboard、等待 API 存活检查、打开浏览器并在退出时安全终止子进程。Windows Job Object 会在启动器正常关闭或异常退出时回收整个子进程树，避免 API、Worker 或 Dashboard 残留占用端口。生产就绪状态仍由 `/health/ready` 单独报告；EvidenceGate 未校准或 Reranker 不可用时返回 503，但不会阻断管理员进入首次配置界面。未校准时 `/answer` 和共享应用服务会在检索/LLM 调用前 fail-closed；`/search` 保持可用，以支持索引诊断和阈值校准。
+
+打包后的同一个 EXE 也提供原生 Qdrant 管理入口，避免依赖 PowerShell 执行策略：
+
+```powershell
+.\dist\ModularRAGLauncher\ModularRAGLauncher.exe --qdrant install
+.\dist\ModularRAGLauncher\ModularRAGLauncher.exe --qdrant start
+.\dist\ModularRAGLauncher\ModularRAGLauncher.exe --qdrant status
+.\dist\ModularRAGLauncher\ModularRAGLauncher.exe --qdrant logs
+```
+
+管理器启动前验证安装收据与可执行文件哈希；停止前再次读取实际进程镜像并与安装路径
+比对，PID 被其他程序复用时会拒绝终止。REST/gRPC 固定监听 `127.0.0.1:6333/6334`，
+遥测关闭，日志位于 `%LOCALAPPDATA%\ModularRAG\qdrant\logs`。
+
+服务器服务账户或自动化验收可设置 `$env:RAG_OPEN_BROWSER = "0"`，启动器仍会启动并检查全部服务，但不会弹出本机浏览器。
 
 Cross-Encoder 模型默认缓存于 `%LOCALAPPDATA%\ModularRAG\models\huggingface`，不会因替换 `dist\ModularRAGLauncher` 而丢失。首次下载和预热在 API 后台执行：`/health/live` 与管理员界面立即可用，`/health/ready` 在模型完成预热前保持 503，避免把未加载好 Reranker 的实例接入生产流量。
 
@@ -187,10 +266,10 @@ Cross-Encoder 模型默认缓存于 `%LOCALAPPDATA%\ModularRAG\models\huggingfac
 
 ## 已知限制
 
-- 需要独立启动 Qdrant；当前环境若 6333 未监听，摄取和查询会返回明确的服务不可用错误。
+- 需要独立启动 Qdrant；可使用 Windows 原生管理器或 Compose。若 6333 未监听，摄取和查询会返回明确的服务不可用错误。
 - SQLite WAL 适合单节点服务，不支持跨主机 Worker 或自动故障转移。
 - EvidenceGate 阈值目前是保守配置值，`calibration_status` 仍为 `pending`；校准工具和启动校验已就绪，但目标规模公开/私有 dev 集尚未完成复核和实测，因此不能宣称质量门槛已经达成。
-- 公开黄金集尚未扩充到 50–200 条，私有黄金集必须由管理员在本机人工整理。
+- 正式公开黄金集仍只有 6 条 seed；100 条公开候选虽已补齐表格、时间、比较、多跳和拒答原料，但尚未逐条人工复核并提升。私有黄金集必须由管理员在本机人工整理。
 - DeepSeek 公共 final 评测只允许仓库公开语料；私有知识库不得进入该流程。
 - Windows EXE 已完成当前工作树 PyInstaller 构建、API/Worker/Dashboard 联合启动、健康探测和父进程异常退出的整棵子进程树回收验证；首次模型下载会正确写入用户缓存。
 - Qdrant + Ollama 单文档生产链路已用隔离的 `modular_rag_production_acceptance_20260813_v1` collection 完成真实摄取和 Dense/BM25/RRF 查询验收，三路均命中预期稳定文档。`--no-rerank` 已验证不会实例化 Cross-Encoder，且会明确标记最终顺序来自 RRF。

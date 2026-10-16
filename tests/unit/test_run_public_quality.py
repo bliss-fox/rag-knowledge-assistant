@@ -18,7 +18,8 @@ def test_collect_public_sources_includes_all_multihop_and_unanswerable_context(
     first = tmp_path / "first.md"
     second = tmp_path / "second.md"
     negative = tmp_path / "negative.md"
-    for path in (first, second, negative):
+    distractor = tmp_path / "distractor.md"
+    for path in (first, second, negative, distractor):
         path.write_text(path.stem, encoding="utf-8")
     dataset_path = tmp_path / "golden.json"
     dataset_path.write_text(json.dumps({
@@ -27,6 +28,7 @@ def test_collect_public_sources_includes_all_multihop_and_unanswerable_context(
             {"document_id": "doc1", "path": str(first)},
             {"document_id": "doc2", "path": str(second)},
             {"document_id": "doc3", "path": str(negative)},
+            {"document_id": "doc4", "path": str(distractor)},
         ],
         "cases": [
             {
@@ -44,7 +46,53 @@ def test_collect_public_sources_includes_all_multihop_and_unanswerable_context(
         ],
     }), encoding="utf-8")
     dataset = load_golden_dataset(dataset_path, "final")
-    assert collect_public_sources(dataset_path, dataset) == sorted([first, second, negative])
+    assert collect_public_sources(dataset_path, dataset) == sorted(
+        [first, second, negative, distractor]
+    )
+
+
+@pytest.mark.parametrize(
+    ("corpus", "error"),
+    [
+        (
+            [
+                {"document_id": "doc1", "path": "first.md"},
+                {"document_id": "doc1", "path": "second.md"},
+            ],
+            "duplicate public corpus document_id",
+        ),
+        (
+            [
+                {"document_id": "doc1", "path": "first.md"},
+                {"document_id": "doc2", "path": "first.md"},
+            ],
+            "duplicate public corpus path",
+        ),
+    ],
+)
+def test_collect_public_sources_rejects_ambiguous_manifest(
+    tmp_path, monkeypatch, corpus, error,
+):
+    monkeypatch.setattr("scripts.run_public_quality.resolve_path", lambda value: (
+        tmp_path if value == "." else tmp_path / value
+    ))
+    (tmp_path / "first.md").write_text("first", encoding="utf-8")
+    (tmp_path / "second.md").write_text("second", encoding="utf-8")
+    dataset_path = tmp_path / "golden.json"
+    dataset_path.write_text(json.dumps({
+        "name": "public", "version": "1", "visibility": "public",
+        "corpus": corpus,
+        "cases": [{
+            "query_id": "q", "query": "q", "category": "fact",
+            "expected_document_ids": ["doc1"], "answer_key_points": ["a"],
+            "answerable": True, "source": "first.md", "split": "final",
+            "language": "en", "difficulty": "easy",
+        }],
+    }), encoding="utf-8")
+    dataset = load_golden_dataset(dataset_path, "final")
+
+    with pytest.raises(ValueError, match=error):
+        collect_public_sources(dataset_path, dataset)
 
 
 def test_collect_public_sources_rejects_missing_multihop_document(tmp_path, monkeypatch):

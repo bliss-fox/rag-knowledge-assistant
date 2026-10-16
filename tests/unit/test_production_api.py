@@ -15,6 +15,14 @@ from src.production.runtime import Runtime
 from src.production.sources import DataSourceService
 from src.production.trace_store import SQLiteTraceStore
 
+_ATTESTATION = {
+    "query_verified": True,
+    "answer_verified": True,
+    "evidence_verified": True,
+    "category_difficulty_verified": True,
+    "split_verified": True,
+}
+
 
 class FakeRAG:
     def search(self, query, collection, top_k, user_id, enable_rerank=True):
@@ -90,7 +98,13 @@ def test_search_answer_source_job_and_health_contract(tmp_path):
         tokens = _bootstrap(client)
         headers = {"Authorization": f"Bearer {tokens['access_token']}"}
         assert client.get("/health/live").json() == {"status": "live"}
-        assert client.get("/health/ready").json()["journal_mode"] == "wal"
+        ready = client.get("/health/ready")
+        assert ready.status_code == 200
+        assert ready.json()["journal_mode"] == "wal"
+        assert ready.json()["ok"] is True
+        assert ready.json()["database_ok"] is True
+        assert ready.json()["dependencies_ok"] is True
+        assert ready.json()["bootstrap_required"] is False
         source = client.post("/data-sources", headers=headers, json={
             "name": "local", "kind": "directory", "location": str(source_root),
             "collection_name": "default",
@@ -179,6 +193,25 @@ def test_readiness_fails_when_warmup_dependency_failed(tmp_path):
         response = client.get("/health/ready")
         assert response.status_code == 503
         assert response.json()["status"] == "not_ready"
+        assert response.json()["ok"] is False
+        assert response.json()["database_ok"] is True
+        assert response.json()["dependencies_ok"] is False
+
+
+def test_readiness_fails_until_admin_bootstrap(tmp_path):
+    with TestClient(create_app(_runtime(tmp_path))) as client:
+        response = client.get("/health/ready")
+        assert response.status_code == 503
+        assert response.json()["ok"] is False
+        assert response.json()["bootstrap_required"] is True
+        assert response.json()["database_ok"] is True
+        assert response.json()["dependencies_ok"] is True
+
+        _bootstrap(client)
+        response = client.get("/health/ready")
+        assert response.status_code == 200
+        assert response.json()["ok"] is True
+        assert response.json()["bootstrap_required"] is False
 
 
 def test_readiness_fails_when_configured_reranker_is_unavailable(tmp_path):
@@ -316,11 +349,29 @@ def test_golden_candidate_review_contract_and_role_isolation(tmp_path):
         query_id = cases.json()[0]["query_id"]
         detail = client.get(f"/golden-candidates/cases/{query_id}", headers=admin_headers)
         assert detail.status_code == 200
+        incomplete = client.put(
+            f"/golden-candidates/cases/{query_id}/review", headers=admin_headers,
+            json={
+                "dataset_sha256": summary.json()["dataset_sha256"],
+                "status": "approved", "notes": "not checked",
+            },
+        )
+        assert incomplete.status_code == 409
+        non_boolean = client.put(
+            f"/golden-candidates/cases/{query_id}/review", headers=admin_headers,
+            json={
+                "dataset_sha256": summary.json()["dataset_sha256"],
+                "status": "approved", "notes": "string values are not attestations",
+                "attestation": {name: "true" for name in _ATTESTATION},
+            },
+        )
+        assert non_boolean.status_code == 422
         reviewed = client.put(
             f"/golden-candidates/cases/{query_id}/review", headers=admin_headers,
             json={
                 "dataset_sha256": summary.json()["dataset_sha256"],
                 "status": "approved", "notes": "evidence checked",
+                "attestation": _ATTESTATION,
             },
         )
         assert reviewed.status_code == 200
@@ -344,3 +395,72 @@ def test_golden_candidate_review_contract_and_role_isolation(tmp_path):
             "/golden-candidates/export-reviewed", headers=user_headers,
             json={"dataset_sha256": summary.json()["dataset_sha256"]},
         ).status_code == 403
+
+
+def test_private_golden_authoring_is_admin_only_reviewed_and_content_safe_in_audit(tmp_path):
+    runtime = _runtime(tmp_path)
+    with TestClient(create_app(runtime)) as client:
+        tokens = _bootstrap(client)
+        admin_headers = {"Authorization": f"Bearer {tokens['access_token']}"}
+        created = client.post("/private-golden-sets", headers=admin_headers, json={
+            "name": "private-corpus", "version": "1.0.0",
+        })
+        assert created.status_code == 201
+        set_id = created.json()["id"]
+        secret_query = "PRIVATE-QUESTION-MUST-NOT-ENTER-AUDIT"
+        secret_document = "PRIVATE-DOCUMENT-ID-MUST-NOT-ENTER-AUDIT"
+        secret_answer = "PRIVATE-ANSWER-MUST-NOT-ENTER-AUDIT"
+        saved = client.put(
+            f"/private-golden-sets/{set_id}/cases/private-001",
+            headers=admin_headers,
+            json={
+                "query": secret_query, "category": "精确事实",
+                "expected_document_ids": [secret_document],
+                "answer_key_points": [secret_answer], "answerable": True,
+                "source": "local-only", "split": "dev", "language": "zh",
+                "difficulty": "medium",
+            },
+        )
+        assert saved.status_code == 200 and saved.json()["review_status"] == "pending"
+        reviewed = client.put(
+            f"/private-golden-sets/{set_id}/cases/private-001/review",
+            headers=admin_headers, json={"status": "approved", "notes": "人工核对"},
+        )
+        assert reviewed.status_code == 409
+        reviewed = client.put(
+            f"/private-golden-sets/{set_id}/cases/private-001/review",
+            headers=admin_headers,
+            json={
+                "status": "approved", "notes": "人工核对",
+                "attestation": _ATTESTATION,
+            },
+        )
+        assert reviewed.status_code == 200 and reviewed.json()["review_status"] == "approved"
+        listed = client.get(f"/private-golden-sets/{set_id}/cases", headers=admin_headers)
+        assert listed.status_code == 200
+        assert "query" not in listed.json()[0]
+        detail = client.get(
+            f"/private-golden-sets/{set_id}/cases/private-001", headers=admin_headers,
+        )
+        assert detail.json()["query"] == secret_query
+        assert client.post(
+            f"/private-golden-sets/{set_id}/export", headers=admin_headers,
+        ).status_code == 409
+
+        client.post("/users", headers=admin_headers, json={
+            "username": "private.user", "password": "another correct password", "role": "user",
+        })
+        login = client.post("/auth/login", json={
+            "username": "private.user", "password": "another correct password",
+        }).json()
+        user_headers = {"Authorization": f"Bearer {login['access_token']}"}
+        assert client.get("/private-golden-sets", headers=user_headers).status_code == 403
+
+    with runtime.database.connect() as connection:
+        details = [row[0] for row in connection.execute(
+            "SELECT detail_json FROM audit_events WHERE action LIKE 'private_golden.%'",
+        ).fetchall()]
+    audit_details = "".join(details)
+    assert secret_query not in audit_details
+    assert secret_document not in audit_details
+    assert secret_answer not in audit_details

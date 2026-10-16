@@ -1,0 +1,3 @@
+# RAGBench FinQA finqa_7161 document 1
+
+[["( in millions of u.s . dollars )", "bermuda subsidiaries 2008", "bermuda subsidiaries 2007", "bermuda subsidiaries 2006", "bermuda subsidiaries 2008", "bermuda subsidiaries 2007", "2006"], ["statutory capital and surplus", "$ 7001", "$ 8579", "$ 7605", "$ 5337", "$ 5321", "$ 4431"], ["statutory net income", "$ 684", "$ 1535", "$ 1527", "$ 798", "$ 873", "$ 724"]]

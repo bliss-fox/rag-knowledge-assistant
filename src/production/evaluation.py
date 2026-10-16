@@ -111,6 +111,14 @@ def require_quality_gate_eligible(path: str | Path) -> None:
         raise ValueError("dataset is not explicitly eligible for quality-gate use")
     if data.get("review_status") != "human_reviewed":
         raise ValueError("dataset does not record completed human review")
+    human_review = data.get("human_review")
+    cases = data.get("cases")
+    if not isinstance(human_review, dict) or human_review.get("attestation_version") != 1:
+        raise ValueError("dataset does not record structured human-review attestations")
+    if not isinstance(cases, list) or not cases:
+        raise ValueError("quality-gate dataset has no reviewed cases")
+    if human_review.get("complete_attestation_count") != len(cases):
+        raise ValueError("dataset human-review attestation count is incomplete")
 
 
 def retrieval_metrics(retrieved: Iterable[str], relevant: Iterable[str], k: int) -> dict[str, float]:

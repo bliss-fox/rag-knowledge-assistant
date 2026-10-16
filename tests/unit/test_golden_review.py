@@ -10,6 +10,14 @@ from src.production.auth import AuthService
 from src.production.database import ProductionDatabase
 from src.production.golden_review import GoldenReviewService
 
+_ATTESTATION = {
+    "query_verified": True,
+    "answer_verified": True,
+    "evidence_verified": True,
+    "category_difficulty_verified": True,
+    "split_verified": True,
+}
+
 
 def _candidate(root: Path) -> tuple[Path, str]:
     corpus = root / "evaluation" / "candidates" / "public_corpus"
@@ -50,6 +58,7 @@ def test_review_is_bound_to_candidate_hash_and_exposes_evidence(tmp_path):
     service.review(
         "q-1", "approved", "verified", admin.user_id, summary["dataset_sha256"],
         str(path.relative_to(tmp_path)),
+        attestation=_ATTESTATION,
     )
     approved = service.summary(str(path.relative_to(tmp_path)))
     assert approved["all_approved"] is True
@@ -60,7 +69,31 @@ def test_review_is_bound_to_candidate_hash_and_exposes_evidence(tmp_path):
         service.review(
             "q-1", "approved", "stale", admin.user_id, summary["dataset_sha256"],
             str(path.relative_to(tmp_path)),
+            attestation=_ATTESTATION,
         )
+
+
+def test_approval_requires_every_structured_attestation(tmp_path):
+    path, _ = _candidate(tmp_path)
+    database = ProductionDatabase(tmp_path / "production.db")
+    auth = AuthService(database, secret="x" * 64)
+    admin = auth.bootstrap_admin("review.admin", "correct horse battery staple")
+    service = GoldenReviewService(database, tmp_path)
+    relative = str(path.relative_to(tmp_path))
+    digest = service.summary(relative)["dataset_sha256"]
+
+    incomplete = {**_ATTESTATION, "evidence_verified": False}
+    with pytest.raises(ValueError, match="evidence_verified"):
+        service.review(
+            "q-1", "approved", "not finished", admin.user_id, digest, relative,
+            attestation=incomplete,
+        )
+    pending = service.review(
+        "q-1", "pending", "continue later", admin.user_id, digest, relative,
+        attestation=incomplete,
+    )
+    assert pending["attestation_complete"] is False
+    assert service.get_case("q-1", relative)["review"]["evidence_verified"] is False
 
 
 def test_review_path_cannot_escape_repository(tmp_path):
@@ -84,7 +117,10 @@ def test_reviewed_export_requires_all_approved_and_remains_gate_ineligible(tmp_p
     with pytest.raises(ValueError, match="1 remain"):
         service.export_reviewed(digest, admin.user_id, relative)
 
-    service.review("q-1", "approved", "evidence verified", admin.user_id, digest, relative)
+    service.review(
+        "q-1", "approved", "evidence verified", admin.user_id, digest, relative,
+        attestation=_ATTESTATION,
+    )
     exported = service.export_reviewed(digest, admin.user_id, relative)
     output = tmp_path / exported["path"]
     payload = json.loads(output.read_text(encoding="utf-8"))
@@ -94,7 +130,10 @@ def test_reviewed_export_requires_all_approved_and_remains_gate_ineligible(tmp_p
     assert payload["artifact_type"] == "golden_set_reviewed_candidate"
     assert payload["source_candidate"]["sha256"] == digest
     assert payload["human_review"]["approved_case_count"] == 1
+    assert payload["human_review"]["attestation_version"] == 1
+    assert payload["human_review"]["complete_attestation_count"] == 1
     assert payload["human_review"]["records"][0]["status"] == "approved"
+    assert payload["human_review"]["records"][0]["attestation_complete"] is True
     assert payload["eligible_for_quality_gate"] is False
 
 
@@ -108,6 +147,7 @@ def test_reviewed_export_rejects_stale_candidate_hash(tmp_path):
     service.review(
         "q-1", "approved", "verified", admin.user_id, digest,
         str(path.relative_to(tmp_path)),
+        attestation=_ATTESTATION,
     )
     path.write_text(path.read_text(encoding="utf-8") + "\n", encoding="utf-8")
 

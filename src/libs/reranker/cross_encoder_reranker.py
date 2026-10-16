@@ -7,6 +7,7 @@ and API-based endpoints.
 
 from __future__ import annotations
 
+import json
 import logging
 import os
 from concurrent.futures import ThreadPoolExecutor
@@ -67,6 +68,7 @@ class CrossEncoderReranker(BaseReranker):
             "cache_dir", getattr(settings.rerank, "cache_dir", "./data/models/huggingface")
         )
         self.cache_dir = self._resolve_cache_dir(cache_dir)
+        self.using_cached_snapshot = False
         
         # Initialize or inject model
         if model is not None:
@@ -129,16 +131,93 @@ class CrossEncoderReranker(BaseReranker):
             logger.info("Cross-Encoder device: %s", self.device)
             if self.cache_dir is not None:
                 self.cache_dir.mkdir(parents=True, exist_ok=True)
-            model = CrossEncoder(
-                model_name, device=self.device,
-                cache_folder=str(self.cache_dir) if self.cache_dir is not None else None,
-            )
+            cached_snapshot = self._find_complete_cached_snapshot(model_name)
+            self.using_cached_snapshot = cached_snapshot is not None
+            if cached_snapshot is not None:
+                # Loading by immutable snapshot path avoids Hub lock writes and
+                # network metadata probes on service accounts whose production
+                # model cache is intentionally read-only after provisioning.
+                model = CrossEncoder(
+                    str(cached_snapshot), device=self.device, local_files_only=True,
+                )
+            else:
+                model = CrossEncoder(
+                    model_name, device=self.device,
+                    cache_folder=(
+                        str(self.cache_dir) if self.cache_dir is not None else None
+                    ),
+                )
             logger.info(f"Cross-Encoder model loaded successfully: {model_name}")
             return model
         except Exception as e:
             raise RuntimeError(
                 f"Failed to load Cross-Encoder model '{model_name}': {e}"
             ) from e
+
+    def _find_complete_cached_snapshot(self, model_name: str) -> Path | None:
+        """Return a complete immutable Hub snapshot, never a partial download."""
+        if self.cache_dir is None or "/" not in model_name:
+            return None
+        repository = self.cache_dir / f"models--{model_name.replace('/', '--')}"
+        snapshots = repository / "snapshots"
+        if not snapshots.is_dir():
+            return None
+
+        candidates: list[Path] = []
+        main_ref = repository / "refs" / "main"
+        try:
+            revision = main_ref.read_text(encoding="utf-8").strip()
+            if revision:
+                candidates.append(snapshots / revision)
+        except OSError:
+            pass
+        try:
+            candidates.extend(
+                item for item in sorted(snapshots.iterdir(), reverse=True)
+                if item.is_dir() and item not in candidates
+            )
+        except OSError:
+            return None
+        return next((item for item in candidates if self._snapshot_is_complete(item)), None)
+
+    @staticmethod
+    def _snapshot_is_complete(snapshot: Path) -> bool:
+        if not (snapshot / "config.json").is_file():
+            return False
+        tokenizers = (
+            "tokenizer.json",
+            "tokenizer.model",
+            "sentencepiece.bpe.model",
+            "spiece.model",
+        )
+        return (
+            CrossEncoderReranker._weights_are_complete(snapshot)
+            and (snapshot / "tokenizer_config.json").is_file()
+            and any((snapshot / name).is_file() for name in tokenizers)
+        )
+
+    @staticmethod
+    def _weights_are_complete(snapshot: Path) -> bool:
+        if any(
+            (snapshot / name).is_file()
+            for name in ("model.safetensors", "pytorch_model.bin")
+        ):
+            return True
+        for index_name in (
+            "model.safetensors.index.json", "pytorch_model.bin.index.json",
+        ):
+            index_path = snapshot / index_name
+            if not index_path.is_file():
+                continue
+            try:
+                payload = json.loads(index_path.read_text(encoding="utf-8"))
+                shards = {
+                    str(value) for value in payload.get("weight_map", {}).values() if value
+                }
+            except (OSError, ValueError, TypeError, AttributeError):
+                return False
+            return bool(shards) and all((snapshot / shard).is_file() for shard in shards)
+        return False
     
     def rerank(
         self,

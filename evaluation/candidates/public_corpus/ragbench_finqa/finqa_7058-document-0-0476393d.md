@@ -1,0 +1,3 @@
+# RAGBench FinQA finqa_7058 document 0
+
+alcoa and its subsidiaries file income tax returns in the u.s . federal jurisdiction and various states and foreign jurisdictions . with a few minor exceptions , alcoa is no longer subject to income tax examinations by tax authorities for years prior to 2006 . all u.s . tax years prior to 2015 have been audited by the internal revenue service . various state and foreign jurisdiction tax authorities are in the process of examining alcoa 2019s income tax returns for various tax years through 2014 . a reconciliation of the beginning and ending amount of unrecognized tax benefits ( excluding interest and penalties ) was as follows: .

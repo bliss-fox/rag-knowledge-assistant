@@ -2,13 +2,7 @@
 
 from __future__ import annotations
 
-import json
-import tempfile
 from pathlib import Path
-from typing import Any, Dict, List, Optional
-from unittest.mock import MagicMock, patch
-
-import pytest
 
 
 class TestEvaluationPanelHelpers:
@@ -16,7 +10,7 @@ class TestEvaluationPanelHelpers:
 
     def test_save_and_load_history(self, tmp_path: Path) -> None:
         """History round-trip: save then load."""
-        from src.observability.dashboard.pages import evaluation_panel as ep
+        from src.observability.dashboard.legacy_pages import evaluation_panel as ep
 
         # Temporarily override history path
         original = ep.EVAL_HISTORY_PATH
@@ -42,7 +36,7 @@ class TestEvaluationPanelHelpers:
 
     def test_load_history_empty(self, tmp_path: Path) -> None:
         """Load returns empty list when no history file exists."""
-        from src.observability.dashboard.pages import evaluation_panel as ep
+        from src.observability.dashboard.legacy_pages import evaluation_panel as ep
 
         original = ep.EVAL_HISTORY_PATH
         ep.EVAL_HISTORY_PATH = tmp_path / "nonexistent.jsonl"
@@ -54,7 +48,7 @@ class TestEvaluationPanelHelpers:
 
     def test_load_history_tolerates_bad_lines(self, tmp_path: Path) -> None:
         """Malformed lines are skipped."""
-        from src.observability.dashboard.pages import evaluation_panel as ep
+        from src.observability.dashboard.legacy_pages import evaluation_panel as ep
 
         original = ep.EVAL_HISTORY_PATH
         hist_file = tmp_path / "eval_history.jsonl"
@@ -74,7 +68,7 @@ class TestEvaluationPanelHelpers:
 
     def test_save_history_creates_parent_dir(self, tmp_path: Path) -> None:
         """_save_to_history creates missing parent directories."""
-        from src.observability.dashboard.pages import evaluation_panel as ep
+        from src.observability.dashboard.legacy_pages import evaluation_panel as ep
 
         original = ep.EVAL_HISTORY_PATH
         ep.EVAL_HISTORY_PATH = tmp_path / "subdir" / "eval.jsonl"
@@ -90,13 +84,13 @@ class TestEvaluationPanelImport:
     """Verify the module can be imported without side effects."""
 
     def test_module_imports(self) -> None:
-        from src.observability.dashboard.pages import evaluation_panel
+        from src.observability.dashboard.legacy_pages import evaluation_panel
 
         assert hasattr(evaluation_panel, "render")
         assert callable(evaluation_panel.render)
 
     def test_default_golden_path(self) -> None:
-        from src.observability.dashboard.pages.evaluation_panel import (
+        from src.observability.dashboard.legacy_pages.evaluation_panel import (
             DEFAULT_GOLDEN_SET,
         )
 

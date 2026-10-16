@@ -2,19 +2,13 @@
 
 Covers:
 - ConfigService.get_component_cards() returns expected components
-- app.py and pages/overview.py are importable without error
+- app.py and legacy_pages/overview.py are importable without error
 """
 
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import pytest
-
-from src.observability.dashboard.services.config_service import (
-    ComponentInfo,
-    ConfigService,
-)
-
+from src.observability.dashboard.services.config_service import ConfigService
 
 # ── Fake Settings ────────────────────────────────────────────────────
 
@@ -130,12 +124,28 @@ class TestDashboardImports:
         assert ConfigService is not None
 
     def test_overview_importable(self) -> None:
-        from src.observability.dashboard.pages import overview
+        from src.observability.dashboard.legacy_pages import overview
         assert hasattr(overview, "render")
 
     def test_app_file_exists(self) -> None:
         app_path = Path("src/observability/dashboard/app.py")
         assert app_path.exists()
+
+    def test_streamlit_has_no_auto_discovered_legacy_pages(self) -> None:
+        dashboard_root = Path("src/observability/dashboard")
+        assert not (dashboard_root / "pages").exists()
+        assert (dashboard_root / "legacy_pages").is_dir()
+
+    def test_production_app_uses_only_fastapi_client_for_business_operations(self) -> None:
+        source = Path("src/observability/dashboard/app.py").read_text(encoding="utf-8")
+        assert "DashboardAPIClient" in source
+        for forbidden in (
+            "IngestionPipeline",
+            "VectorStoreFactory",
+            "LLMFactory",
+            "create_hybrid_search",
+        ):
+            assert forbidden not in source
 
     def test_start_script_exists(self) -> None:
         script_path = Path("scripts/start_dashboard.py")

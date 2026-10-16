@@ -12,8 +12,9 @@ import sys
 import threading
 import time
 import webbrowser
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any
 
 import httpx
 
@@ -182,20 +183,22 @@ def _child_command(mode: str) -> list[str]:
     raise ValueError(f"Unknown child mode: {mode}")
 
 
-def _seed_runtime_config(root: Path) -> None:
-    """Copy packaged defaults once; never overwrite administrator edits."""
-    packaged = Path(getattr(sys, "_MEIPASS", root)) / "config"
-    if not packaged.is_dir():
-        return
-    target = root / "config"
-    for source in packaged.rglob("*"):
-        if not source.is_file():
+def _seed_runtime_assets(root: Path) -> None:
+    """Copy packaged runtime assets once; never overwrite mutable deployment state."""
+    bundle = Path(getattr(sys, "_MEIPASS", root))
+    for relative_root in (Path("config"), Path("evaluation") / "candidates"):
+        packaged = bundle / relative_root
+        if not packaged.is_dir():
             continue
-        destination = target / source.relative_to(packaged)
-        if destination.exists():
-            continue
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source, destination)
+        target = root / relative_root
+        for source in packaged.rglob("*"):
+            if not source.is_file():
+                continue
+            destination = target / source.relative_to(packaged)
+            if destination.exists():
+                continue
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, destination)
 
 
 def _run_child(mode: str) -> None:
@@ -229,13 +232,44 @@ def _run_child(mode: str) -> None:
     raise SystemExit(f"Unknown child mode: {mode}")
 
 
+def _should_open_browser() -> bool:
+    return os.environ.get("RAG_OPEN_BROWSER", "1").strip().lower() not in {
+        "0", "false", "no", "off",
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("--child", choices=("api", "worker", "dashboard"))
+    parser.add_argument(
+        "--qdrant",
+        choices=("install", "start", "stop", "restart", "status", "logs"),
+    )
+    parser.add_argument("--qdrant-base-dir", type=Path)
+    parser.add_argument("--qdrant-storage-dir", type=Path)
+    parser.add_argument("--qdrant-force", action="store_true")
+    parser.add_argument("--qdrant-timeout", type=float, default=90.0)
+    parser.add_argument("--qdrant-tail-lines", type=int, default=200)
     args, _ = parser.parse_known_args()
     root = _app_root()
     os.environ.setdefault("RAG_APP_ROOT", str(root))
-    _seed_runtime_config(root)
+    _seed_runtime_assets(root)
+    if args.qdrant:
+        from src.production.native_qdrant import main as qdrant_main
+
+        qdrant_args = [args.qdrant, "--timeout", str(args.qdrant_timeout)]
+        if args.qdrant_base_dir is not None:
+            qdrant_args.extend(("--base-dir", str(args.qdrant_base_dir)))
+        if args.qdrant_storage_dir is not None:
+            qdrant_args.extend(("--storage-dir", str(args.qdrant_storage_dir)))
+        if args.qdrant_force:
+            qdrant_args.append("--force")
+        if args.qdrant == "logs":
+            qdrant_args.extend(("--tail-lines", str(args.qdrant_tail_lines)))
+        exit_code = qdrant_main(qdrant_args)
+        if exit_code:
+            raise SystemExit(exit_code)
+        return
     if args.child:
         _run_child(args.child)
         return
@@ -284,7 +318,8 @@ def main() -> None:
             raise RuntimeError(
                 f"API liveness timeout after {startup_timeout:g}s; see logs/api.log"
             )
-        webbrowser.open(f"http://127.0.0.1:{dashboard_port}")
+        if _should_open_browser():
+            webbrowser.open(f"http://127.0.0.1:{dashboard_port}")
         print(f"RAG services are running. Dashboard: http://127.0.0.1:{dashboard_port}")
         while not stop_event.wait(1) and all(process.poll() is None for process in processes):
             pass

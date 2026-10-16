@@ -64,12 +64,16 @@ class OllamaEmbedding(BaseEmbedding):
         """
         self.model = settings.embedding.model
         
-        # Base URL: explicit > env var > default
+        # Base URL: explicit > settings > env var > default.  Production
+        # deployments commonly bind Ollama to a non-default loopback address;
+        # silently ignoring settings.embedding.base_url makes the validated
+        # configuration differ from the endpoint used at runtime.
         self.base_url = (
-            base_url 
-            or os.environ.get("OLLAMA_BASE_URL") 
+            base_url
+            or getattr(settings.embedding, "base_url", None)
+            or os.environ.get("OLLAMA_BASE_URL")
             or self.DEFAULT_BASE_URL
-        )
+        ).rstrip("/")
         
         # Timeout: explicit > default
         self.timeout = timeout or self.DEFAULT_TIMEOUT

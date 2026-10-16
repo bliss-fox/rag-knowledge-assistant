@@ -18,13 +18,35 @@ from src.production.runtime import Runtime
 
 
 def collect_public_sources(dataset_path: Path, dataset: object) -> list[Path]:
-    """Resolve every public evidence file, including multi-hop and no-answer context."""
+    """Resolve the complete declared public corpus used by the quality gate.
+
+    Ingesting only labelled-positive documents makes retrieval metrics optimistic:
+    documents intentionally included as distractors never get a chance to rank.  A
+    manifest-backed dataset therefore contributes every declared document, while
+    the case loop below separately verifies labels and no-answer context.
+    """
     raw_dataset = json.loads(dataset_path.read_text(encoding="utf-8"))
-    corpus = {
-        str(item["document_id"]): resolve_path(str(item["path"]))
-        for item in raw_dataset.get("corpus", [])
-    }
-    source_paths: set[Path] = set()
+    raw_corpus = raw_dataset.get("corpus", [])
+    if not isinstance(raw_corpus, list):
+        raise ValueError("public corpus manifest must be a list")
+    corpus: dict[str, Path] = {}
+    declared_paths: set[Path] = set()
+    for index, item in enumerate(raw_corpus):
+        if not isinstance(item, dict):
+            raise ValueError(f"public corpus item[{index}] must be an object")
+        document_id = str(item.get("document_id", "")).strip()
+        path_value = str(item.get("path", "")).strip()
+        if not document_id or not path_value:
+            raise ValueError(f"public corpus item[{index}] needs document_id and path")
+        if document_id in corpus:
+            raise ValueError(f"duplicate public corpus document_id: {document_id}")
+        path = resolve_path(path_value)
+        if path in declared_paths:
+            raise ValueError(f"duplicate public corpus path: {path_value}")
+        corpus[document_id] = path
+        declared_paths.add(path)
+
+    source_paths: set[Path] = set(declared_paths)
     repository_root = resolve_path(".")
     for case in dataset.cases:
         if corpus:
@@ -38,7 +60,7 @@ def collect_public_sources(dataset_path: Path, dataset: object) -> list[Path]:
             # refusal evaluation becomes an unrealistically easy empty-context test.
             if case.source != "manual-negative":
                 source = resolve_path(case.source)
-                if source not in corpus.values():
+                if source not in declared_paths:
                     raise ValueError(f"{case.query_id}: source is not declared in public corpus")
                 source_paths.add(source)
         elif case.answerable and case.source != "manual-negative":

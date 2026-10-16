@@ -10,6 +10,14 @@ from pathlib import Path
 from typing import Any
 
 from src.production.database import ProductionDatabase
+from src.production.review_attestation import (
+    REVIEW_ATTESTATION_FIELDS,
+    attestation_complete,
+    normalize_attestation,
+    require_complete_attestation,
+)
+
+_REVIEW_COLUMNS = ",".join(REVIEW_ATTESTATION_FIELDS)
 
 
 class GoldenReviewService:
@@ -36,6 +44,7 @@ class GoldenReviewService:
             "dataset_sha256": digest, "name": payload["name"],
             "version": payload["version"], "total": total, "counts": counts,
             "all_approved": counts["approved"] == total,
+            "attestation_fields": list(REVIEW_ATTESTATION_FIELDS),
             "eligible_for_quality_gate": bool(payload.get("eligible_for_quality_gate", False)),
         }
 
@@ -47,10 +56,11 @@ class GoldenReviewService:
         digest = hashlib.sha256(raw).hexdigest()
         with self.database.connect() as connection:
             rows = connection.execute(
-                "SELECT query_id,status,notes,reviewer_id,reviewed_at FROM golden_reviews WHERE dataset_sha256=?",
+                f"""SELECT query_id,status,notes,reviewer_id,reviewed_at,{_REVIEW_COLUMNS}
+                    FROM golden_reviews WHERE dataset_sha256=?""",
                 (digest,),
             ).fetchall()
-        reviews = {str(row["query_id"]): dict(row) for row in rows}
+        reviews = {str(row["query_id"]): self._review_dict(row) for row in rows}
         result = []
         for case in payload["cases"]:
             review = reviews.get(case["query_id"])
@@ -84,34 +94,48 @@ class GoldenReviewService:
             evidence.append({**document, "content": path.read_text(encoding="utf-8")})
         with self.database.connect() as connection:
             row = connection.execute(
-                "SELECT status,notes,reviewer_id,reviewed_at FROM golden_reviews WHERE dataset_sha256=? AND query_id=?",
+                f"""SELECT status,notes,reviewer_id,reviewed_at,{_REVIEW_COLUMNS}
+                    FROM golden_reviews WHERE dataset_sha256=? AND query_id=?""",
                 (digest, query_id),
             ).fetchone()
         return {"dataset_sha256": digest, "case": case, "evidence": evidence,
-                "review": dict(row) if row else None}
+                "review": self._review_dict(row) if row else None}
 
     def review(
         self, query_id: str, status: str, notes: str, reviewer_id: str,
         dataset_sha256: str,
         candidate_path: str = "evaluation/candidates/public_golden_candidate.json",
+        *, attestation: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         if status not in {"pending", "approved", "rejected"}:
             raise ValueError("invalid review status")
+        normalized = normalize_attestation(attestation)
+        require_complete_attestation(status, normalized)
         detail = self.get_case(query_id, candidate_path)
         if detail["dataset_sha256"] != dataset_sha256:
             raise ValueError("candidate file changed; reload it before recording review")
         reviewed_at = datetime.now(timezone.utc).isoformat()
         with self.database.transaction(immediate=True) as connection:
             connection.execute(
-                """INSERT INTO golden_reviews(dataset_sha256,query_id,status,notes,reviewer_id,reviewed_at)
-                   VALUES (?,?,?,?,?,?)
+                f"""INSERT INTO golden_reviews(
+                   dataset_sha256,query_id,status,notes,reviewer_id,reviewed_at,{_REVIEW_COLUMNS}
+                   ) VALUES (?,?,?,?,?,?,?,?,?,?,?)
                    ON CONFLICT(dataset_sha256,query_id) DO UPDATE SET
                    status=excluded.status,notes=excluded.notes,
-                   reviewer_id=excluded.reviewer_id,reviewed_at=excluded.reviewed_at""",
-                (dataset_sha256, query_id, status, notes.strip(), reviewer_id, reviewed_at),
+                   reviewer_id=excluded.reviewer_id,reviewed_at=excluded.reviewed_at,
+                   query_verified=excluded.query_verified,
+                   answer_verified=excluded.answer_verified,
+                   evidence_verified=excluded.evidence_verified,
+                   category_difficulty_verified=excluded.category_difficulty_verified,
+                   split_verified=excluded.split_verified""",
+                (
+                    dataset_sha256, query_id, status, notes.strip(), reviewer_id, reviewed_at,
+                    *(int(normalized[field]) for field in REVIEW_ATTESTATION_FIELDS),
+                ),
             )
         return {"query_id": query_id, "status": status, "notes": notes.strip(),
-                "reviewer_id": reviewer_id, "reviewed_at": reviewed_at}
+                "reviewer_id": reviewer_id, "reviewed_at": reviewed_at,
+                **normalized, "attestation_complete": attestation_complete(normalized)}
 
     def export_reviewed(
         self, dataset_sha256: str, exported_by: str,
@@ -125,13 +149,13 @@ class GoldenReviewService:
         query_ids = {str(case["query_id"]) for case in payload["cases"]}
         with self.database.connect() as connection:
             rows = connection.execute(
-                """SELECT query_id,status,notes,reviewer_id,reviewed_at
+                f"""SELECT query_id,status,notes,reviewer_id,reviewed_at,{_REVIEW_COLUMNS}
                    FROM golden_reviews WHERE dataset_sha256=?""",
                 (digest,),
             ).fetchall()
-        reviews = {str(row["query_id"]): dict(row) for row in rows}
+        reviews = {str(row["query_id"]): self._review_dict(row) for row in rows}
         missing = sorted(query_id for query_id in query_ids
-                         if reviews.get(query_id, {}).get("status") != "approved")
+                         if not self._approved_review(reviews.get(query_id)))
         if missing:
             raise ValueError(
                 f"all candidate cases must be approved before export; {len(missing)} remain"
@@ -153,9 +177,12 @@ class GoldenReviewService:
                 "sha256": digest,
             },
             "human_review": {
+                "attestation_version": 1,
                 "exported_at": exported_at,
                 "exported_by": exported_by,
                 "approved_case_count": len(query_ids),
+                "complete_attestation_count": len(query_ids),
+                "attestation_fields": list(REVIEW_ATTESTATION_FIELDS),
                 "records": [reviews[query_id] for query_id in sorted(query_ids)],
             },
             "cases": reviewed_cases,
@@ -182,6 +209,22 @@ class GoldenReviewService:
             "case_count": len(query_ids),
             "eligible_for_quality_gate": False,
         }
+
+    @staticmethod
+    def _review_dict(row: Any) -> dict[str, Any]:
+        result = dict(row)
+        normalized = normalize_attestation(result)
+        result.update(normalized)
+        result["attestation_complete"] = attestation_complete(normalized)
+        return result
+
+    @staticmethod
+    def _approved_review(review: dict[str, Any] | None) -> bool:
+        return bool(
+            review
+            and review.get("status") == "approved"
+            and review.get("attestation_complete") is True
+        )
 
     def _load(self, candidate_path: str) -> tuple[Path, bytes, dict[str, Any]]:
         path = self._repository_file(candidate_path)

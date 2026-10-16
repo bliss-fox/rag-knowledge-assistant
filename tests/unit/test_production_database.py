@@ -1,20 +1,100 @@
 from __future__ import annotations
 
 import json
+import sqlite3
 from datetime import datetime, timedelta, timezone
 
 from src.core.trace import TraceContext
+from src.production.audit import AuditService
 from src.production.auth import AuthService
 from src.production.database import ProductionDatabase
 from src.production.jobs import JobQueue
 from src.production.trace_store import SQLiteTraceStore, percentile
-from src.production.audit import AuditService
 
 
 def test_database_uses_wal_and_migrates(tmp_path):
     database = ProductionDatabase(tmp_path / "production.db")
     health = database.health()
-    assert health == {"ok": True, "schema_version": 3, "journal_mode": "wal"}
+    assert health == {"ok": True, "schema_version": 5, "journal_mode": "wal"}
+
+
+def test_database_migrates_existing_v3_store_to_private_golden_schema(tmp_path):
+    path = tmp_path / "production.db"
+    with sqlite3.connect(path) as connection:
+        connection.execute(
+            "CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY, applied_at TEXT)"
+        )
+        connection.execute("INSERT INTO schema_migrations VALUES (3, '2026-08-13T00:00:00Z')")
+        connection.execute(
+            """CREATE TABLE users (
+                id TEXT PRIMARY KEY, username TEXT NOT NULL UNIQUE COLLATE NOCASE,
+                password_hash TEXT NOT NULL, role TEXT NOT NULL,
+                active INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            )"""
+        )
+
+    database = ProductionDatabase(path)
+
+    assert database.health()["schema_version"] == 5
+    with database.connect() as connection:
+        tables = {
+            row[0]
+            for row in connection.execute(
+                "SELECT name FROM sqlite_master WHERE type='table'"
+            ).fetchall()
+        }
+    assert {"private_golden_sets", "private_golden_cases"} <= tables
+
+
+def test_database_v5_migration_invalidates_legacy_approvals_without_attestations(tmp_path):
+    path = tmp_path / "production.db"
+    with sqlite3.connect(path) as connection:
+        connection.execute(
+            "CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY, applied_at TEXT)"
+        )
+        connection.execute("INSERT INTO schema_migrations VALUES (4, '2026-08-14T00:00:00Z')")
+        connection.execute(
+            """CREATE TABLE golden_reviews (
+                dataset_sha256 TEXT NOT NULL, query_id TEXT NOT NULL,
+                status TEXT NOT NULL, notes TEXT NOT NULL DEFAULT '',
+                reviewer_id TEXT, reviewed_at TEXT NOT NULL,
+                PRIMARY KEY(dataset_sha256, query_id)
+            )"""
+        )
+        connection.execute(
+            "INSERT INTO golden_reviews VALUES ('sha','q1','approved','old',NULL,'now')"
+        )
+        connection.execute(
+            "CREATE TABLE private_golden_sets (id TEXT PRIMARY KEY, status TEXT NOT NULL)"
+        )
+        connection.execute("INSERT INTO private_golden_sets VALUES ('set1','reviewed')")
+        connection.execute(
+            """CREATE TABLE private_golden_cases (
+                set_id TEXT NOT NULL, query_id TEXT NOT NULL, review_status TEXT NOT NULL,
+                PRIMARY KEY(set_id, query_id)
+            )"""
+        )
+        connection.execute(
+            "INSERT INTO private_golden_cases VALUES ('set1','private-q1','approved')"
+        )
+
+    database = ProductionDatabase(path)
+
+    with database.connect() as connection:
+        public = connection.execute("SELECT * FROM golden_reviews").fetchone()
+        private = connection.execute("SELECT * FROM private_golden_cases").fetchone()
+        private_set = connection.execute("SELECT * FROM private_golden_sets").fetchone()
+    assert database.health()["schema_version"] == 5
+    assert public["status"] == "pending"
+    assert private["review_status"] == "pending"
+    assert private_set["status"] == "draft"
+    for field in (
+        "query_verified", "answer_verified", "evidence_verified",
+        "category_difficulty_verified", "split_verified",
+    ):
+        assert public[field] == 0
+        assert private[field] == 0
 
 
 def test_auth_bootstrap_login_refresh_revoke_and_roles(tmp_path):

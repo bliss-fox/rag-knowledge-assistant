@@ -1,0 +1,3 @@
+# RAGBench FinQA finqa_6494 document 2
+
+segment results 20142007 compared to 2006 in 2007 , the segment 2019s net sales increased 43% ( 43 % ) to $ 7.7 billion , compared to $ 5.4 billion in 2006 . the 43% ( 43 % ) increase in net sales was primarily due to increased net sales in the commercial enterprise market , driven by the net sales from the symbol business acquired in january 2007 . net sales in the government and public safety market increased 6% ( 6 % ) , primarily due to strong demand in north america . on a geographic basis , net sales increased in all regions . 62 management 2019s discussion and analysis of financial condition and results of operations .

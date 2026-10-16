@@ -6,11 +6,12 @@ import hashlib
 import json
 import math
 import re
+from collections.abc import Iterable
 from datetime import datetime, timedelta, timezone
-from typing import Any, Iterable
+from pathlib import Path
+from typing import Any
 
 from src.production.database import ProductionDatabase
-
 
 _SECRET_PATTERNS = [
     re.compile(r"(?i)\b(api[_-]?key|authorization|password|token)(\s*[:=]\s*)[^\s,;]+"),
@@ -53,16 +54,28 @@ class SQLiteTraceStore:
         self.database = database
         self.retention_days = retention_days
 
-    def save(self, trace: dict[str, Any]) -> None:
+    def save(self, trace: dict[str, Any], *, overwrite: bool = True) -> bool:
+        """Persist one trace and return whether a row was written.
+
+        Normal production writes retain the historical replace behaviour.  Legacy
+        importers use ``overwrite=False`` so the insert and duplicate check happen
+        atomically and an older JSONL record cannot replace a newer production
+        trace with the same ID.
+        """
         trace_id = trace["trace_id"]
         metadata = dict(trace.get("metadata", {}))
         query = redact_text(str(metadata.pop("query", ""))) or None
-        response = redact_text(metadata.pop("response", None))
-        prompt = redact_text(metadata.pop("prompt", None))
+        response_value = metadata.pop("response", None)
+        prompt_value = metadata.pop("prompt", None)
+        response = redact_text(str(response_value)) if response_value is not None else None
+        prompt = redact_text(str(prompt_value)) if prompt_value is not None else None
         usage = metadata.pop("usage", {}) or {}
+        if not isinstance(usage, dict):
+            raise ValueError("trace metadata.usage must be an object")
+        insert_mode = "INSERT OR REPLACE" if overwrite else "INSERT OR IGNORE"
         with self.database.transaction(immediate=True) as connection:
-            connection.execute(
-                """INSERT OR REPLACE INTO traces(
+            cursor = connection.execute(
+                f"""{insert_mode} INTO traces(
                    id,trace_type,user_id,status,started_at,finished_at,total_elapsed_ms,
                    query_hash,query_text,response_text,prompt_text,prompt_id,prompt_version,prompt_hash,
                    model_version,dataset_version,config_version,retrieval_method,input_tokens,output_tokens,
@@ -79,6 +92,8 @@ class SQLiteTraceStore:
                  metadata.pop("faithfulness", None), metadata.pop("error_type", None),
                  json.dumps(metadata, ensure_ascii=False, default=str)),
             )
+            if not overwrite and cursor.rowcount == 0:
+                return False
             connection.execute("DELETE FROM trace_stages WHERE trace_id=?", (trace_id,))
             for ordinal, stage in enumerate(trace.get("stages", [])):
                 data = self._redact(stage.get("data", {}))
@@ -87,6 +102,177 @@ class SQLiteTraceStore:
                     (trace_id, ordinal, stage.get("stage", "unknown"), stage.get("elapsed_ms"),
                      json.dumps(data, ensure_ascii=False, default=str), stage.get("timestamp") or trace.get("started_at")),
                 )
+        return True
+
+    def import_jsonl(
+        self,
+        path: str | Path,
+        *,
+        skip_existing: bool = True,
+        max_error_details: int = 100,
+    ) -> dict[str, Any]:
+        """Import legacy JSON Lines traces without letting one bad line abort the file.
+
+        Both historical stage fields (stored directly on the stage object) and the
+        current ``stage["data"]`` layout are accepted.  Error details intentionally
+        contain only line numbers and schema/error categories; source text is never
+        echoed into the report.
+        """
+        if max_error_details < 0:
+            raise ValueError("max_error_details must not be negative")
+        source = Path(path)
+        report: dict[str, Any] = {
+            "source": str(source.resolve()),
+            "total_lines": 0,
+            "imported": 0,
+            "skipped_existing": 0,
+            "blank_lines": 0,
+            "malformed_json": 0,
+            "invalid_schema": 0,
+            "storage_errors": 0,
+            "errors": [],
+            "error_details_truncated": 0,
+        }
+
+        def record_error(line_number: int, kind: str, message: str) -> None:
+            if len(report["errors"]) < max_error_details:
+                report["errors"].append({
+                    "line": line_number,
+                    "kind": kind,
+                    "message": message,
+                })
+            else:
+                report["error_details_truncated"] += 1
+
+        with source.open("r", encoding="utf-8-sig") as handle:
+            for line_number, raw_line in enumerate(handle, start=1):
+                report["total_lines"] += 1
+                if not raw_line.strip():
+                    report["blank_lines"] += 1
+                    continue
+                try:
+                    raw_trace = json.loads(raw_line)
+                except json.JSONDecodeError:
+                    report["malformed_json"] += 1
+                    record_error(line_number, "malformed_json", "line is not valid JSON")
+                    continue
+                try:
+                    trace = self._normalize_import_trace(raw_trace)
+                except (TypeError, ValueError) as exc:
+                    report["invalid_schema"] += 1
+                    record_error(line_number, "invalid_schema", str(exc))
+                    continue
+                try:
+                    written = self.save(trace, overwrite=not skip_existing)
+                except Exception:  # keep remaining legacy lines recoverable
+                    report["storage_errors"] += 1
+                    record_error(line_number, "storage_error", "trace could not be stored")
+                    continue
+                if written:
+                    report["imported"] += 1
+                else:
+                    report["skipped_existing"] += 1
+        return report
+
+    @classmethod
+    def _normalize_import_trace(cls, value: Any) -> dict[str, Any]:
+        if not isinstance(value, dict):
+            raise TypeError("trace must be a JSON object")
+        trace_id = value.get("trace_id")
+        if not isinstance(trace_id, str) or not trace_id.strip():
+            raise ValueError("trace_id must be a non-empty string")
+        started_at = value.get("started_at")
+        if not isinstance(started_at, str) or not started_at.strip():
+            raise ValueError("started_at must be a non-empty ISO-8601 string")
+        try:
+            cls._parse_timestamp(started_at)
+        except (TypeError, ValueError):
+            raise ValueError("started_at must be a valid ISO-8601 timestamp") from None
+        finished_at = value.get("finished_at")
+        if finished_at is not None:
+            if not isinstance(finished_at, str) or not finished_at.strip():
+                raise ValueError("finished_at must be null or an ISO-8601 string")
+            try:
+                cls._parse_timestamp(finished_at)
+            except (TypeError, ValueError):
+                raise ValueError("finished_at must be a valid ISO-8601 timestamp") from None
+        trace_type = value.get("trace_type", "query")
+        if trace_type not in {"query", "ingestion"}:
+            raise ValueError("trace_type must be 'query' or 'ingestion'")
+        metadata = value.get("metadata", {})
+        if not isinstance(metadata, dict):
+            raise TypeError("metadata must be a JSON object")
+        usage = metadata.get("usage", {}) or {}
+        if not isinstance(usage, dict):
+            raise TypeError("metadata.usage must be a JSON object")
+        for key in ("prompt_tokens", "completion_tokens"):
+            try:
+                token_count = int(usage.get(key, 0))
+            except (TypeError, ValueError):
+                raise ValueError(f"metadata.usage.{key} must be an integer") from None
+            if token_count < 0:
+                raise ValueError(f"metadata.usage.{key} must not be negative")
+
+        total_elapsed_ms = cls._non_negative_number(
+            value.get("total_elapsed_ms", 0), "total_elapsed_ms",
+        )
+        stages = value.get("stages", [])
+        if not isinstance(stages, list):
+            raise TypeError("stages must be a JSON array")
+        normalized_stages: list[dict[str, Any]] = []
+        for ordinal, stage in enumerate(stages):
+            if not isinstance(stage, dict):
+                raise TypeError(f"stages[{ordinal}] must be a JSON object")
+            stage_name = stage.get("stage")
+            if not isinstance(stage_name, str) or not stage_name.strip():
+                raise ValueError(f"stages[{ordinal}].stage must be a non-empty string")
+            nested_data = stage.get("data", {})
+            if not isinstance(nested_data, dict):
+                raise TypeError(f"stages[{ordinal}].data must be a JSON object")
+            stage_data = {
+                key: item for key, item in stage.items()
+                if key not in {"stage", "timestamp", "elapsed_ms", "data"}
+            }
+            stage_data.update(nested_data)
+            timestamp = stage.get("timestamp") or started_at
+            if not isinstance(timestamp, str):
+                raise TypeError(f"stages[{ordinal}].timestamp must be a string")
+            try:
+                cls._parse_timestamp(timestamp)
+            except (TypeError, ValueError):
+                raise ValueError(
+                    f"stages[{ordinal}].timestamp must be a valid ISO-8601 timestamp"
+                ) from None
+            elapsed = stage.get("elapsed_ms")
+            normalized_stages.append({
+                "stage": stage_name,
+                "timestamp": timestamp,
+                "elapsed_ms": None if elapsed is None else cls._non_negative_number(
+                    elapsed, f"stages[{ordinal}].elapsed_ms",
+                ),
+                "data": stage_data,
+            })
+        return {
+            "trace_id": trace_id.strip(),
+            "trace_type": trace_type,
+            "started_at": started_at,
+            "finished_at": finished_at,
+            "total_elapsed_ms": total_elapsed_ms,
+            "stages": normalized_stages,
+            "metadata": dict(metadata),
+        }
+
+    @staticmethod
+    def _non_negative_number(value: Any, field: str) -> float:
+        if isinstance(value, bool):
+            raise ValueError(f"{field} must be a finite non-negative number")
+        try:
+            result = float(value)
+        except (TypeError, ValueError):
+            raise ValueError(f"{field} must be a finite non-negative number") from None
+        if not math.isfinite(result) or result < 0:
+            raise ValueError(f"{field} must be a finite non-negative number")
+        return result
 
     def get(self, trace_id: str, user_id: str | None = None, is_admin: bool = False) -> dict[str, Any] | None:
         with self.database.connect() as connection:

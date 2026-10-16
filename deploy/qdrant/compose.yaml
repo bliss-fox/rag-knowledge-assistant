@@ -1,0 +1,26 @@
+name: modular-rag-qdrant
+
+services:
+  qdrant:
+    image: qdrant/qdrant:v1.15.4
+    container_name: modular-rag-qdrant
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:6333:6333"
+      - "127.0.0.1:6334:6334"
+    environment:
+      QDRANT__TELEMETRY_DISABLED: "true"
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c ':> /dev/tcp/127.0.0.1/6333'"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  qdrant_storage:
+    name: modular_rag_qdrant_storage

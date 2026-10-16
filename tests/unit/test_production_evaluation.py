@@ -46,8 +46,20 @@ def test_quality_gate_rejects_candidate_artifacts(tmp_path):
     approved.write_text(json.dumps({
         "artifact_type": "golden_set", "eligible_for_quality_gate": True,
         "review_status": "human_reviewed",
+        "human_review": {"attestation_version": 1, "complete_attestation_count": 1},
+        "cases": [{"query_id": "q1"}],
     }), encoding="utf-8")
     require_quality_gate_eligible(approved)
+
+    incomplete = tmp_path / "incomplete-attestation.json"
+    incomplete.write_text(json.dumps({
+        "artifact_type": "golden_set", "eligible_for_quality_gate": True,
+        "review_status": "human_reviewed",
+        "human_review": {"attestation_version": 1, "complete_attestation_count": 0},
+        "cases": [{"query_id": "q1"}],
+    }), encoding="utf-8")
+    with pytest.raises(ValueError, match="attestation count is incomplete"):
+        require_quality_gate_eligible(incomplete)
 
 
 def test_retrieval_citation_and_refusal_metrics():

@@ -17,12 +17,21 @@ Usage::
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 from typing import Any
 from unittest.mock import MagicMock, patch
 
 import pytest
 
 logger = logging.getLogger(__name__)
+
+_ATTESTATION = {
+    "query_verified": True,
+    "answer_verified": True,
+    "evidence_verified": True,
+    "category_difficulty_verified": True,
+    "split_verified": True,
+}
 
 
 # ── Helpers ───────────────────────────────────────────────────────────
@@ -95,7 +104,7 @@ class TestDashboardSmoke:
         from streamlit.testing.v1 import AppTest
 
         def page_script():
-            from src.observability.dashboard.pages.overview import render
+            from src.observability.dashboard.legacy_pages.overview import render
             render()
 
         at = AppTest.from_function(page_script, default_timeout=10)
@@ -125,13 +134,13 @@ class TestDashboardSmoke:
         mock_svc.list_documents.return_value = []
 
         def page_script():
-            from src.observability.dashboard.pages.data_browser import render
+            from src.observability.dashboard.legacy_pages.data_browser import render
             render()
 
         at = AppTest.from_function(page_script, default_timeout=10)
 
         with patch(
-            "src.observability.dashboard.pages.data_browser.DataService",
+            "src.observability.dashboard.legacy_pages.data_browser.DataService",
             return_value=mock_svc,
         ):
             at.run()
@@ -158,13 +167,13 @@ class TestDashboardSmoke:
         mock_svc.list_documents.return_value = []
 
         def page_script():
-            from src.observability.dashboard.pages.ingestion_manager import render
+            from src.observability.dashboard.legacy_pages.ingestion_manager import render
             render()
 
         at = AppTest.from_function(page_script, default_timeout=10)
 
         with patch(
-            "src.observability.dashboard.pages.ingestion_manager.DataService",
+            "src.observability.dashboard.legacy_pages.ingestion_manager.DataService",
             return_value=mock_svc,
         ):
             at.run()
@@ -186,13 +195,13 @@ class TestDashboardSmoke:
         mock_svc.list_traces.return_value = []
 
         def page_script():
-            from src.observability.dashboard.pages.ingestion_traces import render
+            from src.observability.dashboard.legacy_pages.ingestion_traces import render
             render()
 
         at = AppTest.from_function(page_script, default_timeout=10)
 
         with patch(
-            "src.observability.dashboard.pages.ingestion_traces.TraceService",
+            "src.observability.dashboard.legacy_pages.ingestion_traces.TraceService",
             return_value=mock_svc,
         ):
             at.run()
@@ -216,13 +225,13 @@ class TestDashboardSmoke:
         mock_svc.list_traces.return_value = []
 
         def page_script():
-            from src.observability.dashboard.pages.query_traces import render
+            from src.observability.dashboard.legacy_pages.query_traces import render
             render()
 
         at = AppTest.from_function(page_script, default_timeout=10)
 
         with patch(
-            "src.observability.dashboard.pages.query_traces.TraceService",
+            "src.observability.dashboard.legacy_pages.query_traces.TraceService",
             return_value=mock_svc,
         ):
             at.run()
@@ -481,12 +490,17 @@ class TestDashboardSmoke:
             text = _collect_text(at)
             assert "黄金集候选复核" in text
             assert "支持证据" in text
+            for field in _ATTESTATION:
+                at.checkbox(key=f"public-review-candidate-1-{field}").set_value(True).run()
             at.button(key="approve-candidate-1").click().run()
 
         assert not at.exception, f"Golden approval raised an exception: {at.exception}"
         mock_client.put.assert_called_once_with(
             "/golden-candidates/cases/candidate-1/review",
-            json={"dataset_sha256": "sha-1", "status": "approved", "notes": ""},
+            json={
+                "dataset_sha256": "sha-1", "status": "approved", "notes": "",
+                "attestation": _ATTESTATION,
+            },
         )
 
     @pytest.mark.e2e
@@ -522,3 +536,205 @@ class TestDashboardSmoke:
             "/golden-candidates/export-reviewed", json={"dataset_sha256": "sha-1"},
         )
         assert "仍不可用于质量门禁" in _collect_text(at)
+
+    @pytest.mark.e2e
+    def test_private_golden_page_renders_validation_and_creates_case(self) -> None:
+        """Admin can author a local-only case while export validation remains visible."""
+        from streamlit.testing.v1 import AppTest
+
+        mock_client = MagicMock()
+        dataset = {
+            "id": "set-1", "name": "私有知识库", "version": "1.0.0",
+            "status": "draft", "case_count": 1,
+            "review_counts": {"pending": 1, "approved": 0, "rejected": 0},
+            "split_counts": {"dev": 1, "final": 0},
+            "answerability_counts": {"answerable": 1, "unanswerable": 0},
+            "export_ready": False,
+            "export_validation_errors": [
+                "case count must be between 50 and 200", "every case must be approved",
+            ],
+            "output_path": "evaluation/private_golden.json",
+        }
+        summaries = [{
+            "query_id": "private-001", "category": "精确事实", "split": "dev",
+            "language": "zh", "difficulty": "medium", "answerable": True,
+            "review_status": "pending",
+        }]
+
+        def fake_get(path: str):
+            return {
+                "/private-golden-sets": [dataset],
+                "/private-golden-sets/set-1": dataset,
+                "/private-golden-sets/set-1/cases": summaries,
+            }[path]
+
+        mock_client.get.side_effect = fake_get
+
+        def page_script():
+            from src.observability.dashboard.app import _private_golden
+            _private_golden()
+
+        at = AppTest.from_function(page_script, default_timeout=10)
+        with patch("src.observability.dashboard.app._client", return_value=mock_client):
+            at.run()
+            assert not at.exception, f"Private golden page raised: {at.exception}"
+            text = _collect_text(at)
+            assert "私有黄金集" in text
+            assert "case count must be between 50 and 200" in text
+            next(item for item in at.text_input if item.label == "Query ID").set_value(
+                "private-002",
+            ).run()
+            next(item for item in at.text_area if item.label == "问题").set_value(
+                "私有知识库中的部署版本是什么？",
+            ).run()
+            next(
+                item for item in at.text_area if item.label == "期望文档 ID（每行一个）"
+            ).set_value("doc-private-1").run()
+            next(item for item in at.text_area if item.label == "答案要点（每行一个）").set_value(
+                "版本为 1.2.3",
+            ).run()
+            at.button(key="private-case-save-set-1-new").click().run()
+
+        assert not at.exception, f"Saving private case raised: {at.exception}"
+        mock_client.put.assert_called_once_with(
+            "/private-golden-sets/set-1/cases/private-002",
+            json={
+                "query": "私有知识库中的部署版本是什么？", "category": "精确事实",
+                "expected_document_ids": ["doc-private-1"],
+                "answer_key_points": ["版本为 1.2.3"], "answerable": True,
+                "source": "local-only", "split": "dev", "language": "zh",
+                "difficulty": "medium",
+            },
+        )
+
+    @pytest.mark.e2e
+    def test_private_golden_edit_review_and_confirm_delete(self) -> None:
+        """Editing warns about invalidated approval and review/delete actions call the API."""
+        from streamlit.testing.v1 import AppTest
+
+        mock_client = MagicMock()
+        dataset = {
+            "id": "set-1", "name": "私有知识库", "version": "1.0.0",
+            "status": "draft", "case_count": 1,
+            "review_counts": {"pending": 0, "approved": 1, "rejected": 0},
+            "split_counts": {"dev": 1, "final": 0},
+            "answerability_counts": {"answerable": 1, "unanswerable": 0},
+            "export_ready": False,
+            "export_validation_errors": ["case count must be between 50 and 200"],
+            "output_path": "evaluation/private_golden.json",
+        }
+        summary = {
+            "query_id": "private-001", "category": "精确事实", "split": "dev",
+            "language": "zh", "difficulty": "medium", "answerable": True,
+            "review_status": "approved",
+        }
+        detail = {
+            **summary, "query": "当前版本？", "expected_document_ids": ["doc-1"],
+            "answer_key_points": ["1.0.0"], "source": "local-only",
+            "review_notes": "已核对", "reviewer_id": "admin-1",
+        }
+
+        def fake_get(path: str):
+            return {
+                "/private-golden-sets": [dataset],
+                "/private-golden-sets/set-1": dataset,
+                "/private-golden-sets/set-1/cases": [summary],
+                "/private-golden-sets/set-1/cases/private-001": detail,
+            }[path]
+
+        mock_client.get.side_effect = fake_get
+
+        def page_script():
+            from src.observability.dashboard.app import _private_golden
+            _private_golden()
+
+        at = AppTest.from_function(page_script, default_timeout=10)
+        with patch("src.observability.dashboard.app._client", return_value=mock_client):
+            at.run()
+            at.radio(key="private-case-mode-set-1").set_value("编辑已有样例").run()
+            assert "保存任何修改都会自动撤销审批" in _collect_text(at)
+            assert at.button(key="private-delete-set-1-private-001").disabled is True
+            next(item for item in at.text_area if item.label == "问题").set_value(
+                "修改后的当前版本？",
+            ).run()
+            at.button(key="private-case-save-set-1-private-001").click().run()
+            mock_client.put.assert_called_once_with(
+                "/private-golden-sets/set-1/cases/private-001",
+                json={
+                    "query": "修改后的当前版本？", "category": "精确事实",
+                    "expected_document_ids": ["doc-1"], "answer_key_points": ["1.0.0"],
+                    "answerable": True, "source": "local-only", "split": "dev",
+                    "language": "zh", "difficulty": "medium",
+                },
+            )
+            mock_client.put.reset_mock()
+            for field in _ATTESTATION:
+                at.checkbox(
+                    key=f"private-review-set-1-private-001-{field}",
+                ).set_value(True).run()
+            at.button(key="private-approve-set-1-private-001").click().run()
+
+        assert not at.exception, f"Reviewing private case raised: {at.exception}"
+        mock_client.put.assert_called_once_with(
+            "/private-golden-sets/set-1/cases/private-001/review",
+            json={
+                "status": "approved", "notes": "已核对",
+                "attestation": _ATTESTATION,
+            },
+        )
+
+    @pytest.mark.e2e
+    def test_private_golden_exports_only_when_ready(self) -> None:
+        """The canonical private artifact is exported only after server-side readiness."""
+        from streamlit.testing.v1 import AppTest
+
+        mock_client = MagicMock()
+        dataset = {
+            "id": "set-1", "name": "私有知识库", "version": "1.0.0",
+            "status": "draft", "case_count": 50,
+            "review_counts": {"pending": 0, "approved": 50, "rejected": 0},
+            "split_counts": {"dev": 25, "final": 25},
+            "answerability_counts": {"answerable": 49, "unanswerable": 1},
+            "export_ready": True, "export_validation_errors": [],
+            "output_path": "evaluation/private_golden.json",
+        }
+        mock_client.get.side_effect = lambda path: {
+            "/private-golden-sets": [dataset],
+            "/private-golden-sets/set-1": dataset,
+            "/private-golden-sets/set-1/cases": [],
+        }[path]
+        mock_client.post.return_value = {
+            "path": "evaluation/private_golden.json", "case_count": 50,
+            "version": "1.0.0", "sha256": "private-sha",
+            "eligible_for_quality_gate": True,
+        }
+
+        def page_script():
+            from src.observability.dashboard.app import _private_golden
+            _private_golden()
+
+        at = AppTest.from_function(page_script, default_timeout=10)
+        with patch("src.observability.dashboard.app._client", return_value=mock_client):
+            at.run()
+            at.button(key="private-export-set-1").click().run()
+
+        assert not at.exception, f"Exporting private golden set raised: {at.exception}"
+        mock_client.post.assert_called_once_with("/private-golden-sets/set-1/export")
+        assert "evaluation/private_golden.json" in _collect_text(at)
+
+    @pytest.mark.e2e
+    def test_regular_user_navigation_omits_private_golden(self) -> None:
+        """A non-admin session cannot discover the private authoring page in navigation."""
+        from streamlit.testing.v1 import AppTest
+
+        at = AppTest.from_file(
+            Path(__file__).parents[2] / "src/observability/dashboard/app.py",
+            default_timeout=10,
+        )
+        at.session_state["access_token"] = "user-token"
+        at.session_state["user"] = {"username": "reader", "role": "user"}
+        at.run()
+
+        assert not at.exception, f"Regular-user dashboard raised: {at.exception}"
+        navigation = next(item for item in at.radio if item.label == "导航")
+        assert "私有黄金集" not in navigation.options

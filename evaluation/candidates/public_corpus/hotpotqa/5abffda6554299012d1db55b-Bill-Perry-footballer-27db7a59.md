@@ -1,3 +1,0 @@
-# Bill Perry (footballer)
-
-William "Bill" Perry (10 September 1930 – 27 September 2007) was an English professional footballer. He spent thirteen seasons at Blackpool from 1949 to 1962.

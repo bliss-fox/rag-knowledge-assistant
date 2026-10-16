@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from dataclasses import replace
 from pathlib import Path
 
@@ -13,6 +14,16 @@ from src.core.settings import load_settings, resolve_path
 from src.production.evaluation import load_golden_dataset, require_quality_gate_eligible
 from src.production.evidence_calibration import build_calibration_artifact
 from src.production.runtime import Runtime
+
+
+def _unit_interval(value: str) -> float:
+    try:
+        number = float(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("must be a number between 0 and 1") from exc
+    if not math.isfinite(number) or not 0.0 <= number <= 1.0:
+        raise argparse.ArgumentTypeError("must be between 0 and 1")
+    return number
 
 
 def _dataset_metadata(path: Path) -> tuple[dict[str, object], object]:
@@ -36,8 +47,8 @@ def main() -> int:
     parser.add_argument("--public-collection", default="public_evidence_calibration")
     parser.add_argument("--private-collection", default="default")
     parser.add_argument("--top-k", type=int, default=5)
-    parser.add_argument("--min-correct-refusal-rate", type=float, default=0.80)
-    parser.add_argument("--max-false-refusal-rate", type=float, default=0.20)
+    parser.add_argument("--min-correct-refusal-rate", type=_unit_interval, default=0.80)
+    parser.add_argument("--max-false-refusal-rate", type=_unit_interval, default=0.20)
     parser.add_argument("--output", default="evaluation/evidence_calibration.json")
     args = parser.parse_args()
     if args.top_k < 1:

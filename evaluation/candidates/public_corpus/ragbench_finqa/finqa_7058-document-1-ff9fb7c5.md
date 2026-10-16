@@ -1,0 +1,3 @@
+# RAGBench FinQA finqa_7058 document 1
+
+[["december 31,", "2015", "2014", "2013"], ["balance at beginning of year", "$ 35", "$ 63", "$ 66"], ["additions for tax positions of the current year", "2", "2", "2"], ["additions for tax positions of prior years", "15", "5", "11"], ["reductions for tax positions of prior years", "-2 ( 2 )", "-4 ( 4 )", "-2 ( 2 )"], ["settlements with tax authorities", "-2 ( 2 )", "-29 ( 29 )", "-8 ( 8 )"], ["expiration of the statute of limitations", "-1 ( 1 )", "-", "-2 ( 2 )"], ["foreign currency translation", "-4 ( 4 )", "-2 ( 2 )", "-4 ( 4 )"], ["balance at end of year", "$ 43", "$ 35", "$ 63"]]

@@ -1,3 +1,0 @@
-# Mike Cahill (director)
-
-Mike Cahill (born July 5, 1979) is an American film director and screenwriter.

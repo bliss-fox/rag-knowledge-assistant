@@ -11,6 +11,7 @@ from pathlib import Path
 
 from src.core.settings import resolve_path
 from src.production.evaluation import load_golden_dataset, require_quality_gate_eligible
+from src.production.review_attestation import attestation_complete
 
 
 def promote(reviewed: Path, output: Path, version: str) -> dict[str, object]:
@@ -29,6 +30,12 @@ def promote(reviewed: Path, output: Path, version: str) -> dict[str, object]:
         raise ValueError("review records do not match candidate query IDs")
     if any(record.get("status") != "approved" for record in records):
         raise ValueError("reviewed candidate contains a non-approved review")
+    if any(not attestation_complete(record) for record in records):
+        raise ValueError("reviewed candidate contains incomplete review attestations")
+    if payload.get("human_review", {}).get("attestation_version") != 1:
+        raise ValueError("reviewed candidate has an unsupported attestation version")
+    if payload.get("human_review", {}).get("complete_attestation_count") != len(cases):
+        raise ValueError("reviewed candidate attestation count is incomplete")
     if any(not case.get("candidate_metadata", {}).get("human_reviewed") for case in cases):
         raise ValueError("reviewed candidate contains an unreviewed case")
     promoted = {

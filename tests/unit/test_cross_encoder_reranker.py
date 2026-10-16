@@ -140,6 +140,73 @@ class TestCrossEncoderRerankerInit:
             cache_folder=str(tmp_path / "project-cache"),
         )
 
+    def test_model_loader_uses_complete_immutable_cached_snapshot(
+        self, mock_settings, tmp_path, monkeypatch,
+    ):
+        cache_dir = tmp_path / "cache"
+        revision = "abc123"
+        snapshot = (
+            cache_dir
+            / "models--cross-encoder--ms-marco-MiniLM-L-6-v2"
+            / "snapshots"
+            / revision
+        )
+        snapshot.mkdir(parents=True)
+        for name in (
+            "config.json", "model.safetensors", "tokenizer_config.json", "tokenizer.json",
+        ):
+            (snapshot / name).write_text("{}", encoding="utf-8")
+        refs = snapshot.parents[1] / "refs"
+        refs.mkdir()
+        (refs / "main").write_text(revision, encoding="utf-8")
+        mock_settings.rerank.cache_dir = str(cache_dir)
+        mock_settings.rerank.device = "cpu"
+        cross_encoder = Mock(return_value=MockCrossEncoder())
+        monkeypatch.setattr("sentence_transformers.CrossEncoder", cross_encoder)
+
+        reranker = CrossEncoderReranker(settings=mock_settings)
+
+        cross_encoder.assert_called_once_with(
+            str(snapshot), device="cpu", local_files_only=True,
+        )
+        assert reranker.using_cached_snapshot is True
+
+    def test_partial_cached_snapshot_is_not_treated_as_complete(
+        self, mock_settings, tmp_path,
+    ):
+        cache_dir = tmp_path / "cache"
+        snapshot = (
+            cache_dir
+            / "models--cross-encoder--ms-marco-MiniLM-L-6-v2"
+            / "snapshots"
+            / "partial"
+        )
+        snapshot.mkdir(parents=True)
+        (snapshot / "config.json").write_text("{}", encoding="utf-8")
+        (snapshot / "model.safetensors").write_text("partial", encoding="utf-8")
+        mock_settings.rerank.cache_dir = str(cache_dir)
+        reranker = CrossEncoderReranker(settings=mock_settings, model=MockCrossEncoder())
+
+        assert reranker._find_complete_cached_snapshot(
+            "cross-encoder/ms-marco-MiniLM-L-6-v2"
+        ) is None
+
+    def test_sharded_snapshot_requires_every_weight_file(self, tmp_path):
+        snapshot = tmp_path / "snapshot"
+        snapshot.mkdir()
+        for name in ("config.json", "tokenizer_config.json", "tokenizer.json"):
+            (snapshot / name).write_text("{}", encoding="utf-8")
+        (snapshot / "model.safetensors.index.json").write_text(
+            '{"weight_map":{"a":"part-1.safetensors","b":"part-2.safetensors"}}',
+            encoding="utf-8",
+        )
+        (snapshot / "part-1.safetensors").write_text("one", encoding="utf-8")
+
+        assert CrossEncoderReranker._snapshot_is_complete(snapshot) is False
+
+        (snapshot / "part-2.safetensors").write_text("two", encoding="utf-8")
+        assert CrossEncoderReranker._snapshot_is_complete(snapshot) is True
+
     def test_user_cache_resolves_outside_replaceable_application_directory(
         self, mock_settings, tmp_path, monkeypatch,
     ):

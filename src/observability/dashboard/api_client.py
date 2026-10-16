@@ -9,7 +9,12 @@ import httpx
 
 
 class DashboardAPIError(RuntimeError):
-    pass
+    def __init__(
+        self, message: str, *, status_code: int | None = None, detail: Any = None,
+    ) -> None:
+        super().__init__(message)
+        self.status_code = status_code
+        self.detail = detail
 
 
 class DashboardAPIClient:
@@ -34,7 +39,11 @@ class DashboardAPIClient:
                 detail = response.json().get("detail", response.text)
             except Exception:
                 detail = response.text
-            raise DashboardAPIError(f"{response.status_code}: {detail}")
+            raise DashboardAPIError(
+                f"{response.status_code}: {detail}",
+                status_code=response.status_code,
+                detail=detail,
+            )
         if response.status_code == 204:
             return None
         return response.json()

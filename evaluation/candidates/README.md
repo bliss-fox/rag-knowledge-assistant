@@ -2,6 +2,9 @@
 
 `public_golden_candidate.json` 和 `public_corpus/` 来自固定版本的公开数据集，只是人工标注的候选原料。
 
+来源、许可证、纳入/排除理由见 [SOURCE_RESEARCH.md](SOURCE_RESEARCH.md)。生成器会校验
+固定 revision 的数据卡许可证、文件大小和 SHA-256；上游内容漂移时默认失败。
+
 - `eligible_for_quality_gate` 必须保持 `false`。
 - 自动生成器不得把 `human_reviewed` 改为 `true`。
 - 每条问题、答案要点、证据文档、类别、难度和 dev/final 划分必须人工复核。
@@ -36,3 +39,6 @@ evaluation/reviewed/public_golden_reviewed-<candidate-sha-prefix>.json
 ```powershell
 .\.venv\Scripts\python.exe scripts\build_public_golden_candidates.py
 ```
+
+当前版本 `2026.09.02.3` 含 100 条候选、255 份 corpus 文档，中文/英文为 38/62，
+dev/final 为 50/50。它仍是 `requires_human_review`，不能用于正式质量门禁。

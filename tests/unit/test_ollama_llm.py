@@ -28,6 +28,7 @@ class MockLLMSettings:
     model: str = "llama3"
     temperature: float = 0.7
     max_tokens: int = 2048
+    base_url: str | None = None
 
 
 @dataclass
@@ -138,6 +139,24 @@ class TestOllamaInit:
         settings = MockSettings()
         llm = OllamaLLM(settings, base_url="http://192.168.1.100:11434")
         assert llm.base_url == "http://192.168.1.100:11434"
+
+    def test_init_base_url_from_settings(self):
+        settings = MockSettings(
+            llm=MockLLMSettings(base_url="http://configured-ollama:11434/")
+        )
+
+        llm = OllamaLLM(settings)
+
+        assert llm.base_url == "http://configured-ollama:11434"
+
+    def test_settings_base_url_overrides_env(self):
+        settings = MockSettings(
+            llm=MockLLMSettings(base_url="http://configured-ollama:11434")
+        )
+        with patch.dict("os.environ", {"OLLAMA_BASE_URL": "http://env:11434"}):
+            llm = OllamaLLM(settings)
+
+        assert llm.base_url == "http://configured-ollama:11434"
     
     def test_init_base_url_from_env(self):
         """Should read base URL from environment variable."""

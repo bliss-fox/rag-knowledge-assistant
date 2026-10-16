@@ -15,11 +15,12 @@ from typing import Any, Literal
 
 from fastapi import Depends, FastAPI, File, Header, HTTPException, Request, Response, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, StrictBool
 
 from src.core.settings import resolve_path
 from src.production.auth import Principal
 from src.production.golden_review import GoldenReviewService
+from src.production.private_golden import PrivateGoldenService
 from src.production.runtime import Runtime
 
 
@@ -73,14 +74,51 @@ class EvaluationRequest(BaseModel):
     repeats: int = Field(default=5, ge=1, le=20)
 
 
+class ReviewAttestation(BaseModel):
+    query_verified: StrictBool = False
+    answer_verified: StrictBool = False
+    evidence_verified: StrictBool = False
+    category_difficulty_verified: StrictBool = False
+    split_verified: StrictBool = False
+
+
 class GoldenReviewRequest(BaseModel):
     dataset_sha256: str
     status: Literal["pending", "approved", "rejected"]
     notes: str = Field(default="", max_length=4000)
+    attestation: ReviewAttestation = Field(default_factory=ReviewAttestation)
 
 
 class GoldenExportRequest(BaseModel):
     dataset_sha256: str
+
+
+class PrivateGoldenSetCreate(BaseModel):
+    name: str = Field(min_length=1, max_length=120)
+    version: str = Field(default="1.0.0", min_length=5, max_length=40)
+
+
+class PrivateGoldenSetUpdate(BaseModel):
+    name: str | None = Field(default=None, min_length=1, max_length=120)
+    version: str | None = Field(default=None, min_length=5, max_length=40)
+
+
+class PrivateGoldenCasePut(BaseModel):
+    query: str = Field(min_length=1, max_length=2000)
+    category: str = Field(min_length=1, max_length=80)
+    expected_document_ids: list[str] = Field(default_factory=list, max_length=20)
+    answer_key_points: list[str] = Field(default_factory=list, max_length=20)
+    answerable: bool
+    source: str = Field(min_length=1, max_length=500)
+    split: Literal["dev", "final"]
+    language: str = Field(default="zh", min_length=1, max_length=20)
+    difficulty: Literal["easy", "medium", "hard"] = "medium"
+
+
+class PrivateGoldenCaseReview(BaseModel):
+    status: Literal["pending", "approved", "rejected"]
+    notes: str = Field(default="", max_length=4000)
+    attestation: ReviewAttestation = Field(default_factory=ReviewAttestation)
 
 
 class _RateLimiter:
@@ -103,6 +141,7 @@ def create_app(runtime: Runtime | None = None) -> FastAPI:
     runtime = runtime or Runtime.create()
     limiter = _RateLimiter(runtime.settings.server.rate_limit_per_minute)
     golden_reviews = GoldenReviewService(runtime.database, resolve_path(".").resolve())
+    private_goldens = PrivateGoldenService(runtime.database, resolve_path(".").resolve())
 
     @asynccontextmanager
     async def lifespan(_: FastAPI):
@@ -202,11 +241,19 @@ def create_app(runtime: Runtime | None = None) -> FastAPI:
         health = runtime.database.health()
         warmup = getattr(app.state, "warmup", None)
         dependency_ok = isinstance(warmup, dict) and dependencies_ready()
-        ready_now = bool(health["ok"] and dependency_ok)
+        database_ok = bool(health["ok"])
+        bootstrap_required = not runtime.auth.has_users()
+        ready_now = bool(database_ok and dependency_ok and not bootstrap_required)
         if not ready_now:
             response.status_code = 503
-        health.update({"status": "ready" if ready_now else "not_ready",
-                       "bootstrap_required": not runtime.auth.has_users(), "warmup": warmup})
+        health.update({
+            "ok": ready_now,
+            "database_ok": database_ok,
+            "dependencies_ok": dependency_ok,
+            "status": "ready" if ready_now else "not_ready",
+            "bootstrap_required": bootstrap_required,
+            "warmup": warmup,
+        })
         return health
 
     @app.post("/auth/bootstrap", status_code=201)
@@ -508,6 +555,7 @@ def create_app(runtime: Runtime | None = None) -> FastAPI:
         try:
             result = golden_reviews.review(
                 query_id, body.status, body.notes, value.user_id, body.dataset_sha256,
+                attestation=body.attestation.model_dump(),
             )
         except KeyError as exc:
             raise HTTPException(status_code=404, detail="Candidate query not found") from exc
@@ -515,7 +563,11 @@ def create_app(runtime: Runtime | None = None) -> FastAPI:
             raise HTTPException(status_code=409, detail=str(exc)) from exc
         runtime.audit.record(
             "golden_candidate.review", value.user_id, "golden_candidate", query_id,
-            {"status": body.status, "dataset_sha256": body.dataset_sha256},
+            {
+                "status": body.status,
+                "dataset_sha256": body.dataset_sha256,
+                "attestation_complete": result["attestation_complete"],
+            },
         )
         return result
 
@@ -530,6 +582,148 @@ def create_app(runtime: Runtime | None = None) -> FastAPI:
         runtime.audit.record(
             "golden_candidate.export_reviewed", value.user_id, "golden_candidate",
             body.dataset_sha256, result,
+        )
+        return result
+
+    @app.get("/private-golden-sets")
+    def private_golden_sets(value: Principal = Depends(admin)) -> list[dict[str, Any]]:
+        del value
+        return private_goldens.list_sets()
+
+    @app.post("/private-golden-sets", status_code=201)
+    def create_private_golden_set(
+        body: PrivateGoldenSetCreate, value: Principal = Depends(admin),
+    ) -> dict[str, Any]:
+        try:
+            result = private_goldens.create_set(body.name, body.version, value.user_id)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        runtime.audit.record(
+            "private_golden.create", value.user_id, "private_golden_set", result["id"],
+            {"version": result["version"]},
+        )
+        return result
+
+    @app.get("/private-golden-sets/{set_id}")
+    def private_golden_set(
+        set_id: str, value: Principal = Depends(admin),
+    ) -> dict[str, Any]:
+        del value
+        try:
+            return private_goldens.get_set(set_id)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail="Private golden set not found") from exc
+
+    @app.patch("/private-golden-sets/{set_id}")
+    def update_private_golden_set(
+        set_id: str, body: PrivateGoldenSetUpdate, value: Principal = Depends(admin),
+    ) -> dict[str, Any]:
+        if body.name is None and body.version is None:
+            raise HTTPException(status_code=400, detail="No private golden-set fields supplied")
+        try:
+            result = private_goldens.update_set(set_id, name=body.name, version=body.version)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail="Private golden set not found") from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        runtime.audit.record(
+            "private_golden.update", value.user_id, "private_golden_set", set_id,
+            {"version": result["version"]},
+        )
+        return result
+
+    @app.get("/private-golden-sets/{set_id}/cases")
+    def private_golden_cases(
+        set_id: str,
+        status: Literal["pending", "approved", "rejected"] | None = None,
+        value: Principal = Depends(admin),
+    ) -> list[dict[str, Any]]:
+        del value
+        try:
+            return private_goldens.list_cases(set_id, review_status=status, include_content=False)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail="Private golden set not found") from exc
+
+    @app.get("/private-golden-sets/{set_id}/cases/{query_id}")
+    def private_golden_case(
+        set_id: str, query_id: str, value: Principal = Depends(admin),
+    ) -> dict[str, Any]:
+        del value
+        try:
+            return private_goldens.get_case(set_id, query_id)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail="Private golden case not found") from exc
+
+    @app.put("/private-golden-sets/{set_id}/cases/{query_id}")
+    def put_private_golden_case(
+        set_id: str, query_id: str, body: PrivateGoldenCasePut,
+        value: Principal = Depends(admin),
+    ) -> dict[str, Any]:
+        try:
+            result = private_goldens.put_case(
+                set_id, query_id, body.model_dump(), value.user_id,
+            )
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail="Private golden set not found") from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        runtime.audit.record(
+            "private_golden.case_upsert", value.user_id, "private_golden_case", query_id,
+            {"set_id": set_id, "split": result["split"]},
+        )
+        return result
+
+    @app.put("/private-golden-sets/{set_id}/cases/{query_id}/review")
+    def review_private_golden_case(
+        set_id: str, query_id: str, body: PrivateGoldenCaseReview,
+        value: Principal = Depends(admin),
+    ) -> dict[str, Any]:
+        try:
+            result = private_goldens.review_case(
+                set_id, query_id, body.status, body.notes, value.user_id,
+                attestation=body.attestation.model_dump(),
+            )
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail="Private golden case not found") from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        runtime.audit.record(
+            "private_golden.case_review", value.user_id, "private_golden_case", query_id,
+            {
+                "set_id": set_id,
+                "status": body.status,
+                "attestation_complete": result["attestation_complete"],
+            },
+        )
+        return result
+
+    @app.delete("/private-golden-sets/{set_id}/cases/{query_id}", status_code=204)
+    def delete_private_golden_case(
+        set_id: str, query_id: str, value: Principal = Depends(admin),
+    ) -> Response:
+        try:
+            private_goldens.delete_case(set_id, query_id)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail="Private golden case not found") from exc
+        runtime.audit.record(
+            "private_golden.case_delete", value.user_id, "private_golden_case", query_id,
+            {"set_id": set_id},
+        )
+        return Response(status_code=204)
+
+    @app.post("/private-golden-sets/{set_id}/export")
+    def export_private_golden_set(
+        set_id: str, value: Principal = Depends(admin),
+    ) -> dict[str, Any]:
+        try:
+            result = private_goldens.export(set_id, value.user_id)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail="Private golden set not found") from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        runtime.audit.record(
+            "private_golden.export", value.user_id, "private_golden_set", set_id,
+            {key: result[key] for key in ("sha256", "case_count", "version")},
         )
         return result
 

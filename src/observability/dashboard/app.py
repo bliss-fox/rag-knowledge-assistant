@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
+from typing import Any
 from urllib.parse import urlencode
 
 import streamlit as st
@@ -34,13 +35,22 @@ def _auth_screen() -> None:
         st.warning("服务已启动，但尚未达到生产就绪状态。" + (f" {detail}" if detail else ""))
     bootstrap = bool(ready.get("bootstrap_required"))
     st.subheader("首次创建管理员" if bootstrap else "登录")
-    username = st.text_input("用户名")
-    password = st.text_input("密码", type="password")
+    username = st.text_input(
+        "用户名",
+        help="3–64 个字符；仅允许字母、数字、点、下划线和连字符。",
+    )
+    password = st.text_input(
+        "密码", type="password",
+        help="新建或重置密码时必须为 12–256 个字符。",
+    )
     if bootstrap:
         confirm = st.text_input("确认密码", type="password")
         submitted = st.button("创建管理员", type="primary")
         if submitted and password != confirm:
             st.error("两次密码不一致")
+            return
+        if submitted and not 12 <= len(password) <= 256:
+            st.error("密码必须为 12–256 个字符")
             return
         path = "/auth/bootstrap"
     else:
@@ -176,7 +186,9 @@ def _users() -> None:
     with st.form("create-user"):
         cols = st.columns(3)
         username = cols[0].text_input("新用户名")
-        password = cols[1].text_input("初始密码", type="password")
+        password = cols[1].text_input(
+            "初始密码", type="password", help="12–256 个字符",
+        )
         role = cols[2].selectbox("角色", ["user", "admin"])
         create = st.form_submit_button("创建用户", type="primary")
     if create:
@@ -204,7 +216,8 @@ def _users() -> None:
                 "账户启用", value=bool(account["active"]), key=f"user-active-{account['id']}",
             )
             replacement = cols[2].text_input(
-                "重置密码（留空不改）", type="password", key=f"user-password-{account['id']}",
+                "重置密码（留空不改）", type="password", help="12–256 个字符",
+                key=f"user-password-{account['id']}",
             )
             if st.button("保存账户", key=f"save-user-{account['id']}"):
                 payload: dict[str, object] = {"role": selected_role, "active": active}
@@ -450,6 +463,24 @@ def _evaluations() -> None:
                 st.json(variant.get("failures", []))
 
 
+def _review_attestation_inputs(prefix: str, prior: dict[str, Any]) -> dict[str, bool]:
+    st.markdown("**结构化人工核对**")
+    st.caption("五项必须全部确认后才能批准；待定或退回可以保存未完成的核对进度。")
+    labels = (
+        ("query_verified", "问题表述、可回答性与业务意图正确"),
+        ("answer_verified", "答案要点正确；无答案题已确认应拒答"),
+        ("evidence_verified", "预期文档逐条支持答案，且没有伪造引用"),
+        ("category_difficulty_verified", "类别、语言和难度标注正确"),
+        ("split_verified", "dev/final 分配正确，final 未参与调参"),
+    )
+    result: dict[str, bool] = {}
+    for field, label in labels:
+        result[field] = st.checkbox(
+            label, value=bool(prior.get(field, False)), key=f"{prefix}-{field}",
+        )
+    return result
+
+
 def _golden_review() -> None:
     st.header("黄金集候选复核")
     st.caption("候选必须逐条核对问题、答案要点和支持文档；自动生成内容不能直接进入质量门禁。")
@@ -501,6 +532,10 @@ def _golden_review() -> None:
         return
     case = detail["case"]
     st.subheader(case["query"])
+    if case.get("candidate_metadata", {}).get("answer_key_origin") == (
+        "model_response_requires_human_review"
+    ):
+        st.warning("该答案要点来自模型输出，必须对照表格和原始证据人工重算后才能批准。")
     st.json({
         "query_id": case["query_id"], "answerable": case["answerable"],
         "category": case["category"], "difficulty": case["difficulty"],
@@ -518,9 +553,13 @@ def _golden_review() -> None:
         st.info("无答案候选没有期望支持文档；请确认问题确实无法由候选 corpus 回答。")
     prior = detail.get("review") or {}
     notes = st.text_area("复核备注", value=prior.get("notes", ""), key=f"review-notes-{case['query_id']}")
+    attestation = _review_attestation_inputs(f"public-review-{case['query_id']}", prior)
     actions = st.columns(3)
     selected_status = None
-    if actions[0].button("批准", type="primary", key=f"approve-{case['query_id']}"):
+    if actions[0].button(
+        "批准", type="primary", disabled=not all(attestation.values()),
+        key=f"approve-{case['query_id']}",
+    ):
         selected_status = "approved"
     if actions[1].button("退回", key=f"reject-{case['query_id']}"):
         selected_status = "rejected"
@@ -530,12 +569,278 @@ def _golden_review() -> None:
         try:
             _client().put(f"/golden-candidates/cases/{case['query_id']}/review", json={
                 "dataset_sha256": summary["dataset_sha256"],
-                "status": selected_status, "notes": notes,
+                "status": selected_status, "notes": notes, "attestation": attestation,
             })
             st.success("复核状态已保存")
             st.rerun()
         except DashboardAPIError as exc:
             st.error(str(exc))
+
+
+def _private_golden() -> None:
+    st.header("私有黄金集")
+    st.caption(
+        "草稿和审批记录只保存在本机 SQLite；导出文件不会进入 Git。每次修改样例都会撤销原审批。"
+    )
+    st.warning("final split 只用于冻结后的最终验收，不得用于日常调参或 EvidenceGate 阈值校准。")
+
+    with st.expander("创建私有数据集"):
+        new_name = st.text_input("数据集名称", key="private-golden-new-name")
+        new_version = st.text_input(
+            "初始版本", value="1.0.0", key="private-golden-new-version",
+        )
+        if st.button("创建数据集", type="primary", key="private-golden-create-set"):
+            try:
+                _client().post("/private-golden-sets", json={
+                    "name": new_name, "version": new_version,
+                })
+                st.success("私有黄金集草稿已创建")
+                st.rerun()
+            except DashboardAPIError as exc:
+                st.error(str(exc))
+
+    try:
+        datasets = _client().get("/private-golden-sets")
+    except DashboardAPIError as exc:
+        st.error(str(exc))
+        return
+    if not datasets:
+        st.info("尚未创建私有黄金集。请先创建一个 50–200 条的本地草稿。")
+        return
+
+    dataset_labels = {
+        f"{item['name']} · v{item['version']} · {item['case_count']} 条": item["id"]
+        for item in datasets
+    }
+    selected_dataset = st.selectbox("选择私有黄金集", list(dataset_labels))
+    set_id = dataset_labels[selected_dataset]
+    try:
+        dataset = _client().get(f"/private-golden-sets/{set_id}")
+    except DashboardAPIError as exc:
+        st.error(str(exc))
+        return
+
+    review_counts = dataset["review_counts"]
+    split_counts = dataset["split_counts"]
+    answerability = dataset["answerability_counts"]
+    metrics = st.columns(7)
+    metrics[0].metric("样例", dataset["case_count"])
+    metrics[1].metric("已批准", review_counts["approved"])
+    metrics[2].metric("待审批", review_counts["pending"])
+    metrics[3].metric("已退回", review_counts["rejected"])
+    metrics[4].metric("dev / final", f"{split_counts['dev']} / {split_counts['final']}")
+    metrics[5].metric("可回答", answerability["answerable"])
+    metrics[6].metric("不可回答", answerability["unanswerable"])
+
+    with st.expander("数据集版本和名称"):
+        edited_name = st.text_input(
+            "名称", value=dataset["name"], key=f"private-set-name-{set_id}",
+        )
+        edited_version = st.text_input(
+            "版本", value=dataset["version"], key=f"private-set-version-{set_id}",
+        )
+        st.caption("名称、样例或其他发布内容变化后，覆盖既有导出必须提升语义版本。")
+        if st.button("保存数据集信息", key=f"private-set-save-{set_id}"):
+            payload = {}
+            if edited_name != dataset["name"]:
+                payload["name"] = edited_name
+            if edited_version != dataset["version"]:
+                payload["version"] = edited_version
+            if not payload:
+                st.info("数据集信息没有变化")
+            else:
+                try:
+                    _client().patch(f"/private-golden-sets/{set_id}", json=payload)
+                    st.success("数据集信息已保存")
+                    st.rerun()
+                except DashboardAPIError as exc:
+                    st.error(str(exc))
+
+    if dataset["export_ready"]:
+        st.success("50–200 条样例均已逐条批准，dev/final 和可回答性覆盖满足导出要求。")
+        if st.button("导出本机私有黄金集", type="primary", key=f"private-export-{set_id}"):
+            try:
+                exported = _client().post(f"/private-golden-sets/{set_id}/export")
+                st.success(
+                    f"已导出 {exported['path']} · {exported['case_count']} 条 · "
+                    f"SHA-256 {exported['sha256']}"
+                )
+            except DashboardAPIError as exc:
+                st.error(str(exc))
+    else:
+        st.info("当前草稿尚不可导出：")
+        for error in dataset["export_validation_errors"]:
+            st.markdown(f"- {error}")
+
+    status_filter = st.selectbox(
+        "样例状态筛选", ["全部", "pending", "approved", "rejected"],
+        key=f"private-case-filter-{set_id}",
+    )
+    case_path = f"/private-golden-sets/{set_id}/cases"
+    if status_filter != "全部":
+        case_path += f"?status={status_filter}"
+    try:
+        cases = _client().get(case_path)
+    except DashboardAPIError as exc:
+        st.error(str(exc))
+        return
+
+    modes = ["新建样例"] + (["编辑已有样例"] if cases else [])
+    mode = st.radio("样例操作", modes, horizontal=True, key=f"private-case-mode-{set_id}")
+    selected_case: dict[str, object] = {}
+    if mode == "编辑已有样例":
+        case_labels = {
+            f"{item['query_id']} · {item['split']} · {item['category']} · {item['review_status']}":
+                item["query_id"]
+            for item in cases
+        }
+        selected_label = st.selectbox(
+            "选择样例", list(case_labels), key=f"private-case-select-{set_id}",
+        )
+        query_id = case_labels[selected_label]
+        try:
+            selected_case = _client().get(
+                f"/private-golden-sets/{set_id}/cases/{query_id}",
+            )
+        except DashboardAPIError as exc:
+            st.error(str(exc))
+            return
+    else:
+        query_id = ""
+
+    categories = [
+        "精确事实", "同义词与缩写", "多文档组合", "长尾实体", "否定或条件限制",
+        "时间敏感", "表格/列表信息", "模糊查询", "无答案", "冲突文档",
+    ]
+    difficulties = ["easy", "medium", "hard"]
+    selected_category = str(selected_case.get("category", "精确事实"))
+    selected_difficulty = str(selected_case.get("difficulty", "medium"))
+    st.subheader("编辑样例" if selected_case else "新增样例")
+    edited_query_id = st.text_input(
+        "Query ID", value=str(selected_case.get("query_id", query_id)),
+        disabled=bool(selected_case), key=f"private-query-id-{set_id}-{query_id or 'new'}",
+    )
+    query = st.text_area(
+        "问题", value=str(selected_case.get("query", "")),
+        key=f"private-query-{set_id}-{query_id or 'new'}",
+    )
+    form_columns = st.columns(4)
+    category = form_columns[0].selectbox(
+        "类别", categories, index=categories.index(selected_category),
+        key=f"private-category-{set_id}-{query_id or 'new'}",
+    )
+    split = form_columns[1].selectbox(
+        "Split", ["dev", "final"], index=0 if selected_case.get("split", "dev") == "dev" else 1,
+        key=f"private-split-{set_id}-{query_id or 'new'}",
+    )
+    language = form_columns[2].text_input(
+        "语言", value=str(selected_case.get("language", "zh")),
+        key=f"private-language-{set_id}-{query_id or 'new'}",
+    )
+    difficulty = form_columns[3].selectbox(
+        "难度", difficulties, index=difficulties.index(selected_difficulty),
+        key=f"private-difficulty-{set_id}-{query_id or 'new'}",
+    )
+    answerable = st.checkbox(
+        "可由知识库证据回答", value=bool(selected_case.get("answerable", True)),
+        key=f"private-answerable-{set_id}-{query_id or 'new'}",
+    )
+    source = st.text_input(
+        "来源标识", value=str(selected_case.get("source", "local-only")),
+        key=f"private-source-{set_id}-{query_id or 'new'}",
+    )
+    expected_documents = st.text_area(
+        "期望文档 ID（每行一个）",
+        value="\n".join(selected_case.get("expected_document_ids", [])),
+        key=f"private-docs-{set_id}-{query_id or 'new'}",
+    )
+    key_points = st.text_area(
+        "答案要点（每行一个）",
+        value="\n".join(selected_case.get("answer_key_points", [])),
+        key=f"private-key-points-{set_id}-{query_id or 'new'}",
+    )
+    if split == "final":
+        st.error("这是 final 样例：保存后不得将它用于日常调参。")
+    if selected_case.get("review_status") == "approved":
+        st.warning("该样例已批准；保存任何修改都会自动撤销审批并回到 pending。")
+
+    if st.button("保存样例", type="primary", key=f"private-case-save-{set_id}-{query_id or 'new'}"):
+        payload = {
+            "query": query,
+            "category": category,
+            "expected_document_ids": [
+                item.strip() for item in expected_documents.splitlines() if item.strip()
+            ],
+            "answer_key_points": [
+                item.strip() for item in key_points.splitlines() if item.strip()
+            ],
+            "answerable": answerable,
+            "source": source,
+            "split": split,
+            "language": language,
+            "difficulty": difficulty,
+        }
+        try:
+            _client().put(
+                f"/private-golden-sets/{set_id}/cases/{edited_query_id}", json=payload,
+            )
+            st.success("样例已保存；当前状态为 pending")
+            st.rerun()
+        except DashboardAPIError as exc:
+            st.error(str(exc))
+
+    if selected_case:
+        st.subheader("人工审批")
+        st.caption(
+            f"当前状态：{selected_case['review_status']} · "
+            f"审批人：{selected_case.get('reviewer_id') or '无'}"
+        )
+        review_notes = st.text_area(
+            "审批备注", value=str(selected_case.get("review_notes", "")),
+            key=f"private-review-notes-{set_id}-{query_id}",
+        )
+        attestation = _review_attestation_inputs(
+            f"private-review-{set_id}-{query_id}", selected_case,
+        )
+        review_columns = st.columns(3)
+        review_status = None
+        if review_columns[0].button(
+            "批准样例", type="primary", disabled=not all(attestation.values()),
+            key=f"private-approve-{set_id}-{query_id}",
+        ):
+            review_status = "approved"
+        if review_columns[1].button("退回样例", key=f"private-reject-{set_id}-{query_id}"):
+            review_status = "rejected"
+        if review_columns[2].button("标记待定", key=f"private-pending-{set_id}-{query_id}"):
+            review_status = "pending"
+        if review_status:
+            try:
+                _client().put(
+                    f"/private-golden-sets/{set_id}/cases/{query_id}/review",
+                    json={
+                        "status": review_status,
+                        "notes": review_notes,
+                        "attestation": attestation,
+                    },
+                )
+                st.success("审批状态已保存")
+                st.rerun()
+            except DashboardAPIError as exc:
+                st.error(str(exc))
+
+        delete_confirmed = st.checkbox(
+            f"确认删除样例 {query_id}", key=f"private-delete-confirm-{set_id}-{query_id}",
+        )
+        if st.button(
+            "删除样例", disabled=not delete_confirmed,
+            key=f"private-delete-{set_id}-{query_id}",
+        ):
+            try:
+                _client().delete(f"/private-golden-sets/{set_id}/cases/{query_id}")
+                st.success("样例已删除")
+                st.rerun()
+            except DashboardAPIError as exc:
+                st.error(str(exc))
 
 
 def main() -> None:
@@ -548,13 +853,16 @@ def main() -> None:
         st.markdown(f"**{user['username']}** · `{user['role']}`")
         pages = ["问答", "我的 Trace"]
         if user["role"] == "admin":
-            pages.extend(["数据源", "用户管理", "黄金集复核", "离线评测", "可观测性"])
+            pages.extend([
+                "数据源", "用户管理", "黄金集复核", "私有黄金集", "离线评测", "可观测性",
+            ])
         page = st.radio("导航", pages)
         if st.button("退出"):
             _logout()
             st.rerun()
     {"问答": _chat, "我的 Trace": _traces, "数据源": _sources, "用户管理": _users,
      "黄金集复核": _golden_review,
+     "私有黄金集": _private_golden,
      "离线评测": _evaluations, "可观测性": _observability}[page]()
 
 

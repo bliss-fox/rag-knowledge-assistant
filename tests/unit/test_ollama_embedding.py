@@ -28,6 +28,7 @@ def mock_settings_ollama() -> Any:
     settings.embedding.provider = "ollama"
     settings.embedding.model = "nomic-embed-text"
     settings.embedding.dimensions = 768
+    settings.embedding.base_url = None
     return settings
 
 
@@ -61,6 +62,24 @@ class TestOllamaEmbedding:
         embedding = OllamaEmbedding(mock_settings_ollama, base_url=custom_url)
         
         assert embedding.base_url == custom_url
+
+    def test_initialization_with_settings_base_url(self, mock_settings_ollama: Any) -> None:
+        """The configured endpoint must be used when no explicit override is supplied."""
+        mock_settings_ollama.embedding.base_url = "http://configured-ollama:11434/"
+
+        embedding = OllamaEmbedding(mock_settings_ollama)
+
+        assert embedding.base_url == "http://configured-ollama:11434"
+
+    def test_settings_base_url_overrides_env(
+        self, mock_settings_ollama: Any, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        mock_settings_ollama.embedding.base_url = "http://configured-ollama:11434"
+        monkeypatch.setenv("OLLAMA_BASE_URL", "http://env-ollama:11434")
+
+        embedding = OllamaEmbedding(mock_settings_ollama)
+
+        assert embedding.base_url == "http://configured-ollama:11434"
     
     def test_initialization_with_env_var(
         self, mock_settings_ollama: Any, monkeypatch: pytest.MonkeyPatch

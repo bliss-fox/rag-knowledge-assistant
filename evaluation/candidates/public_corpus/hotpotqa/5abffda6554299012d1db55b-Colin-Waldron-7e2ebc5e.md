@@ -1,3 +1,0 @@
-# Colin Waldron
-
-Colin Waldron (born 22 June 1948 in Bristol) was an English football defender. He spent thirteen seasons in the Football League and two in the North American Soccer League.

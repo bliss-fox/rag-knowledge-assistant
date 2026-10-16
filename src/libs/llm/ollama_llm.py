@@ -66,12 +66,15 @@ class OllamaLLM(BaseLLM):
         self.default_temperature = settings.llm.temperature
         self.default_max_tokens = settings.llm.max_tokens
         
-        # Base URL: explicit > env var > default
+        # Base URL: explicit > settings > env var > default.  Keep the
+        # effective endpoint aligned with the configuration validated by the
+        # launcher and readiness checks.
         self.base_url = (
-            base_url 
-            or os.environ.get("OLLAMA_BASE_URL") 
+            base_url
+            or getattr(settings.llm, "base_url", None)
+            or os.environ.get("OLLAMA_BASE_URL")
             or self.DEFAULT_BASE_URL
-        )
+        ).rstrip("/")
         
         # Timeout: explicit > default
         self.timeout = timeout or self.DEFAULT_TIMEOUT
